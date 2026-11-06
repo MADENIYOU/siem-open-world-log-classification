@@ -116,7 +116,7 @@ const enclair = (s, text, y = 1.42) => T(s, [{ text: "En clair : ", options: { b
   enclair(s, "chaque alerte de sécurité doit être triée par un humain, et il n'y a pas assez de monde pour toutes les traiter.");
   T(s, "4,99 M$", { x: X0, y: 1.95, w: 5.8, h: 1.3, fontSize: 70, color: CORAL, fontFace: HEAD });
   P(s, [["coût moyen d'une violation de données, en hausse de 12 % en un an ", C("ibm")]], { x: X0, y: 3.25, w: 5.5, h: 0.8, fontSize: 19 });
-  P(s, [["247 jours pour l'identifier et la contenir ; au-delà de 200 jours, la violation coûte 5,65 M$ contre 4,32 M$ ", C("ibm")]], { x: X0, y: 4.1, w: 5.5, h: 0.9, fontSize: 15, run: { color: MUTED } });
+  P(s, [["247 jours en moyenne pour identifier et contenir une violation ", C("ibm")]], { x: X0, y: 4.1, w: 5.5, h: 0.9, fontSize: 15, run: { color: MUTED } });
   hline(s, 6.9, 2.0, 5.75);
   T(s, "4 484", { x: 6.9, y: 2.12, w: 2.3, h: 0.8, fontSize: 36, color: BLUE, fontFace: HEAD });
   P(s, [["alertes par jour pour une équipe de surveillance (SOC) ; 67 % sont ignorées ", C("vectra")]], { x: 9.3, y: 2.2, w: 3.35, h: 0.8, fontSize: 15, valign: "middle" });
@@ -126,7 +126,7 @@ const enclair = (s, text, y = 1.42) => T(s, [{ text: "En clair : ", options: { b
   hline(s, 6.9, 4.4, 5.75);
   dark(s, X0, 5.35, CW, 1.5);
   T(s, "Pourquoi c'est notre sujet", { x: X0 + 0.35, y: 5.5, w: 5, h: 0.3, fontSize: 13, bold: true, color: ICE });
-  T(s, "Un SIEM rassemble les logs de tout le système d'information. Le goulot est humain : classer chaque événement et repérer celui qu'aucune règle ne décrit. Un classifieur qui sait dire « inconnu » réduit cette charge, à condition d'être évalué honnêtement.", { x: X0 + 0.35, y: 5.85, w: CW - 0.7, h: 0.95, fontSize: 16, color: "FFFFFF" });
+  T(s, "Un SIEM rassemble les logs de toute l'entreprise. Le goulot est humain : trier chaque événement et repérer celui qu'aucune règle ne décrit.", { x: X0 + 0.35, y: 5.85, w: CW - 0.7, h: 0.95, fontSize: 16, color: "FFFFFF" });
 }
 
 // 3. Problématique
@@ -136,10 +136,10 @@ const enclair = (s, text, y = 1.42) => T(s, [{ text: "En clair : ", options: { b
   enclair(s, "un gabarit est une phrase à trous : tous les logs sont fabriqués en remplissant les mêmes phrases avec des valeurs différentes.");
   dark(s, X0, 2.05, 6.7, 2.15);
   T(s, "Question centrale", { x: X0 + 0.3, y: 2.17, w: 5, h: 0.3, fontSize: 13, bold: true, color: ICE });
-  T(s, "Comment ranger un événement de sécurité dans une famille puis une classe précise, tout en reconnaissant qu'il n'appartient à aucune classe connue, avec une évaluation qui ne triche pas ?", { x: X0 + 0.3, y: 2.55, w: 6.1, h: 1.6, fontSize: 19, fontFace: HEAD, color: "FFFFFF" });
-  const q = [["1", "Que valent les scores publiés ?", "Au test, on retrouve les mêmes phrases à trous qu'à l'entraînement : le score est gonflé."], ["2", "Sait-on repérer une classe jamais vue ?", "Dans un SIEM, l'inconnu est la règle."], ["3", "Le système résiste-t-il aux textes modifiés ?", "Fautes, lettres d'autres alphabets, mots ajoutés."]];
+  T(s, "Comment classer un événement de sécurité, tout en reconnaissant qu'il n'appartient à aucune classe connue, avec une évaluation qui ne triche pas ?", { x: X0 + 0.3, y: 2.55, w: 6.1, h: 1.6, fontSize: 19, fontFace: HEAD, color: "FFFFFF" });
+  const q = [["1", "Que valent les scores publiés ?", "Les mêmes phrases à trous reviennent au test."], ["2", "Sait-on repérer une classe jamais vue ?", "Dans un SIEM, l'inconnu est la règle."], ["3", "Le système résiste-t-il aux textes modifiés ?", "Fautes, lettres trompeuses, mots ajoutés."]];
   q.forEach((r, i) => { const y = 4.5 + i * 0.82; T(s, r[0], { x: X0, y, w: 0.5, h: 0.5, fontSize: 26, color: CORAL, fontFace: HEAD }); T(s, r[1], { x: X0 + 0.6, y, w: 6.1, h: 0.32, fontSize: 15, bold: true, color: BLUE }); T(s, r[2], { x: X0 + 0.6, y: y + 0.33, w: 6.1, h: 0.4, fontSize: 12.5, color: MUTED }); });
-  P(s, [[{ b: "Ce qui existe" }], ["Des programmes qui classent des logs, évalués avec un découpage au hasard : scores de 0,93 à 0,97 ", C("sieve")], [{ b: "Ce qui manque" }], ["Savoir ce que valent ces scores sur des phrases à trous nouvelles, et si l'on repère les classes jamais vues."]], { x: 7.9, y: 2.05, w: 4.75, h: 4.5, fontSize: 17, gap: 12 });
+  P(s, [[{ b: "Ce qui existe" }], ["Des scores de 0,93 à 0,97 avec un découpage au hasard ", C("sieve")], [{ b: "Ce qui manque" }], ["Ce que valent ces scores sur de nouveaux gabarits, et si l'on repère l'inconnu."]], { x: 7.9, y: 2.05, w: 4.75, h: 4.5, fontSize: 17, gap: 12 });
 }
 
 // 4. Objectifs
@@ -147,12 +147,12 @@ const enclair = (s, text, y = 1.42) => T(s, [{ text: "En clair : ", options: { b
   const s = slide("Introduction - Objectifs", "Le projet mesure honnêtement ; il ne construit pas un produit",
     "Transition : de la question aux objectifs. À dire : volontairement pas de fonctionnalité promise ; l'utilité est un banc d'essai. Question probable : quel est le livrable ? Un notebook exécutable, des résultats chiffrés et un protocole qu'on peut réutiliser pour comparer d'autres classifieurs de logs.");
   lab(s, "Objectif général", X0, 2.0, 4.5);
-  T(s, "Mesurer jusqu'où un programme sait classer des journaux de sécurité, reconnaître ceux qu'il n'a jamais vus et résister à des textes modifiés, avec une évaluation qui ne triche pas.", { x: X0, y: 2.4, w: 4.6, h: 3.2, fontSize: 21, fontFace: HEAD });
+  T(s, "Mesurer jusqu'où un programme classe des journaux de sécurité, reconnaît l'inconnu et résiste à des textes modifiés, sans tricher sur l'évaluation.", { x: X0, y: 2.4, w: 4.6, h: 3.2, fontSize: 21, fontFace: HEAD });
   lab(s, "Objectifs spécifiques", 6.2, 2.0, 5);
-  [["Mesurer", " de combien la triche (mêmes phrases à trous au test) gonfle les scores"], ["Comparer", " trois façons de transformer le texte en nombres : comptage de mots, vecteurs de mots, réseau Transformer"], ["Comparer", " huit façons de repérer l'inconnu, en cachant des classes pour de faux"], ["Tester", " si les attaques sur le texte et les défenses tiennent vraiment"], ["Livrer", " un notebook reproductible, avec les règles de décision écrites avant les résultats"]].forEach((t, i) => {
+  [["Mesurer", " de combien la triche gonfle les scores"], ["Comparer", " trois façons de transformer le texte en nombres"], ["Comparer", " huit façons de repérer l'inconnu"], ["Tester", " les attaques sur le texte et les défenses"], ["Livrer", " un notebook reproductible"]].forEach((t, i) => {
     const y = 2.45 + i * 0.68; hline(s, 6.2, y - 0.08, 6.45); P(s, [[{ b: t[0] }, t[1]]], { x: 6.2, y, w: 6.45, h: 0.6, fontSize: 15, valign: "middle", run: { color: INK } }); });
   lab(s, "Sur quoi le projet pourrait servir", X0, 6.02, 6);
-  T(s, "Un protocole et un banc d'essai réutilisables pour comparer des programmes de classement de logs et leurs détecteurs d'inconnu sans surestimer leurs performances. Rien de plus n'est revendiqué.", { x: X0, y: 6.34, w: 11.9, h: 0.55, fontSize: 14.5 });
+  T(s, "Un banc d'essai réutilisable pour comparer des classifieurs de logs sans surestimer leurs scores.", { x: X0, y: 6.34, w: 11.9, h: 0.55, fontSize: 14.5 });
 }
 
 // 5. État de l'art : vue d'ensemble
@@ -160,12 +160,12 @@ const enclair = (s, text, y = 1.42) => T(s, [{ text: "En clair : ", options: { b
   const s = slide("État de l'art - Vue d'ensemble", "Aucun travail trouvé ne traite le classement hiérarchique de logs SIEM en monde ouvert",
     "Transition : ce qui existe. À dire : six familles de travaux, chacune avec ses références ; la recherche systématique du projet n'a trouvé aucun travail qui combine hiérarchie, logs SIEM et monde ouvert ; les 73 références ont toutes été ouvertes. Question probable : et la détection d'anomalies dans les logs ? C'est un autre problème : il sépare normal et anormal, sans classer les événements dans une taxonomie.");
   enclair(s, "« monde ouvert » veut dire que le programme peut rencontrer des événements qu'il n'a jamais appris.");
-  const F = [["Jeux de logs", "Des journaux de sécurité synthétiques pour s'entraîner", [["SIEVE, Artioli et al., 2025 ", C("sieve")]]],
-    ["Détection par le score", "Se méfier quand le modèle hésite entre les classes", [["Hendrycks et Gimpel, 2017 ", C("msp"), " ; Liu et al., 2020 ", C("energy")]]],
-    ["Détection par la distance", "Se méfier quand l'exemple est loin de tout ce qui est connu", [["Lee et al., 2018 ", C("maha"), " ; Sun et al., 2022 ", C("knn"), " ; Bendale et Boult, 2016 ", C("openmax")]]],
-    ["Hiérarchie", "Si la classe est incertaine, donner au moins la bonne famille", [["Linderman et al., 2022 ", C("lind")]]],
-    ["Robustesse du texte", "Résister aux lettres trompeuses (homoglyphes) et aux fautes", [["Norme Unicode UTS #39 ", C("uts39")]]],
-    ["Fiabilité de l'évaluation", "Vérifier que la confiance du modèle est honnête", [["Guo et al., 2017 ", C("guo"), " ; Vaze et al., 2022 ", C("vaze")]]]];
+  const F = [["Jeux de logs", "Des logs de sécurité synthétiques", [["SIEVE, Artioli et al., 2025 ", C("sieve")]]],
+    ["Détection par le score", "Se méfier quand le modèle hésite", [["Hendrycks et Gimpel, 2017 ", C("msp"), " ; Liu et al., 2020 ", C("energy")]]],
+    ["Détection par la distance", "Se méfier quand l'exemple est loin du connu", [["Lee et al., 2018 ", C("maha"), " ; Sun et al., 2022 ", C("knn"), " ; Bendale et Boult, 2016 ", C("openmax")]]],
+    ["Hiérarchie", "Donner au moins la bonne famille", [["Linderman et al., 2022 ", C("lind")]]],
+    ["Robustesse du texte", "Résister aux lettres trompeuses", [["Norme Unicode UTS #39 ", C("uts39")]]],
+    ["Fiabilité de l'évaluation", "Vérifier que la confiance est honnête", [["Guo et al., 2017 ", C("guo"), " ; Vaze et al., 2022 ", C("vaze")]]]];
   T(s, "Famille", { x: X0, y: 1.95, w: 3, h: 0.3, fontSize: 12, bold: true, color: MUTED }); T(s, "L'idée en clair", { x: 4.1, y: 1.95, w: 4, h: 0.3, fontSize: 12, bold: true, color: MUTED }); T(s, "Travaux", { x: 9.0, y: 1.95, w: 3, h: 0.3, fontSize: 12, bold: true, color: MUTED });
   F.forEach((f, i) => { const y = 2.3 + i * 0.66; hline(s, X0, y - 0.05, CW); T(s, f[0], { x: X0, y, w: 3.4, h: 0.55, fontSize: 16, bold: true, color: BLUE, valign: "middle" }); T(s, f[1], { x: 4.1, y, w: 4.7, h: 0.55, fontSize: 14.5, valign: "middle" }); P(s, f[2], { x: 9.0, y, w: 3.65, h: 0.55, fontSize: 12.5, valign: "middle", run: { color: MUTED } }); });
   hline(s, X0, 6.28, CW);
@@ -180,14 +180,14 @@ const enclair = (s, text, y = 1.42) => T(s, [{ text: "En clair : ", options: { b
   const H = (t) => ({ text: t, options: { bold: true, color: BLUE, fontSize: 13, fontFace: BODY, valign: "middle", border: [{ type: "none" }, { type: "none" }, { type: "solid", color: BLUE, pt: 1.25 }, { type: "none" }] } });
   const Cc = (t, o = {}) => ({ text: t, options: Object.assign({ fontSize: 13, fontFace: BODY, color: INK, valign: "middle", border: [{ type: "none" }, { type: "none" }, { type: "solid", color: LINE, pt: 0.75 }, { type: "none" }] }, o) });
   s.addTable([[H("Famille"), H("Ce qu'elle apporte"), H("Sa limite, mesurée chez nous")],
-    [Cc("Scores de sortie", { bold: true }), Cc("Simples, sans réentraînement"), Cc("La confiance affichée est fausse : écart de 0,15 à 0,25 avec la réalité")],
-    [Cc("Distances", { bold: true }), Cc("Mesurent l'éloignement par rapport aux classes connues"), Cc("Avec le comptage de mots : 0,56, à peine mieux que le hasard (0,5). Avec le Transformer : mieux que le score de sortie")],
-    [Cc("Hiérarchie", { bold: true }), Cc("Des erreurs moins graves : on garde la bonne famille"), Cc("Gain non démontré : la bonne famille est proposée une fois sur quatre")],
-    [Cc("Défenses du texte", { bold: true }), Cc("Efficaces contre l'attaque connue"), Cc("Trompeuses : testées avec la table de l'attaque, elles semblent parfaites")]],
+    [Cc("Scores de sortie", { bold: true }), Cc("Simples, sans réentraînement"), Cc("Confiance fausse : écart de 0,15 à 0,25")],
+    [Cc("Distances", { bold: true }), Cc("Mesurent l'éloignement du connu"), Cc("Comptage de mots : 0,56, presque le hasard")],
+    [Cc("Hiérarchie", { bold: true }), Cc("Erreurs moins graves"), Cc("Gain non démontré : bonne famille 1 fois sur 4")],
+    [Cc("Défenses du texte", { bold: true }), Cc("Efficaces contre l'attaque connue"), Cc("Trompeuses si testées avec la table de l'attaque")]],
     { x: X0, y: 2.0, w: 7.6, colW: [1.6, 2.5, 3.5], rowH: [0.45, 0.8, 1.0, 0.8, 0.8], margin: [0.05, 0.1, 0.05, 0.05], autoPage: false });
   P(s, [["Dans la littérature, la distance est efficace sur un Transformer affiné ", C("podolskiy"), "."]], { x: X0, y: 6.3, w: 7.6, h: 0.4, fontSize: 13, run: { color: MUTED } });
   lab(s, "Nos propositions", 8.9, 2.0, 3.8);
-  P(s, [[{ b: "Découper par gabarit" }, " (phrase à trous) et sceller le test : on ne l'ouvre qu'une fois"], [{ b: "Écrire les règles avant de voir les chiffres" }], [{ b: "Comparer les scores" }, " sur la sortie du modèle et sur ses vecteurs internes"], [{ b: "Tester la défense" }, " avec une autre table de lettres que celle de l'attaque"]], { x: 8.9, y: 2.5, w: 3.8, h: 4.0, fontSize: 15, gap: 16 });
+  P(s, [[{ b: "Découper par gabarit" }, ", test scellé"], [{ b: "Règles écrites" }, " avant les chiffres"], [{ b: "Scores comparés" }, " sur sorties et vecteurs"], [{ b: "Défense testée" }, " avec une autre table"]], { x: 8.9, y: 2.5, w: 3.8, h: 4.0, fontSize: 15, gap: 16 });
 }
 
 // 7. Matériel
@@ -196,13 +196,9 @@ const enclair = (s, text, y = 1.42) => T(s, [{ text: "En clair : ", options: { b
     "Transition : après la théorie, la matière. À dire : le jeu SIEVE est la base ; les fichiers du professeur servent de contrôle de fuite ; le CDS réel n'était pas dans l'archive donc le transfert vers des logs réels n'a pas pu être fait. Question probable : les logs sont-ils réels ? Non, ils sont générés à partir de 440 gabarits issus de logs réels.");
   lab(s, "SIEVE : six versions de 100 000 logs, de plus en plus abîmées", X0, 1.95, 7);
   ["0", "0,1", "0,2", "0,3", "0,4", "0,5"].forEach((p, i) => { const x = X0 + i * 0.98; s.addShape(pres.ShapeType.rect, { x, y: 2.4, w: 0.88, h: 0.7, fill: { color: i === 0 ? BLUE : "FFFFFF" }, line: { color: BLUE, width: 1 } }); T(s, "p = " + p, { x, y: 2.4, w: 0.88, h: 0.7, fontSize: 13, bold: true, color: i === 0 ? "FFFFFF" : BLUE, align: "center", valign: "middle" }); });
-  P(s, [["30 classes équilibrées, 440 gabarits (phrases à trous) ", C("sieve")], ["p mesure à quel point le texte est abîmé : plus il augmente, plus des mots sont remplacés, ajoutés ou déplacés."]], { x: X0, y: 3.3, w: 5.9, h: 1.8, fontSize: 15, gap: 10 });
-  const R = [["6 × 35 000", [["logs du professeur : mêmes phrases à trous, valeurs nouvelles"]]], ["1 447", [["lettres d'autres alphabets confondables avec les nôtres (table Unicode officielle ", C("uts39"), ")"]]], ["DistilBERT", [["réseau de neurones déjà entraîné sur du texte ", C("distil")]]], ["8 familles", [["regroupement des 30 classes : notre hypothèse"]]], ["0 log réel", [["aucun log réel fourni : pas de test en conditions réelles"]]]];
-  R.forEach((r, i) => { const y = 2.0 + i * 0.62; hline(s, 7.0, y - 0.05, 5.65); T(s, r[0], { x: 7.0, y, w: 2.15, h: 0.52, fontSize: 19, color: CORAL, fontFace: HEAD, valign: "middle" }); P(s, r[1], { x: 9.2, y, w: 3.45, h: 0.52, fontSize: 12.5, valign: "middle" }); });
-  s.addShape(pres.ShapeType.rect, { x: X0, y: 5.3, w: CW, h: 1.55, fill: { color: PANEL }, line: { color: LINE, width: 0.5 } });
-  T(s, "Même événement (échec de connexion) : propre à p = 0, puis abîmé à p = 0,5. Extraits des fichiers du professeur.", { x: X0 + 0.25, y: 5.38, w: CW - 0.5, h: 0.25, fontSize: 11, color: MUTED });
-  T(s, "p = 0    [Wed Nov 03 19:30:11 1976] [error] [client 217.121.56.73] user clarkesummer: authentication failure for \"/at/challenge.png/pass\": Password Mismatch", { x: X0 + 0.25, y: 5.68, w: CW - 0.5, h: 0.5, fontSize: 11.5, color: INK, fontFace: MONO });
-  T(s, "p = 0,5  :forauthentication [failure] /authority/car.wavhsandoval 214.18.6.71] user /: client Mismatch Thu Dec 07 03:54:44 2006 \"[Password[]air \" error", { x: X0 + 0.25, y: 6.3, w: CW - 0.5, h: 0.5, fontSize: 11.5, color: INK, fontFace: MONO });
+  P(s, [["30 classes équilibrées, 440 gabarits ", C("sieve")], ["p mesure à quel point le texte est abîmé."]], { x: X0, y: 3.4, w: 5.9, h: 1.6, fontSize: 17, gap: 12 });
+  const R = [["6 × 35 000", [["logs du professeur, mêmes gabarits"]]], ["1 447", [["lettres confondables (table Unicode ", C("uts39"), ")"]]], ["DistilBERT", [["réseau déjà entraîné sur du texte ", C("distil")]]], ["8 familles", [["regroupement des classes : notre hypothèse"]]], ["0 log réel", [["aucun log réel fourni"]]]];
+  R.forEach((r, i) => { const y = 2.05 + i * 0.9; hline(s, 7.0, y - 0.07, 5.65); T(s, r[0], { x: 7.0, y, w: 2.15, h: 0.75, fontSize: 21, color: CORAL, fontFace: HEAD, valign: "middle" }); P(s, r[1], { x: 9.2, y, w: 3.45, h: 0.75, fontSize: 14, valign: "middle" }); });
 }
 
 // 8. Méthodes
@@ -210,14 +206,14 @@ const enclair = (s, text, y = 1.42) => T(s, [{ text: "En clair : ", options: { b
   const s = slide("Méthodes", "Quatre étapes séparent le texte brut de la décision d'accepter ou de rejeter",
     "Transition : de la matière à la méthode. À dire : lire de gauche à droite ; le seuil de rejet est calé sur 95 % des logs connus de validation ; les classes masquées servent seulement à mesurer. Question probable : pourquoi huit scores ? Parce que la littérature n'en désigne pas un meilleur dans notre cas ; on compare avec des règles écrites d'avance.");
   enclair(s, "le texte devient des nombres, un modèle choisit une classe, une note dit s'il faut s'en méfier, puis on évalue sans tricher.");
-  const cols = [["Transformer le texte en nombres", [["Comptage de mots (TF-IDF, n-grammes)"], ["Vecteurs de mots (Word2Vec, GloVe)"], ["Réseau Transformer (DistilBERT) ", C("distil")]]], ["Choisir la famille puis la classe", [["Un seul niveau : directement la classe"], ["Deux niveaux : la famille d'abord, puis la classe ", C("lind")]]],
-    ["Donner une note d'étrangeté", [["Selon la confiance du modèle (MSP ", C("msp"), ", énergie ", C("energy"), ")"], ["Selon la distance aux classes connues (Mahalanobis ", C("maha"), ", kNN ", C("knn"), ", OpenMax ", C("openmax"), ")"], ["On rejette au-delà d'un seuil qui garde 95 % des cas connus"]]], ["Évaluer sans tricher", [["Découpage par gabarit, test scellé"], ["Cinq rotations : six classes cachées pour de faux à chaque fois"], ["Marges d'erreur calculées par gabarit ", C("field")]]]];
+  const cols = [["Transformer le texte en nombres", [["Comptage de mots"], ["Vecteurs de mots"], ["Réseau Transformer ", C("distil")]]], ["Choisir famille puis classe", [["Un niveau : la classe"], ["Deux niveaux : famille, puis classe ", C("lind")]]],
+    ["Donner une note d'étrangeté", [["Confiance du modèle (MSP ", C("msp"), ", énergie ", C("energy"), ")"], ["Distance au connu (Mahalanobis ", C("maha"), ", kNN ", C("knn"), ", OpenMax ", C("openmax"), ")"], ["Seuil : garder 95 % des connus"]]], ["Évaluer sans tricher", [["Découpage par gabarit, test scellé"], ["Cinq rotations : six classes cachées"], ["Marges d'erreur par gabarit ", C("field")]]]];
   cols.forEach((c, i) => { const x = X0 + i * 3.05; if (i > 0) s.addShape(pres.ShapeType.line, { x: x - 0.22, y: 2.05, w: 0, h: 3.4, line: { color: LINE, width: 0.75 } });
     if (i < 3) s.addShape(pres.ShapeType.rightArrow, { x: x + 2.72, y: 2.22, w: 0.2, h: 0.26, fill: { color: STEEL }, line: { color: STEEL, width: 0 } });
     P(s, [[{ b: String(i + 1) + "  " }, { b: c[0] }]], { x, y: 2.05, w: 2.7, h: 0.75, fontSize: 16, run: { color: BLUE } }); P(s, c[1], { x, y: 2.9, w: 2.7, h: 2.6, fontSize: 14, gap: 12 }); });
   hline(s, X0, 5.65, CW);
   lab(s, "Robustesse et fiabilité", X0, 5.8, 4);
-  P(s, [["Attaques : fautes de frappe, lettres trompeuses, mots ajoutés. Défenses : remplacer les lettres trompeuses par la table officielle ", C("uts39"), ", entraîner avec des textes abîmés, recalibrer la confiance ", C("guo")]], { x: X0, y: 6.13, w: CW, h: 0.75, fontSize: 14.5 });
+  P(s, [["Attaques : fautes, lettres trompeuses, mots ajoutés. Défenses : table officielle ", C("uts39"), ", textes abîmés à l'entraînement, recalibrage ", C("guo")]], { x: X0, y: 6.13, w: CW, h: 0.75, fontSize: 14.5 });
 }
 
 // 9. Présentation des données (1/3) : taxonomie et rotations dessinées en natif
@@ -258,7 +254,6 @@ const enclair = (s, text, y = 1.42) => T(s, [{ text: "En clair : ", options: { b
   lab(s, "3. Le même log abîmé, à p = 0,5", X0, 5.1, 7);
   s.addShape(pres.ShapeType.rect, { x: X0, y: 5.48, w: 7.4, h: 0.85, fill: { color: PANEL }, line: { color: LINE, width: 0.5 } });
   T(s, ":forauthentication [failure] /authority/car.wavhsandoval 214.18.6.71] user /: client Mismatch Thu Dec 07 03:54:44 2006 \"[Password[]air \" error", { x: X0 + 0.2, y: 5.48, w: 7.0, h: 0.85, fontSize: 11.5, fontFace: MONO, valign: "middle" });
-  T(s, "Plus p est grand, plus le texte s'éloigne de la phrase d'origine.", { x: X0, y: 6.45, w: 7.4, h: 0.35, fontSize: 12.5, color: MUTED });
   s.addChart(pres.charts.BAR, [{ name: "gabarits", labels: ["Annoncés par SIEVE", "Retrouvés par nous"], values: [440, 311] }], Object.assign(chartBase("Nombre de gabarits"), { x: 8.5, y: 2.0, w: 4.15, h: 3.9, barDir: "col", chartColors: [STEEL, BLUE], valAxisMinVal: 0, valAxisMaxVal: 500, valAxisMajorUnit: 100, dataLabelFormatCode: "0", showLegend: false }));
   T(s, "Les gabarits rares se confondent entre eux : 129 restent introuvables.", { x: 8.5, y: 6.0, w: 4.15, h: 0.7, fontSize: 13, color: MUTED });
 }
@@ -289,10 +284,10 @@ const enclair = (s, text, y = 1.42) => T(s, [{ text: "En clair : ", options: { b
     "Transition : des outils à l'exécution. À dire : les entraînements d'encodeur tournent sur la carte graphique du Mac ou sur Colab ; chaque résultat est sauvegardé donc une interruption ne fait pas tout refaire. Question probable : pourquoi pas tout sur Colab ? Le quota de carte graphique gratuit s'épuise vite ; répartir a évité de perdre du temps.");
   enclair(s, "le gros calcul tourne sur deux machines, chaque résultat est sauvegardé, et tout peut être rejoué.");
   const box = (x, y, w, h, t1, t2, fill) => { s.addShape(pres.ShapeType.rect, { x, y, w, h, fill: { color: fill || "FFFFFF" }, line: { color: BLUE, width: 1.25 } }); T(s, t1, { x: x + 0.2, y: y + 0.12, w: w - 0.4, h: 0.4, fontSize: 16, bold: true, color: fill ? "FFFFFF" : BLUE }); T(s, t2, { x: x + 0.2, y: y + 0.55, w: w - 0.4, h: h - 0.6, fontSize: 13, color: fill ? ICE : INK }); };
-  box(X0, 2.0, 4.0, 1.5, "Mac (puce M3 Pro)", "Modèles simples, vecteurs de mots, et une partie des entraînements du réseau (rotations 3 à 5), sur la carte graphique du Mac");
-  box(X0, 3.65, 4.0, 1.5, "Google Colab", "Ordinateur loué dans le nuage, avec une carte graphique : entraînements du réseau (rotations 1 et 2)");
-  box(5.7, 2.85, 2.5, 1.5, "Notebook", "Un seul document qui contient le code, les résultats et les figures", BLUE);
-  box(9.2, 2.85, 3.43, 1.5, "Dépôt GitHub public", "Notebook, résultats, figures, code ; sans les données SIEVE");
+  box(X0, 2.0, 4.0, 1.5, "Mac (puce M3 Pro)", "Modèles simples et rotations 3 à 5 du réseau");
+  box(X0, 3.65, 4.0, 1.5, "Google Colab", "Carte graphique louée : rotations 1 et 2");
+  box(5.7, 2.85, 2.5, 1.5, "Notebook", "Code, résultats et figures", BLUE);
+  box(9.2, 2.85, 3.43, 1.5, "Dépôt GitHub public", "Notebook, résultats, code ; sans les données SIEVE");
   const arrow = (x1, y1, x2, y2) => s.addShape(pres.ShapeType.line, { x: Math.min(x1, x2), y: Math.min(y1, y2), w: Math.abs(x2 - x1), h: Math.abs(y2 - y1), flipV: y2 < y1, line: { color: CORAL, width: 1.75, endArrowType: "triangle" } });
   arrow(X0 + 4.0, 2.75, 5.7, 3.4); arrow(X0 + 4.0, 4.4, 5.7, 3.85); arrow(8.2, 3.6, 9.2, 3.6);
   dark(s, X0, 5.5, CW, 1.3);
@@ -304,8 +299,8 @@ const enclair = (s, text, y = 1.42) => T(s, [{ text: "En clair : ", options: { b
   const s = slide("Conception - Pipeline utilisé", "Onze étapes, dont le découpage par gabarit est celle qui change le plus les conclusions",
     "Transition : de l'environnement au déroulé. À dire : chaque étape a ses décisions justifiées dans le notebook ; la 3 est en couleur car c'est elle qui a fait passer le score de 0,97 à 0,46. Les codes H1 à H15 (hypothèses), P0 à P3 (protocoles de découpage) et E1 à E5 (expériences) sont dans le notebook. Question probable : pourquoi 11 étapes ? Elles suivent la consigne du projet (cadrage à conclusion) avec les sous-étapes que nous avons ajoutées.");
   enclair(s, "de la question de départ à la conclusion, onze étapes ; l'étape en orange est celle qui change tout.");
-  const P_ = [["Cadrage", "Question, hypothèses à tester, critères de succès fixés d'avance"], ["Données", "Récupération et vérification du format"], ["Exploration", "Classes proches, phrases à trous, effet de p"], ["Découpage", "Par gabarit, test scellé, quatre protocoles"], ["Prétraitement", "Nettoyage du texte, 10 variantes"], ["Représentations", "Comptage de mots, vecteurs, Transformer"],
-    ["Modèles", "Un ou deux niveaux, huit notes d'étrangeté"], ["Évaluation", "Test scellé, ouvert une seule fois"], ["Robustesse", "Attaques sur le texte"], ["Amélioration", "Défenses, calibration"], ["Conclusion", "99 affirmations vérifiées, limites"]];
+  const P_ = [["Cadrage", "Question, hypothèses, critères"], ["Données", "Récupération, vérification"], ["Exploration", "Classes, gabarits, effet de p"], ["Découpage", "Par gabarit, test scellé"], ["Prétraitement", "Nettoyage du texte"], ["Représentations", "Mots, vecteurs, Transformer"],
+    ["Modèles", "Un ou deux niveaux, huit scores"], ["Évaluation", "Test scellé, ouvert une fois"], ["Robustesse", "Attaques sur le texte"], ["Amélioration", "Défenses, calibration"], ["Conclusion", "99 affirmations, limites"]];
   const rows = [[0, 6, 2.2], [6, 11, 4.3]];
   rows.forEach(([a, b, y]) => { const cnt = b - a, step = 2.05, x0 = X0 + 0.6 + (cnt < 6 ? step / 2 : 0); s.addShape(pres.ShapeType.line, { x: x0, y: y + 0.28, w: step * (cnt - 1), h: 0, line: { color: STEEL, width: 2 } });
     for (let i = a; i < b; i++) { const cx = x0 + (i - a) * step, hot = i === 3;
@@ -324,23 +319,23 @@ const resultat = (k, message, clair, addChart, lire, retiens, notes) => {
 const CH = { x: X0, y: 2.0, w: 7.9, h: 4.8 };
 resultat(1, "De 0,99 à 0,48 : le découpage fait l'écart, pas le modèle", "le score mesure la part de bonnes réponses ; avec le découpage au hasard, le programme revoit au test des phrases déjà apprises.",
   (s) => s.addChart(pres.charts.BAR, [{ name: "macro-F1", labels: ["Découpage\nau hasard", "Par gabarit", "Par groupes\nde gabarits", "Validation\nimbriquée", "Test scellé"], values: [0.987, 0.422, 0.507, 0.511, 0.483] }], Object.assign(chartBase("Part de bonnes réponses (macro-F1)"), CH, { barDir: "col", chartColors: [STEEL, BLUE, BLUE, BLUE, CORAL], valAxisMaxVal: 1, valAxisMinVal: 0, valAxisMajorUnit: 0.25, dataLabelFormatCode: "0.00", dataLabelFontSize: 13, catAxisLabelFontSize: 12, showLegend: false })),
-  "1 = tout est juste. Le macro-F1 note chaque classe selon deux questions : les logs trouvés sont-ils les bons, et a-t-on trouvé tous les bons ? Il moyenne ensuite les 30 classes.",
-  "0,99 au hasard, 0,48 au test scellé : le score élevé venait de phrases à trous déjà vues.",
+  "1 = tout est juste. Le macro-F1 est la moyenne des notes des 30 classes.",
+  "0,99 au hasard, 0,48 au test scellé : le score venait de gabarits déjà vus.",
   "Transition : du déroulé aux résultats. À dire : même modèle, seul le découpage change. Question probable : le 0,97 est-il faux ? Non, il est exact, mais il mesure la reconnaissance de gabarits déjà vus. Valeurs : découpage aléatoire 0,987, par gabarit 0,422, groupes 0,507, imbriquée 0,511, test scellé 0,483.");
 resultat(2, "Repérer l'inconnu reste difficile : 0,60 au test, où 0,5 est le hasard", "chaque barre dit à quel point un programme sait distinguer un événement inconnu d'un événement connu.",
   (s) => s.addChart(pres.charts.BAR, [{ name: "AUROC", labels: ["Comptage de mots\n(validation)", "Comptage de mots\n(test)", "Transformer,\nscore de confiance", "Transformer\n+ distance"], values: [0.728, 0.599, 0.548, 0.605] }], Object.assign(chartBase("Capacité à repérer l'inconnu (AUROC)"), CH, { barDir: "col", chartColors: [STEEL, BLUE, STEEL, CORAL], valAxisMaxVal: 1, valAxisMinVal: 0.4, valAxisMajorUnit: 0.1, dataLabelFormatCode: "0.00", dataLabelFontSize: 13, catAxisLabelFontSize: 12, showLegend: false })),
-  "L'AUROC va de 0,5 (hasard) à 1 (parfait). C'est la chance qu'un événement inconnu reçoive une note plus étrange qu'un événement connu.",
-  "0,60 au test : à peine mieux que le hasard. La distance (Mahalanobis) sur le Transformer gagne 0,057 sur son score de confiance.",
+  "0,5 = hasard, 1 = parfait.",
+  "0,60 au test, à peine mieux que le hasard. Mahalanobis gagne 0,057 sur le Transformer.",
   "À dire : le score de validation, 0,73, était trop optimiste ; au test sur de nouvelles phrases à trous il tombe à 0,60. Le Transformer seul fait 0,55 ; avec Mahalanobis sur ses vecteurs, 0,605, soit 0,057 de plus. Question probable : pourquoi Mahalanobis ? Parce que la littérature le donne efficace sur un Transformer affiné.");
 resultat(3, "Les lettres trompeuses sont l'attaque la plus efficace : jusqu'à 21,5 % de score en moins", "on abîme les logs de trois façons et on mesure de combien le score baisse.",
   (s) => s.addChart(pres.charts.BAR, [{ name: "Modèle par mots", labels: ["Fautes de frappe", "Lettres trompeuses", "Mots ajoutés"], values: [7.8, 21.5, 12.5] }, { name: "Modèle par lettres", labels: ["Fautes de frappe", "Lettres trompeuses", "Mots ajoutés"], values: [4.0, 10.6, 14.4] }], Object.assign(chartBase("Perte de score après l'attaque (%)"), CH, { barDir: "col", chartColors: [BLUE, STEEL], valAxisMinVal: 0, dataLabelFormatCode: "0.0", dataLabelFontSize: 13, catAxisLabelFontSize: 12, showLegend: true, legendPos: "b", legendFontSize: 12, legendColor: INK })),
-  "Une barre haute = le modèle est très perturbé. Les « lettres trompeuses » sont des lettres d'autres alphabets qui ressemblent aux nôtres (un a cyrillique, par exemple).",
-  "Le modèle par mots perd 21,5 % avec des lettres trompeuses ; le modèle par lettres résiste mieux à celle-ci, moins aux mots ajoutés.",
+  "Barre haute = modèle très perturbé. Lettres trompeuses : lettres d'autres alphabets qui imitent les nôtres.",
+  "21,5 % de perte avec des lettres trompeuses, sur le modèle par mots.",
   "À dire : attaques fortes, mesurées en perte relative de macro-F1. Question probable : que veut dire modèle par mots ? Il compte les mots entiers ; le modèle par lettres compte des morceaux de mots, donc une lettre changée le trouble moins.");
 resultat(4, "Une défense qui connaît l'attaque paraît parfaite, mais ne protège pas contre une autre table", "on essaie de réparer les lettres trompeuses avec une table de correspondance, puis on la teste de deux façons.",
   (s) => s.addChart(pres.charts.BAR, [{ name: "perte", labels: ["Sans défense", "Table de l'attaque,\ntestée contre elle-même", "Table de l'attaque,\ntestée contre la\ntable officielle", "Table officielle\ncomplète"], values: [10.8, 0.0, 8.7, 0.1] }], Object.assign(chartBase("Perte de score malgré la défense (%)"), CH, { barDir: "col", chartColors: [STEEL, BLUE, CORAL, BLUE], valAxisMinVal: 0, dataLabelFormatCode: "0.0", dataLabelFontSize: 13, catAxisLabelFontSize: 11, showLegend: false })),
-  "Une barre basse = la défense marche. Testée contre la table même qui l'a conçue, elle paraît parfaite : c'est un test circulaire.",
-  "0,0 % était trompeur : contre la table officielle, la perte revient à 8,7 %. Seule la table officielle complète tient (0,1 %).",
+  "Barre basse = défense efficace. Testée avec la table même de l'attaque, elle triche.",
+  "0,0 % était trompeur : 8,7 % contre la table officielle. Seule la table complète tient (0,1 %).",
   "À dire : la défense « maison » est construite avec la table de l'attaque, donc elle y réussit à 100 %. Testée contre la table officielle Unicode, elle perd 8,7 %. La table officielle complète limite la perte à 0,1 %. Question probable : que conclure ? Une défense se teste contre une autre table que celle de l'attaque.");
 
 // 14. Limites : tableau limite -> conséquence
