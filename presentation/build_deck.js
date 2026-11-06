@@ -208,15 +208,42 @@ const lab = (s, text, x, y, w) => T(s, text, { x, y, w, h: 0.3, fontSize: 13, bo
   P(s, [["Attaques : fautes de frappe, homoglyphes, mots ajoutés  ·  Parades : normalisation Unicode ", C("uts39"), ", entraînement adversarial  ·  Calibration par température ", C("guo")]], { x: X0, y: 6.13, w: CW, h: 0.7, fontSize: 16 });
 }
 
-// 9. Présentation des données : mosaïque (une grande figure et quatre moyennes)
+// 9. Présentation des données (1/3) : taxonomie et rotations dessinées en natif
 {
-  const s = slide("Présentation des données", "Les logs viennent de 440 gabarits : la structure des données guide toute l'évaluation",
-    "Transition : de la méthode aux données. À dire : en haut les chiffres, puis la taxonomie en 8 familles, les 5 rotations de classes masquées, la reconstruction des gabarits (311 retrouvés sur 440) et l'effet de la perturbation p. Question probable : comment avez-vous retrouvé les gabarits ? En regroupant les logs qui se ressemblent après masquage des valeurs, puis en vérifiant le nombre contre le tableau de l'article.");
-  P(s, [[{ b: "600 000" }, " logs   ·   ", { b: "30" }, " classes   ·   ", { b: "440" }, " gabarits (", { b: "311" }, " retrouvés)   ·   ", { b: "8" }, " familles   ·   ", { b: "5 × 6" }, " classes masquées   ·   ", { b: "6" }, " niveaux de perturbation"]], { x: X0, y: 1.9, w: CW, h: 0.4, fontSize: 16, run: { color: BLUE } });
-  image(s, "00_taxonomie", X0, 2.4, 6.2, 2.55, "Taxonomie : 30 classes en 8 familles"); T(s, "Taxonomie : 30 classes en 8 familles", { x: X0, y: 4.97, w: 6.2, h: 0.28, fontSize: 11, color: MUTED });
-  image(s, "00_rotations", X0, 5.32, 6.2, 1.3, "Cinq rotations de classes masquées"); T(s, "Cinq rotations de six classes masquées", { x: X0, y: 6.64, w: 6.2, h: 0.28, fontSize: 11, color: MUTED });
-  image(s, "02_gabarits", 7.2, 2.4, 5.45, 1.95, "Gabarits reconstruits et effet de p"); T(s, "Gabarits reconstruits (311 sur 440) et effet de p", { x: 7.2, y: 4.37, w: 5.45, h: 0.28, fontSize: 11, color: MUTED });
-  image(s, "03_fuite_gabarits", 7.2, 4.75, 5.45, 1.85, "Fuite entre gabarits"); T(s, "Fuite entre gabarits : plus proches voisins entre entraînement et test", { x: 7.2, y: 6.64, w: 5.45, h: 0.28, fontSize: 11, color: MUTED });
+  const s = slide("Présentation des données (1/3)", "30 classes en 8 familles, chacune masquée dans une rotation sur cinq",
+    "Transition : de la méthode aux données. À dire : six fichiers de 100 000 logs, 30 classes équilibrées ; la taxonomie à deux niveaux est notre hypothèse de démonstration, adossée à ECS, pas validée par un expert. Le repère R1 à R5 à droite de chaque classe dit dans quelle rotation elle est masquée pour simuler l'inconnu : six classes par rotation, chaque classe masquée une seule fois. Question probable : pourquoi cinq rotations ? Pour que chaque classe serve une fois d'inconnue et que le résultat ne dépende pas d'un seul choix.");
+  P(s, [[{ b: "600 000" }, " logs   ·   ", { b: "30" }, " classes équilibrées   ·   ", { b: "8" }, " familles   ·   ", { b: "6" }, " niveaux de perturbation   ·   ", { b: "440" }, " gabarits"]], { x: X0, y: 1.9, w: CW, h: 0.4, fontSize: 16, run: { color: BLUE } });
+  const TAX = {
+    file: ["directory-changed", "directory-created", "directory-deleted", "file-action-failure", "file-deleted", "file-modification", "file-read", "file-write"],
+    network: ["connection-closed", "connection-failed", "connection-opened", "network-filtered", "network-traffic"], web: ["http-request-failure", "http-request-success"],
+    process: ["process-ended", "process-error", "process-info", "process-shutdown", "process-started"], authentication: ["authentication-failed", "authentication-success"],
+    identity_session: ["user-creation", "user-deletion", "user-logout", "user-session-open"], system: ["database-operation", "hardware-monitoring", "system-configuration-changed"], security_alert: ["ids-alert"] };
+  const ROT = {"directory-created": 1, "http-request-success": 1, "process-info": 1, "process-started": 1, "system-configuration-changed": 1, "user-session-open": 1, "database-operation": 2, "file-deleted": 2, "network-traffic": 2, "process-ended": 2, "process-error": 2, "user-creation": 2, "authentication-failed": 3, "connection-failed": 3, "directory-changed": 3, "file-action-failure": 3, "http-request-failure": 3, "network-filtered": 3, "file-modification": 4, "file-read": 4, "hardware-monitoring": 4, "ids-alert": 4, "process-shutdown": 4, "user-logout": 4, "authentication-success": 5, "connection-closed": 5, "connection-opened": 5, "directory-deleted": 5, "file-write": 5, "user-deletion": 5};
+  const COLS = [["file"], ["network", "web"], ["process", "authentication"], ["identity_session", "system", "security_alert"]];
+  const cw = 2.85, gx = (CW - 4 * cw) / 3;
+  COLS.forEach((fams, col) => { let y = 2.45; const x = X0 + col * (cw + gx);
+    fams.forEach((f) => { const cl = TAX[f];
+      s.addShape(pres.ShapeType.rect, { x, y, w: cw, h: 0.36, fill: { color: BLUE }, line: { color: BLUE, width: 0 } });
+      T(s, f + "  (" + cl.length + ")", { x: x + 0.12, y, w: cw - 0.2, h: 0.36, fontSize: 13, bold: true, color: "FFFFFF", valign: "middle" });
+      cl.forEach((c, j) => { const yy = y + 0.42 + j * 0.25; T(s, c, { x: x + 0.12, y: yy, w: cw - 0.65, h: 0.25, fontSize: c.length > 26 ? 9.5 : 11, fontFace: MONO, color: INK, valign: "middle" }); T(s, "R" + ROT[c], { x: x + cw - 0.5, y: yy, w: 0.4, h: 0.25, fontSize: 11, bold: true, color: CORAL, align: "right", valign: "middle" }); });
+      y += 0.42 + cl.length * 0.25 + 0.2; }); });
+  T(s, "R1 à R5 : rotation dans laquelle la classe est masquée pour simuler l'inconnu (six classes par rotation). Taxonomie : hypothèse de démonstration, non validée par un expert SIEM.", { x: X0, y: 6.5, w: CW, h: 0.4, fontSize: 12, color: MUTED });
+}
+
+// 9bis. Présentation des données (2/3) : gabarits
+{
+  const s = slide("Présentation des données (2/3)", "440 gabarits annoncés, 311 retrouvés, et un log s'éloigne de son gabarit quand p augmente",
+    "À dire : les logs sortent de gabarits remplis de valeurs. À gauche, chaque point compare le nombre de gabarits annoncés dans l'article à ceux que nous reconstruisons : plus un point est près de la diagonale, mieux c'est ; 311 sur 440 retrouvés. À droite, plus p est grand, plus la ressemblance d'un log à son gabarit baisse. Question probable : pourquoi n'en retrouve-t-on pas 440 ? Les gabarits rares se confondent ; c'est dit comme limite.");
+  image(s, "02_gabarits", X0, 2.0, CW, 4.4, "Gabarits reconstruits et effet de p");
+  T(s, "À gauche : gabarits annoncés contre retrouvés, par classe. À droite : ressemblance d'un log à son gabarit, selon p.", { x: X0, y: 6.5, w: CW, h: 0.35, fontSize: 12, color: MUTED });
+}
+
+// 9ter. Présentation des données (3/3) : fuite
+{
+  const s = slide("Présentation des données (3/3)", "Avec un découpage aléatoire, le voisin le plus proche d'un log de test est de son propre gabarit",
+    "À dire : on compare chaque log de test à son plus proche voisin dans l'entraînement. En rouge, découpage aléatoire : la ressemblance est presque parfaite, parce que le même gabarit est des deux côtés. En bleu, découpage par gabarit : la ressemblance chute. Voilà la fuite, c'est elle qui explique 0,97 contre 0,46. Question probable : est-ce propre à SIEVE ? Oui à ce jeu, fabriqué à partir de gabarits ; c'est pourquoi l'évaluation par gabarit est le cœur du travail.");
+  image(s, "03_fuite_gabarits", X0, 2.0, CW, 4.4, "Fuite entre gabarits");
+  T(s, "Rouge : découpage aléatoire. Bleu : découpage par gabarit. À gauche SIEVE_00 (p = 0), à droite SIEVE_05 (p = 0,5).", { x: X0, y: 6.5, w: CW, h: 0.35, fontSize: 12, color: MUTED });
 }
 
 // 10. Librairies
