@@ -43,7 +43,7 @@ Auteur : Mouhamadou Madeniyou SALL ([@MADENIYOU](https://github.com/MADENIYOU)).
 | `artifacts/results/` | Tous les résultats chiffrés (CSV, JSON), dont `success_criteria.json`. |
 | `artifacts/figures/` | Les 43 figures du notebook. |
 | `artifacts/data/` | Découpages par gabarit (`splits_v1.csv.gz`), gabarits reconstruits, table de confusables (sans texte de logs). |
-| `presentation/` | Présentation de soutenance (`Soutenance_SIEM_monde_ouvert.pptx`, 19 diapositives dont les références) et son script de construction (`build_deck.js`, `build.sh`). |
+| `presentation/` | Présentation de soutenance (`Soutenance_SIEM_monde_ouvert.pptx`, 22 diapositives dont les références) et son script de construction (`build_deck.js`, `build.sh`). |
 | `etat_de_l_art/` | Sources vérifiées et table Unicode UTS #39 (`confusables.txt`, v18.0.0, somme de contrôle dans le notebook). |
 
 ## Données
