@@ -1,0 +1,24 @@
+{
+ "finalistes": {
+  "F1": "TF-IDF mots",
+  "F2": "TF-IDF caractères 3-5 (dans les mots)",
+  "F3": "Word2Vec Skip-gram | idf",
+  "F4": "encodeur distilbert-base-uncased contre distilbert-base-cased (fenêtre 256 jetons)"
+ },
+ "max_len": 256,
+ "troncature_pct": {
+  "128": {
+   "distilbert-base-uncased": 8.0,
+   "distilbert-base-cased": 9.7
+  },
+  "256": {
+   "distilbert-base-uncased": 2.5,
+   "distilbert-base-cased": 3.0
+  },
+  "512": {
+   "distilbert-base-uncased": 0.1,
+   "distilbert-base-cased": 0.7
+  }
+ },
+ "data_id": "999a1f7edf7eb964"
+}

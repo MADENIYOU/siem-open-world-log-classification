@@ -1,0 +1,21 @@
+# --- Données (SIEVE : fournies sur demande par les auteurs, non redistribuées) et dérivés contenant du texte de logs
+artifacts/data/raw/
+colab/*.csv.gz
+colab/out/
+colab/out_v2/
+colab/out_v2_local/
+colab/out_v3_local/
+# --- Modèles, vecteurs, caches (volumineux, reproductibles)
+artifacts/models/
+artifacts/features/
+artifacts/results/cache_*/
+# --- Journaux de session et sauvegardes locales
+HANDOFF.md
+**/HANDOFF.md
+*.bak
+# --- Python
+__pycache__/
+*.pyc
+.venv*/
+.ipynb_checkpoints/
+.DS_Store

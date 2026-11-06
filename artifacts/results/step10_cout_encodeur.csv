@@ -1,0 +1,4 @@
+appareil,passages,logs,ms par log
+GPU Apple (MPS),1,1000,1.55
+GPU Apple (MPS),11,300,17.82
+CPU,1,300,6.06

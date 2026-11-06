@@ -1,0 +1,30 @@
+{
+ "zip": {
+  "bytes": 31043250,
+  "sha256": "3b15c579a847f75914a970a9cf1de661c69240f318fa9175e694eff9b986aae7"
+ },
+ "SIEVE_00_100K.csv": {
+  "bytes": 16985152,
+  "sha256": "959a387e241d167dfeff362c4ee07c0f0e6116741709f65ea3d612f4c914aeaf"
+ },
+ "SIEVE_01_100K.csv": {
+  "bytes": 17404387,
+  "sha256": "0d143903157bf7968ecaf9869e030d27f43da585380a442e3a3860a929f78acf"
+ },
+ "SIEVE_02_100K.csv": {
+  "bytes": 17873215,
+  "sha256": "78850965e069c73aee8556f651af88964a6c87d7a11297695798e41b38d23e19"
+ },
+ "SIEVE_03_100K.csv": {
+  "bytes": 18305783,
+  "sha256": "e8335ad1f50617e0eeb5e174747a5e849a4585f64b41e337cc69a1f296861bac"
+ },
+ "SIEVE_04_100K.csv": {
+  "bytes": 18719560,
+  "sha256": "7aa349d8e7e822e956577a50c3d2db0a98f4d5bd5d93c7e3e2cfb3cfabefecbe"
+ },
+ "SIEVE_05_100K.csv": {
+  "bytes": 19203280,
+  "sha256": "859d4267455886309afe34aea0e7c1d1bea50e58ce6afa7896734e03c4551334"
+ }
+}

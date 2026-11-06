@@ -1,0 +1,126 @@
+{
+ "taxonomy": {
+  "authentication": [
+   "authentication-failed",
+   "authentication-success"
+  ],
+  "identity_session": [
+   "user-creation",
+   "user-deletion",
+   "user-logout",
+   "user-session-open"
+  ],
+  "network": [
+   "connection-closed",
+   "connection-failed",
+   "connection-opened",
+   "network-filtered",
+   "network-traffic"
+  ],
+  "web": [
+   "http-request-failure",
+   "http-request-success"
+  ],
+  "file": [
+   "directory-changed",
+   "directory-created",
+   "directory-deleted",
+   "file-action-failure",
+   "file-deleted",
+   "file-modification",
+   "file-read",
+   "file-write"
+  ],
+  "process": [
+   "process-ended",
+   "process-error",
+   "process-info",
+   "process-shutdown",
+   "process-started"
+  ],
+  "system": [
+   "database-operation",
+   "hardware-monitoring",
+   "system-configuration-changed"
+  ],
+  "security_alert": [
+   "ids-alert"
+  ]
+ },
+ "rotations": [
+  [
+   "directory-created",
+   "http-request-success",
+   "process-info",
+   "process-started",
+   "system-configuration-changed",
+   "user-session-open"
+  ],
+  [
+   "database-operation",
+   "file-deleted",
+   "network-traffic",
+   "process-ended",
+   "process-error",
+   "user-creation"
+  ],
+  [
+   "authentication-failed",
+   "connection-failed",
+   "directory-changed",
+   "file-action-failure",
+   "http-request-failure",
+   "network-filtered"
+  ],
+  [
+   "file-modification",
+   "file-read",
+   "hardware-monitoring",
+   "ids-alert",
+   "process-shutdown",
+   "user-logout"
+  ],
+  [
+   "authentication-success",
+   "connection-closed",
+   "connection-opened",
+   "directory-deleted",
+   "file-write",
+   "user-deletion"
+  ]
+ ],
+ "seed": 42,
+ "tries": 1,
+ "classes_paper_order": [
+  "authentication-failed",
+  "authentication-success",
+  "connection-closed",
+  "connection-failed",
+  "connection-opened",
+  "database-operation",
+  "directory-changed",
+  "directory-created",
+  "directory-deleted",
+  "file-action-failure",
+  "file-deleted",
+  "file-modification",
+  "file-read",
+  "file-write",
+  "hardware-monitoring",
+  "http-request-failure",
+  "http-request-success",
+  "ids-alert",
+  "network-filtered",
+  "network-traffic",
+  "process-ended",
+  "process-error",
+  "process-info",
+  "process-shutdown",
+  "process-started",
+  "system-configuration-changed",
+  "user-creation",
+  "user-deletion",
+  "user-logout",
+  "user-session-open"
+ ]
+}

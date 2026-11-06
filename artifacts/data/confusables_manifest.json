@@ -1,0 +1,22 @@
+{
+ "fichier": "confusables.txt",
+ "source": "https://www.unicode.org/Public/security/latest/confusables.txt",
+ "version_uts39": "18.0.0",
+ "date": "2026-08-06, 01:05:35 GMT",
+ "octets": 763128,
+ "sha256": "6ed3ee967c9dfdf6677d563c9985182fbc50a2efb7d6059cd57b2e2ce18f5b92",
+ "entrees": 6712,
+ "caracteres_vers_lettre_ascii": 1447,
+ "lettres_latines_concernees": 50,
+ "corriges_par_nfkc": 719,
+ "restants_apres_nfkc": 728,
+ "version_unicode_de_python": "15.0.0",
+ "sources_ascii_ecartees": [
+  "|->l",
+  "1->l",
+  "I->l",
+  "0->O"
+ ],
+ "notre_table_attaque": 18,
+ "notre_table_retrouvee_dans_la_table_officielle": 18
+}

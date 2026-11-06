@@ -1,0 +1,10 @@
+{
+  "source": "sortie console collée par l'utilisateur dans le chat (Colab v1, avant limite GPU) ; PAS de fichiers de scores récupérés",
+  "date": "2026-11-05",
+  "metrique": "exactitude fermée sur les connus, validation (pas un macro-F1)",
+  "uncased_len256_s42": {"rot1": 0.620, "rot2": 0.745, "rot3": 0.688, "rot4": 0.722, "rot5": 0.770},
+  "cased_len256_s42":   {"rot1": 0.659, "rot2": 0.709, "rot3": 0.634, "rot4": 0.716, "rot5": 0.743},
+  "uncased_len512_s42": {"rot1": 0.599},
+  "minutes_entrainement": {"len256": "10.4 à 13.9", "len512_rot1": 20.9},
+  "note": "les avertissements UNEXPECTED (vocab_transform, vocab_projector...) concernent la tête de langage masqué non utilisée : inoffensifs"
+}

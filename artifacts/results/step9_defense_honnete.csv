@@ -1,0 +1,61 @@
+attaque,défense,intensité,baisse relative
+A1 table maison (celle de la parade),D0 aucune,0.05,0.025585535285109585
+A1 table maison (celle de la parade),D1 table maison (parade P1),0.05,0.0
+A1 table maison (celle de la parade),D2 NFKC seul,0.05,0.025585535285109585
+A1 table maison (celle de la parade),D3 moitié de la table officielle,0.05,0.011291386896280406
+A1 table maison (celle de la parade),D4 NFKC + table officielle complète,0.05,0.0
+A1 table maison (celle de la parade),D0 aucune,0.15,0.08459392195362136
+A1 table maison (celle de la parade),D1 table maison (parade P1),0.15,0.0
+A1 table maison (celle de la parade),D2 NFKC seul,0.15,0.08459392195362136
+A1 table maison (celle de la parade),D3 moitié de la table officielle,0.15,0.03716522303910559
+A1 table maison (celle de la parade),D4 NFKC + table officielle complète,0.15,0.0
+A1 table maison (celle de la parade),D0 aucune,0.3,0.21517642649299198
+A1 table maison (celle de la parade),D1 table maison (parade P1),0.3,0.0
+A1 table maison (celle de la parade),D2 NFKC seul,0.3,0.21517642649299198
+A1 table maison (celle de la parade),D3 moitié de la table officielle,0.3,0.07800491024454126
+A1 table maison (celle de la parade),D4 NFKC + table officielle complète,0.3,0.0
+A2 table officielle complète,D0 aucune,0.05,0.02450039712350978
+A2 table officielle complète,D1 table maison (parade P1),0.05,0.023303069730631773
+A2 table officielle complète,D2 NFKC seul,0.05,0.02450039712350978
+A2 table officielle complète,D3 moitié de la table officielle,0.05,0.013521225132077132
+A2 table officielle complète,D4 NFKC + table officielle complète,0.05,-0.00048491240866507053
+A2 table officielle complète,D0 aucune,0.15,0.08480767988721188
+A2 table officielle complète,D1 table maison (parade P1),0.15,0.08100070928916671
+A2 table officielle complète,D2 NFKC seul,0.15,0.08480767988721188
+A2 table officielle complète,D3 moitié de la table officielle,0.15,0.04309337919790421
+A2 table officielle complète,D4 NFKC + table officielle complète,0.15,0.0017241660601723377
+A2 table officielle complète,D0 aucune,0.3,0.164786848900358
+A2 table officielle complète,D1 table maison (parade P1),0.3,0.1558425556805434
+A2 table officielle complète,D2 NFKC seul,0.3,0.164786848900358
+A2 table officielle complète,D3 moitié de la table officielle,0.3,0.0801222004206684
+A2 table officielle complète,D4 NFKC + table officielle complète,0.3,0.001899102229601932
+A3 officielle hors moitié connue du défenseur D3 (adaptative),D0 aucune,0.05,0.02484908686168557
+A3 officielle hors moitié connue du défenseur D3 (adaptative),D1 table maison (parade P1),0.05,0.023272026335092785
+A3 officielle hors moitié connue du défenseur D3 (adaptative),D2 NFKC seul,0.05,0.02484908686168557
+A3 officielle hors moitié connue du défenseur D3 (adaptative),D3 moitié de la table officielle,0.05,0.02484908686168557
+A3 officielle hors moitié connue du défenseur D3 (adaptative),D4 NFKC + table officielle complète,0.05,0.0010358246084816631
+A3 officielle hors moitié connue du défenseur D3 (adaptative),D0 aucune,0.15,0.08187614181294851
+A3 officielle hors moitié connue du défenseur D3 (adaptative),D1 table maison (parade P1),0.15,0.07665936750000156
+A3 officielle hors moitié connue du défenseur D3 (adaptative),D2 NFKC seul,0.15,0.08187614181294851
+A3 officielle hors moitié connue du défenseur D3 (adaptative),D3 moitié de la table officielle,0.15,0.08187614181294851
+A3 officielle hors moitié connue du défenseur D3 (adaptative),D4 NFKC + table officielle complète,0.15,0.002299401451741046
+A3 officielle hors moitié connue du défenseur D3 (adaptative),D0 aucune,0.3,0.1733429746377354
+A3 officielle hors moitié connue du défenseur D3 (adaptative),D1 table maison (parade P1),0.3,0.16370498930352365
+A3 officielle hors moitié connue du défenseur D3 (adaptative),D2 NFKC seul,0.3,0.1733429746377354
+A3 officielle hors moitié connue du défenseur D3 (adaptative),D3 moitié de la table officielle,0.3,0.1733429746377354
+A3 officielle hors moitié connue du défenseur D3 (adaptative),D4 NFKC + table officielle complète,0.3,0.00118381540643693
+A4 officielle hors table maison (adaptative contre D1),D0 aucune,0.05,0.02381840265509823
+A4 officielle hors table maison (adaptative contre D1),D1 table maison (parade P1),0.05,0.02381840265509823
+A4 officielle hors table maison (adaptative contre D1),D2 NFKC seul,0.05,0.02381840265509823
+A4 officielle hors table maison (adaptative contre D1),D3 moitié de la table officielle,0.05,0.013070040316763403
+A4 officielle hors table maison (adaptative contre D1),D4 NFKC + table officielle complète,0.05,-0.0006045280678964372
+A4 officielle hors table maison (adaptative contre D1),D0 aucune,0.15,0.08721661646228028
+A4 officielle hors table maison (adaptative contre D1),D1 table maison (parade P1),0.15,0.08721661646228028
+A4 officielle hors table maison (adaptative contre D1),D2 NFKC seul,0.15,0.08721661646228028
+A4 officielle hors table maison (adaptative contre D1),D3 moitié de la table officielle,0.15,0.04089002725024581
+A4 officielle hors table maison (adaptative contre D1),D4 NFKC + table officielle complète,0.15,0.0017273887709595035
+A4 officielle hors table maison (adaptative contre D1),D0 aucune,0.3,0.16346287860695455
+A4 officielle hors table maison (adaptative contre D1),D1 table maison (parade P1),0.3,0.16346287860695455
+A4 officielle hors table maison (adaptative contre D1),D2 NFKC seul,0.3,0.16346287860695455
+A4 officielle hors table maison (adaptative contre D1),D3 moitié de la table officielle,0.3,0.0752078434938321
+A4 officielle hors table maison (adaptative contre D1),D4 NFKC + table officielle complète,0.3,0.0027527786360329455

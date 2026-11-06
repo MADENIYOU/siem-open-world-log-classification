@@ -1,0 +1,27 @@
+{
+  "A": {
+    "name": "A",
+    "usage": "TF-IDF, caractères, vecteurs de mots",
+    "normalisation": "Unicode NFKC, retrait des caractères de contrôle et de \\r\\n",
+    "masques": [],
+    "minuscules": true,
+    "ponctuation": false,
+    "mots_vides": false,
+    "troncature": null,
+    "etapes_adoptees_par_la_regle": [],
+    "module": "src/tp2_logtext.py",
+    "module_hash": "2b5360ac2128"
+  },
+  "B": {
+    "name": "B",
+    "usage": "encodeur Transformer (tokenizer propre au modèle)",
+    "normalisation": "Unicode NFKC, retrait des caractères de contrôle et de \\r\\n",
+    "masques": [],
+    "casse": "à trancher à l'étape 6 (cased contre uncased)",
+    "troncature": "fenêtre de l'encodeur, choisie à l'étape 5",
+    "module": "src/tp2_logtext.py",
+    "module_hash": "2b5360ac2128"
+  },
+  "data_id": "999a1f7edf7eb964",
+  "splits_sha256": "035dbbec929384c0"
+}

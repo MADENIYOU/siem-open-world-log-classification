@@ -1,0 +1,10 @@
+attaque,intensité,AUROC (5 rotations),connus rejetés à tort (seuil val)
+typos,faible,0.599,0.1285
+typos,moyenne,0.592,0.1371
+typos,forte,0.5822,0.1489
+homoglyphs,faible,0.5945,0.1397
+homoglyphs,moyenne,0.5803,0.1707
+homoglyphs,forte,0.5619,0.2249
+padding,faible,0.6052,0.1303
+padding,moyenne,0.611,0.1428
+padding,forte,0.5982,0.1887

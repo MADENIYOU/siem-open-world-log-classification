@@ -1,0 +1,13 @@
+représentation,score,AUROC,± entre rotations,AUPR,FPR@95,OSCR
+TF-IDF mots,msp,0.7282,0.0999,0.9058,0.8727,0.5657
+TF-IDF mots,energy,0.7273,0.0908,0.9091,0.8977,0.5594
+TF-IDF mots,proto,0.7167,0.0877,0.9105,0.9045,0.5433
+TF-IDF mots,ens_msp,0.732,0.0995,0.9071,0.8795,0.5671
+TF-IDF mots,hier_msp,0.7359,0.1055,0.9107,0.875,0.5675
+TF-IDF mots,fam_msp,0.7168,0.0869,0.8951,0.8757,0.5423
+Skip-gram pondéré IDF,msp,0.6505,0.0575,0.868,0.8731,0.5085
+Skip-gram pondéré IDF,energy,0.6809,0.101,0.8809,0.7699,0.5147
+Skip-gram pondéré IDF,proto,0.702,0.0859,0.9008,0.8624,0.5274
+Skip-gram pondéré IDF,ens_msp,0.6686,0.0685,0.879,0.8533,0.5224
+Skip-gram pondéré IDF,hier_msp,0.6631,0.0935,0.8797,0.8711,0.5166
+Skip-gram pondéré IDF,fam_msp,0.6827,0.0915,0.8777,0.8685,0.5173

@@ -1,0 +1,3 @@
+représentation,AUROC val : meilleur des 6 scores,AUROC val : moyenne des 6 scores,avantage maximal de la sélection,baisse val → test : plus petite,plus grande
+TF-IDF mots,0.7359,0.7262,0.0098,0.0919,0.131
+Skip-gram pondéré IDF,0.702,0.6746,0.0274,0.057,0.1009

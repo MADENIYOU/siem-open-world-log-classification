@@ -1,0 +1,11 @@
+variante,dim,F1 A (6 versions),F1 A à p=0,"F1 A à p=0,5",Δ vs V0,IC 95 %,verdict,dim vs V0
+"V0 référence (mots, minuscules)",9880,0.4745,0.4816,0.4667,0.0,[+0.0000 ; +0.0000],référence,+0%
+V1 + champs masqués par type,9410,0.4734,0.4784,0.4676,-0.0021,[-0.0196 ; +0.0148],indistinguable,-5%
+V2 + ponctuation et symboles gardés,9912,0.421,0.4205,0.4166,-0.0398,[-0.0816 ; +0.0193],indistinguable,+0%
+V3 + masques ET ponctuation,9442,0.4286,0.4317,0.4243,-0.0374,[-0.0790 ; +0.0222],indistinguable,-4%
+V4 casse conservée,10489,0.4257,0.4208,0.4292,-0.0494,[-0.1002 ; -0.0054],perte réelle,+6%
+V5 mots vides anglais retirés,9654,0.4966,0.4953,0.4905,0.0137,[-0.0149 ; +0.0408],indistinguable,-2%
+V6 tronqué à 128 caractères,8695,0.5101,0.4911,0.5166,0.0075,[-0.0754 ; +0.0637],indistinguable,-12%
+V7 tronqué à 256 caractères,8932,0.4873,0.4816,0.489,0.0004,[-0.0264 ; +0.0186],indistinguable,-10%
+V8 masques seulement IP et heures,9882,0.4781,0.4828,0.4749,0.001,[-0.0064 ; +0.0082],indistinguable,+0%
+"V9 tout cumulé : masques, ponctuation, casse, mots vides",9680,0.4546,0.4647,0.4437,-0.0301,[-0.0977 ; +0.0449],indistinguable,-2%

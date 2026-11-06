@@ -1,0 +1,17 @@
+représentation,famille,dim,F1 palier A,F1 à p=0,"F1 à p=0,5",F1 tous,Δ vs TF-IDF mots,IC 95 %,verdict
+BoW comptages,creuse,9880,0.4282,0.4362,0.4182,0.6084,-0.0351,[-0.0622 ; +0.0014],indistinguable
+BoW binaire,creuse,9880,0.4344,0.442,0.4222,0.6118,-0.0294,[-0.0599 ; +0.0024],indistinguable
+BoW comptages + norme L2,creuse,9880,0.4408,0.4467,0.4396,0.6225,-0.0246,[-0.0426 ; -0.0024],perte réelle
+TF-IDF mots,creuse,9880,0.4745,0.4816,0.4667,0.6426,0.0,[+0.0000 ; +0.0000],référence
+TF-IDF mots 1-2 grammes,creuse,75530,0.4901,0.4955,0.4814,0.653,0.0029,[-0.0324 ; +0.0363],indistinguable
+TF-IDF mots 1-3 grammes,creuse,129485,0.4896,0.4927,0.485,0.6524,0.0029,[-0.0342 ; +0.0380],indistinguable
+TF-IDF caractères 3-5 (dans les mots),creuse,300000,0.505,0.5038,0.4913,0.6588,0.0157,[-0.0454 ; +0.0832],indistinguable
+TF-IDF caractères 2-4,creuse,220981,0.4537,0.4297,0.4654,0.6333,-0.0213,[-0.0708 ; +0.0437],indistinguable
+Word2Vec CBOW | mean,dense,100,0.4278,0.4329,0.4185,0.6127,-0.0544,[-0.1223 ; +0.0034],indistinguable
+Word2Vec CBOW | idf,dense,100,0.4325,0.4328,0.4212,0.6165,-0.0507,[-0.1118 ; +0.0009],indistinguable
+Word2Vec Skip-gram | mean,dense,100,0.4677,0.4554,0.4595,0.641,-0.0179,[-0.0927 ; +0.0493],indistinguable
+Word2Vec Skip-gram | idf,dense,100,0.4727,0.4732,0.4708,0.6417,-0.0197,[-0.1061 ; +0.0506],indistinguable
+FastText Skip-gram | mean,dense,100,0.446,0.4458,0.4369,0.6281,-0.0233,[-0.0534 ; +0.0103],indistinguable
+FastText Skip-gram | idf,dense,100,0.4447,0.4419,0.4335,0.6264,-0.0246,[-0.0607 ; +0.0133],indistinguable
+"GloVe 100d (pré-entraîné, TP1) | mean",dense,100,0.323,0.3379,0.3121,0.5274,-0.1329,[-0.2164 ; -0.0627],perte réelle
+"GloVe 100d (pré-entraîné, TP1) | idf",dense,100,0.2588,0.2545,0.2515,0.4675,-0.1763,[-0.2765 ; -0.0849],perte réelle

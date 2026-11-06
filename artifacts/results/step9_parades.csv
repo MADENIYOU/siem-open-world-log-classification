@@ -1,0 +1,9 @@
+modèle,parade,F1 propre val,baisse moyenne val,pire baisse val,F1 propre test,baisse moyenne test,pire baisse test
+TF-IDF mots,P0 aucune,0.4344,0.0547,0.167,0.4832,0.0671,0.2152
+TF-IDF mots,P1 homoglyphes normalisés,0.4344,0.0275,0.1181,0.4832,0.0309,0.1251
+TF-IDF mots,P2 entraînement adversarial,0.434,0.0275,0.0759,0.4797,0.0234,0.0715
+TF-IDF mots,P3 P1 + P2,0.4243,0.0069,0.0517,0.4763,0.0057,0.0652
+TF-IDF caractères,P0 aucune,0.4529,0.0109,0.1118,0.5146,0.0478,0.1438
+TF-IDF caractères,P1 homoglyphes normalisés,0.4529,0.0145,0.1118,0.5146,0.0286,0.1438
+TF-IDF caractères,P2 entraînement adversarial,0.4902,0.0103,0.0486,0.4919,0.0173,0.0359
+TF-IDF caractères,P3 P1 + P2,0.4902,0.0015,0.0317,0.4919,0.0109,0.0358

@@ -1,0 +1,10 @@
+type,paire,cosinus,rang de la 2e parmi les voisins de la 1re,part des paires aléatoires moins proches
+contraires,failed / accepted,0.355,"1,557 sur 24,485",57%
+contraires,allowed / denied,0.282,"13,525 sur 24,485",34%
+contraires,opened / closed,0.593,"58 sur 24,485",91%
+contraires,created / deleted,0.479,"351 sur 24,485",80%
+contraires,enabled / disabled,0.406,"15,490 sur 24,485",68%
+contraires,started / stopped,0.332,"7,932 sur 24,485",50%
+contraires,success / failure,0.203,"22,584 sur 24,485",14%
+synonymes,failed / unsuccessful,0.852,"3 sur 24,485",96%
+synonymes,deleted / erased,0.879,"2 sur 24,485",97%

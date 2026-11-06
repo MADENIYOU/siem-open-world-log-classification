@@ -1,0 +1,122 @@
+{
+ "version": 1,
+ "data_id": "999a1f7edf7eb964",
+ "seed": 42,
+ "target": [
+  0.7,
+  0.15,
+  0.15
+ ],
+ "template_params": {
+  "tau": 0.05,
+  "jaccard": 0.8
+ },
+ "n_groups": 311,
+ "tiers": {
+  "authentication-failed": "A",
+  "authentication-success": "A",
+  "connection-closed": "A",
+  "connection-failed": "A",
+  "connection-opened": "A",
+  "database-operation": "A",
+  "directory-changed": "B",
+  "directory-created": "B",
+  "directory-deleted": "B",
+  "file-action-failure": "C",
+  "file-deleted": "B",
+  "file-modification": "C",
+  "file-read": "C",
+  "file-write": "B",
+  "hardware-monitoring": "A",
+  "http-request-failure": "B",
+  "http-request-success": "B",
+  "ids-alert": "A",
+  "network-filtered": "A",
+  "network-traffic": "A",
+  "process-ended": "A",
+  "process-error": "A",
+  "process-info": "A",
+  "process-shutdown": "A",
+  "process-started": "A",
+  "system-configuration-changed": "A",
+  "user-creation": "A",
+  "user-deletion": "B",
+  "user-logout": "A",
+  "user-session-open": "C"
+ },
+ "templates_per_class": {
+  "authentication-failed": 51,
+  "authentication-success": 30,
+  "connection-closed": 12,
+  "connection-failed": 12,
+  "connection-opened": 14,
+  "database-operation": 8,
+  "directory-changed": 4,
+  "directory-created": 3,
+  "directory-deleted": 4,
+  "file-action-failure": 2,
+  "file-deleted": 4,
+  "file-modification": 2,
+  "file-read": 2,
+  "file-write": 3,
+  "hardware-monitoring": 13,
+  "http-request-failure": 3,
+  "http-request-success": 4,
+  "ids-alert": 13,
+  "network-filtered": 12,
+  "network-traffic": 5,
+  "process-ended": 10,
+  "process-error": 5,
+  "process-info": 7,
+  "process-shutdown": 22,
+  "process-started": 25,
+  "system-configuration-changed": 15,
+  "user-creation": 5,
+  "user-deletion": 4,
+  "user-logout": 16,
+  "user-session-open": 1
+ },
+ "splits_sha256": "035dbbec929384c0",
+ "rotations": [
+  [
+   "directory-created",
+   "http-request-success",
+   "process-info",
+   "process-started",
+   "system-configuration-changed",
+   "user-session-open"
+  ],
+  [
+   "database-operation",
+   "file-deleted",
+   "network-traffic",
+   "process-ended",
+   "process-error",
+   "user-creation"
+  ],
+  [
+   "authentication-failed",
+   "connection-failed",
+   "directory-changed",
+   "file-action-failure",
+   "http-request-failure",
+   "network-filtered"
+  ],
+  [
+   "file-modification",
+   "file-read",
+   "hardware-monitoring",
+   "ids-alert",
+   "process-shutdown",
+   "user-logout"
+  ],
+  [
+   "authentication-success",
+   "connection-closed",
+   "connection-opened",
+   "directory-deleted",
+   "file-write",
+   "user-deletion"
+  ]
+ ]
+}
