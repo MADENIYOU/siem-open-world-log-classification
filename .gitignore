@@ -19,3 +19,8 @@ __pycache__/
 .venv*/
 .ipynb_checkpoints/
 .DS_Store
+
+# Présentation : dépendances locales
+presentation/node_modules/
+presentation/.venv/
+presentation/_render/
