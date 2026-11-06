@@ -4,7 +4,7 @@
 
 Projet du cours de traitement automatique du langage naturel (ESP / UCAD), projet 2 de la proposition *SIEVE pipelines* : **peut-on classer un événement de sécurité dans une taxonomie à deux niveaux tout en reconnaissant qu'il n'appartient à aucune classe apprise ?**
 
-Auteur : Madeniyou Sall ([@MADENIYOU](https://github.com/MADENIYOU)).
+Auteur : Mouhamadou Madeniyou SALL ([@MADENIYOU](https://github.com/MADENIYOU)).
 
 ## Résultats principaux
 
