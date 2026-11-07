@@ -1,0 +1,6 @@
+groupe,part des logs,exactitude
+plus proche voisin dans l'entraînement,0.635,0.9568
+plus proche voisin dans la validation,0.17,0.6726
+plus proche voisin dans le test,0.196,0.4376
+"similarité ≥ 0,90",0.257,0.86
+"similarité < 0,90",0.743,0.7886

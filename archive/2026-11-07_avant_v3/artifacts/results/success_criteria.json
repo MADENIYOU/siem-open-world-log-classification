@@ -1,0 +1,50 @@
+{
+ "S1_closed_macro_f1": {
+  "description": "macro-F1 en 30 classes, découpage PAR GABARIT, moyenne sur 3 graines",
+  "plancher_reference": "SVM linéaire TF-IDF : voir 3.6",
+  "acceptable": "plancher + 0,05 avec IC excluant 0",
+  "cible": "plancher + 0,15"
+ },
+ "S2_open_auroc": {
+  "description": "AUROC de détection des classes masquées, moyenne sur 5 rotations",
+  "acceptable": 0.8,
+  "cible": 0.9
+ },
+ "S3_open_fpr95": {
+  "description": "FPR@95 %TPR (part des inconnus acceptés à tort), moyenne sur 5 rotations",
+  "acceptable_max": 0.5,
+  "cible_max": 0.3
+ },
+ "S4_hierarchie": {
+  "description": "F1 famille >= F1 classe fine + 0,10 ; part de prédictions cohérentes (enfant dans la famille prédite) = 100 % par construction"
+ },
+ "S5_decision_statistique": {
+  "regle": "différence réelle si l'IC bootstrap par gabarit (95 %) exclut 0 ET |écart| >= 0,01 (marge plus large qu'au TP1, bruit plus fort)"
+ },
+ "S6_cout": {
+  "inference_ms_par_log": 100,
+  "remarque": "indicatif"
+ },
+ "S7_calibration": {
+  "description": "ECE du MSP sur les classes connues (validation), avant et après mise à l'échelle par température",
+  "acceptable_max": 0.1,
+  "cible_max": 0.05,
+  "remarque": "posé APRÈS l'état de l'art, en connaissant des résultats exploratoires (ECE de l'encodeur 0,18 à 0,35) : structure la conclusion, ne départage pas des méthodes"
+ },
+ "S8_robustesse": {
+  "description": "pire cas de baisse relative de macro-F1 sur les attaques, défense bâtie sur une moitié de la table UTS #39 et attaquée avec l'autre (attaque adaptative incluse)",
+  "acceptable_max": 0.1,
+  "cible_max": 0.05,
+  "remarque": "idem : posé après l'état de l'art"
+ },
+ "E6_protocoles_de_decoupage": [
+  "aleatoire_temoin",
+  "simple_par_gabarit",
+  "kplis_par_groupes_5",
+  "imbriquee_par_groupes_5x3"
+ ],
+ "version_des_criteres": 2,
+ "S1_a_S6_inchanges_depuis_la_version_1": true,
+ "ecrit_le": "2026-11-06 09:03:23",
+ "test_ouvert": false
+}

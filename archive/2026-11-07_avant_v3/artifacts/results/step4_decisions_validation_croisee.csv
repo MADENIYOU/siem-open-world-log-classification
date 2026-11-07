@@ -1,0 +1,4 @@
+variante,F1 V0 (moy. des 5 plis),F1 variante,Δ moyen,Δ par pli,plis où la variante perd,verdict sous validation croisée
+V1 + champs masqués par type,0.4964,0.4955,-0.0008,"[-0.01, -0.006, 0.011, 0.002, -0.0]",3,indistinguable
+V4 casse conservée,0.4964,0.4742,-0.0222,"[-0.021, -0.087, -0.008, -0.029, 0.033]",4,indistinguable
+V5 mots vides anglais retirés,0.4964,0.4849,-0.0115,"[-0.003, -0.025, -0.008, -0.002, -0.019]",5,perte régulière

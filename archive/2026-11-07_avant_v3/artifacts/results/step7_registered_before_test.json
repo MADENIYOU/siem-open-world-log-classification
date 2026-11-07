@@ -1,0 +1,94 @@
+{
+ "models_closed": {
+  "flat+hier": [
+   "tfidf",
+   "sg_idf"
+  ]
+ },
+ "models_open": {
+  "tfidf": {
+   "seeds": [
+    42,
+    43,
+    44
+   ],
+   "score_principal": "msp"
+  },
+  "sg_idf": {
+   "seeds": [
+    42
+   ],
+   "score_principal": "proto"
+  }
+ },
+ "C": 16.0,
+ "rotations": [
+  [
+   "directory-created",
+   "http-request-success",
+   "process-info",
+   "process-started",
+   "system-configuration-changed",
+   "user-session-open"
+  ],
+  [
+   "database-operation",
+   "file-deleted",
+   "network-traffic",
+   "process-ended",
+   "process-error",
+   "user-creation"
+  ],
+  [
+   "authentication-failed",
+   "connection-failed",
+   "directory-changed",
+   "file-action-failure",
+   "http-request-failure",
+   "network-filtered"
+  ],
+  [
+   "file-modification",
+   "file-read",
+   "hardware-monitoring",
+   "ids-alert",
+   "process-shutdown",
+   "user-logout"
+  ],
+  [
+   "authentication-success",
+   "connection-closed",
+   "connection-opened",
+   "directory-deleted",
+   "file-write",
+   "user-deletion"
+  ]
+ ],
+ "threshold_rule": "seuil de rejet calé sur les logs CONNUS de validation (95 % acceptés), puis APPLIQUÉ tel quel au test",
+ "main": {
+  "representation": "tfidf",
+  "classifieur": "plat",
+  "score": "msp"
+ },
+ "metrics": [
+  "macro-F1 (30 classes, palier A, B, C)",
+  "F1 famille",
+  "distance d'erreur",
+  "AUROC",
+  "AUPR",
+  "FPR@95 (seuil du test)",
+  "FPR et rejet des connus au seuil de validation",
+  "OSCR",
+  "ECE"
+ ],
+ "rules": [
+  "aucun réglage, seuil ni choix de score ne sera modifié d'après le test",
+  "le test s'ouvre UNE fois (accès journalisé)",
+  "les résultats sont rapportés tels quels, y compris les échecs",
+  "E5 (transfert vers CDS) reste en suspens : fichier absent",
+  "les chiffres sont comparés aux critères S1 à S4 de l'étape 2"
+ ],
+ "data_id": "999a1f7edf7eb964",
+ "splits_sha256": "035dbbec929384c0",
+ "registered_at": "2026-11-06 09:05:46"
+}

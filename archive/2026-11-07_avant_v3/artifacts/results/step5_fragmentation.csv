@@ -1,0 +1,4 @@
+tiers de logs (palier A),jetons par mot (moyenne),logs,exactitude TF-IDF,exactitude encodeur gelé,écart (TF-IDF moins encodeur)
+peu fragmentés,2.31,4782,0.511,0.395,0.116
+moyens,3.44,4794,0.805,0.673,0.132
+très fragmentés,6.66,4788,0.26,0.37,-0.11

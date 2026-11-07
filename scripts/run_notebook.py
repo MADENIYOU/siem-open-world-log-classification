@@ -7,6 +7,8 @@ from pathlib import Path
 import nbformat
 from nbclient import NotebookClient
 ROOT = Path(__file__).resolve().parents[1]; NB = ROOT / "TP2_logs_hierarchique_monde_ouvert.ipynb"; t0 = time.time()
+import shutil, time as _t
+(ROOT / 'archive' / 'notebook').mkdir(parents=True, exist_ok=True); shutil.copy2(NB, ROOT / 'archive' / 'notebook' / f"TP2_{_t.strftime('%Y%m%d-%H%M%S')}.ipynb")   # règle : on garde toujours le précédent (archive_state.py pour les résultats)
 nb = nbformat.read(NB, as_version=4)
 NotebookClient(nb, timeout=1500, kernel_name="python3", resources={"metadata": {"path": str(ROOT)}}).execute()
 nbformat.write(nb, NB)

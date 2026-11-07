@@ -40,6 +40,8 @@ def run_unit(block, name, cfg, fn, code_version="1", force=False, quiet=False):
     if path.exists() and not force:
         if not quiet: print(f"[{block}] {name} : rechargé ({h})")
         return json.loads(path.read_text(encoding="utf-8"))["result"], "rechargé"
+    if path.exists() and force:                                                               # règle : on ne supprime jamais un résultat précédent
+        os.replace(path, path.with_name(f"{h}.ancien-{time.strftime('%Y%m%d-%H%M%S')}.json"))
     t0 = time.time(); result = fn(); sec = round(time.time() - t0, 2)
     rec = {"hash": h, "block": block, "name": name, "cfg": cfg, "code_version": code_version, "result": result, "seconds": sec,
            "machine": machine(), "commit": git_commit(), "date": time.strftime("%Y-%m-%d %H:%M:%S")}
@@ -53,4 +55,4 @@ def run_unit(block, name, cfg, fn, code_version="1", force=False, quiet=False):
 def load_block(block):
     """Tous les résultats d'un bloc : liste d'enregistrements complets."""
     d = RES / block
-    return [json.loads(p.read_text(encoding="utf-8")) for p in sorted(d.glob("*.json"))] if d.exists() else []
+    return [json.loads(p.read_text(encoding="utf-8")) for p in sorted(d.glob("*.json")) if ".ancien-" not in p.name] if d.exists() else []

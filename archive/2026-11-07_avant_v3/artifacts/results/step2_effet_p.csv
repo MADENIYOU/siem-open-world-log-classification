@@ -1,0 +1,7 @@
+version,p,mots distincts,longueur moy. (car.),jetons moy.,part de mots absents de SIEVE_00
+SIEVE_00,0.0,31627,150.8,50.1,0.0
+SIEVE_01,0.1,46880,155.0,50.3,0.0494
+SIEVE_02,0.2,54721,159.7,50.7,0.0809
+SIEVE_03,0.3,59848,164.1,51.0,0.1055
+SIEVE_04,0.4,63612,168.2,51.4,0.1252
+SIEVE_05,0.5,66385,173.0,51.9,0.1464

@@ -1,0 +1,5 @@
+modèle,ms pour 1 000 logs,ms par log,taille (Mo)
+"TF-IDF mots, tête plate + hiérarchique + 6 scores (os_tfidf_closed_s42)",14.0,0.014,9.9
+Skip-gram pondéré IDF (os_sg_idf_closed_s42),16.6,0.017,14.1
+TF-IDF caractères 3-5 (os_char35_closed_s42),150.9,0.151,45.1
+TF-IDF mots + entraînement adversarial (adv_word_robust),16.7,0.017,5.9

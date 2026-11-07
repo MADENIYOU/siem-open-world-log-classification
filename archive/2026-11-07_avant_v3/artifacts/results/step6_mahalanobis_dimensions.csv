@@ -1,0 +1,5 @@
+dimension k,variance gardée,AUROC Mahalanobis,± entre rotations,FPR@95,Δ vs MSP,rotations gagnées,verdict
+50,0.303,0.5695,0.0808,0.9351,-0.1586,1/5,indistinguable
+100,0.402,0.6307,0.0673,0.8867,-0.0974,1/5,indistinguable
+200,0.487,0.6281,0.0975,0.859,-0.1,2/5,indistinguable
+300,0.531,0.6441,0.0884,0.872,-0.084,2/5,indistinguable

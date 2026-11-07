@@ -1,0 +1,128 @@
+{
+ "hash": "4d58a9d78fd70afa",
+ "block": "A_decoupage",
+ "name": "P2 r4 pli3",
+ "cfg": {
+  "protocol": "P2",
+  "repeat": 4,
+  "fold": 3,
+  "cap": 400,
+  "models": [
+   "svm_word",
+   "svm_char",
+   "lr_word",
+   "nb_word",
+   "knn_word",
+   "centroid_word"
+  ],
+  "grid": {
+   "svm_word": [
+    "C",
+    [
+     0.1,
+     1,
+     10
+    ]
+   ],
+   "svm_char": [
+    "C",
+    [
+     0.1,
+     1
+    ]
+   ],
+   "lr_word": [
+    "C",
+    [
+     1,
+     10,
+     100
+    ]
+   ],
+   "nb_word": [
+    "alpha",
+    [
+     0.03,
+     0.3,
+     3
+    ]
+   ],
+   "knn_word": [
+    "k",
+    [
+     3,
+     5,
+     15
+    ]
+   ],
+   "centroid_word": [
+    null,
+    [
+     null
+    ]
+   ]
+  },
+  "file": "SIEVE_00",
+  "splits": "groups_v3"
+ },
+ "code_version": "A1",
+ "result": {
+  "svm_word": {
+   "f1A": 0.5130783684784146,
+   "f1_30": 0.329836094021838,
+   "acc": 0.4562313236069608,
+   "param": 1,
+   "seconds": 1.9
+  },
+  "svm_char": {
+   "f1A": 0.6189541568940485,
+   "f1_30": 0.39789910086045976,
+   "acc": 0.5103708911935314,
+   "param": 1,
+   "seconds": 20.6
+  },
+  "lr_word": {
+   "f1A": 0.498300211014668,
+   "f1_30": 0.3322001406764453,
+   "acc": 0.44462998769555284,
+   "param": 10,
+   "seconds": 2.3
+  },
+  "nb_word": {
+   "f1A": 0.39759849295673316,
+   "f1_30": 0.2650656619711555,
+   "acc": 0.35515907892423976,
+   "param": 0.3,
+   "seconds": 0.0
+  },
+  "knn_word": {
+   "f1A": 0.4639477413621754,
+   "f1_30": 0.2879675636041088,
+   "acc": 0.4090349797855511,
+   "param": 5,
+   "seconds": 16.3
+  },
+  "centroid_word": {
+   "f1A": 0.4623259150542344,
+   "f1_30": 0.3200717873452393,
+   "acc": 0.3933028651784145,
+   "param": null,
+   "seconds": 5.9
+  },
+  "_info": {
+   "n_train": 41061,
+   "n_test": 11378,
+   "n_test_groups": 50,
+   "twin_share": 0.015333333333333332,
+   "median_nn_cos": 0.484082518145161
+  }
+ },
+ "seconds": 64.89,
+ "machine": {
+  "host": "MacBook-Pro-de-Madeniyou.local",
+  "platform": "macOS-27.0.1-arm64-arm-64bit",
+  "python": "3.12.16"
+ },
+ "commit": "51154ea",
+ "date": "2026-11-07 21:39:36"
+}

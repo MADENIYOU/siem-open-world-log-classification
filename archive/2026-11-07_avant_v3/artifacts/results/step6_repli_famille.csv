@@ -1,0 +1,11 @@
+représentation,façon de proposer une famille,exactitude (moyenne des rotations),pire rotation,meilleure rotation,part répondue
+TF-IDF mots,toujours la famille majoritaire,0.292,0.013,0.805,1.0
+TF-IDF mots,famille de la classe (plat),0.219,0.062,0.461,1.0
+TF-IDF mots,famille de la classe (hiérarchique),0.238,0.023,0.606,1.0
+TF-IDF mots,tête famille,0.227,0.022,0.599,1.0
+TF-IDF mots,tête famille (avec seuil),0.468,0.0,0.99,0.094
+Skip-gram pondéré IDF,toujours la famille majoritaire,0.314,0.155,0.649,1.0
+Skip-gram pondéré IDF,famille de la classe (plat),0.275,0.142,0.445,1.0
+Skip-gram pondéré IDF,famille de la classe (hiérarchique),0.304,0.13,0.467,1.0
+Skip-gram pondéré IDF,tête famille,0.304,0.13,0.467,1.0
+Skip-gram pondéré IDF,tête famille (avec seuil),0.446,0.214,0.594,0.397

@@ -1,0 +1,5 @@
+dimension k,variance expliquée,"macro-F1 fermé (classes connues, validation)"
+50,0.312,0.5836
+100,0.413,0.5337
+200,0.495,0.5403
+300,0.538,0.5372

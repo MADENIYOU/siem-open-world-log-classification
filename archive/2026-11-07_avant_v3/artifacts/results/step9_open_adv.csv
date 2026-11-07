@@ -1,0 +1,5 @@
+condition,AUROC base,AUROC adv.,connus rejetés base,connus rejetés adv.
+homoglyphs forte,0.5619,0.5948,0.2249,0.2562
+padding forte,0.5982,0.6113,0.1887,0.1909
+propre,0.6029,0.596,0.1241,0.1375
+typos forte,0.5822,0.5753,0.1489,0.1901

@@ -3,6 +3,11 @@
 Document de suivi, tenu à jour. Dernière mise à jour : 2026-11-07. **Rendu : samedi 2026-11-14.**
 Priorités fixées par l'étudiant : **reproductibilité, traçabilité, document de recherche**, viser le meilleur score possible, et comprendre ce qui est fait. Le travail se poursuit après le rendu.
 
+## 0. Règles de conduite (demande de l'étudiant, 2026-11-07)
+- **Méthodique de bout en bout** ; chaque choix, décision et résultat est **justifié** ; chaque hypothèse est préinscrite puis **confirmée ou réfutée**.
+- **On ne supprime jamais un résultat précédent, dans aucun document** : on garde le précédent et l'actuel. Mise en œuvre : journal append-only et `REGISTRE_V3.md`, archives non écrasables (`archive/`, `scripts/archive_state.py`), étiquette git `etat-2026-11-07-avant-v3`, archivage automatique du notebook (`run_notebook.py`) et de la présentation (`build.sh`), recalcul forcé qui archive l'ancien fichier.
+- Le registre complet (règles R1 à R8, décisions D1 à D6, hypothèses HA1 à HA8) est dans `REGISTRE_V3.md`.
+
 ## 1. Décisions prises
 | Date | Décision | Raison |
 |---|---|---|

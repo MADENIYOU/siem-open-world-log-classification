@@ -1,0 +1,34 @@
+{
+ "closed_word": {
+  "parade": "P1 homoglyphes normalisés",
+  "models": {
+   "P0 aucune": "os_tfidf_closed_s42",
+   "P1 homoglyphes normalisés": "os_tfidf_closed_s42 + unconfuse",
+   "P2 entraînement adversarial": "adv_word",
+   "P3 P1 + P2": "adv_word_robust"
+  }
+ },
+ "closed_char": {
+  "parade": "P0 aucune",
+  "models": {
+   "P0 aucune": "os_char35_closed_s42",
+   "P2 entraînement adversarial": "adv_char"
+  }
+ },
+ "open_adv": "os_tfidf_adv_rot{1..5}_s42",
+ "temperatures": {
+  "closed_tfidf": 1.6229498637106836,
+  "rot1": 1.7304034167075384,
+  "rot2": 1.4942973508413213,
+  "rot3": 1.5214209120550917,
+  "rot4": 1.5989973081875413,
+  "rot5": 1.5100242103474162
+ },
+ "data_id": "999a1f7edf7eb964",
+ "splits_sha256": "035dbbec929384c0",
+ "modules": {
+  "openset": "05d7b8a91592",
+  "attacks": "37a5b3530f02",
+  "text": "2b5360ac2128"
+ }
+}

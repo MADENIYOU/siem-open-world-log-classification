@@ -1,0 +1,9 @@
+[
+  {
+    "when": "2026-11-05 00:05:55",
+    "why": "\u00c9tape 7 : \u00e9valuation finale unique des mod\u00e8les fig\u00e9s (r\u00e8gles enregistr\u00e9es en 7.1)",
+    "reconstituee": true,
+    "preuve": "date de modification de test_sample_v1.csv.gz ; entr\u00e9e d'origine perdue lors d'une r\u00e9g\u00e9n\u00e9ration (voir texte ci-dessus)",
+    "sha256_echantillon": "d2a970df41b164f3"
+  }
+]

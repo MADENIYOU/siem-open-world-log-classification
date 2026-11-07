@@ -1,0 +1,128 @@
+{
+ "hash": "3819e33796fc787d",
+ "block": "A_decoupage",
+ "name": "P3 r2 pli1",
+ "cfg": {
+  "protocol": "P3",
+  "repeat": 2,
+  "fold": 1,
+  "cap": 400,
+  "models": [
+   "svm_word",
+   "svm_char",
+   "lr_word",
+   "nb_word",
+   "knn_word",
+   "centroid_word"
+  ],
+  "grid": {
+   "svm_word": [
+    "C",
+    [
+     0.1,
+     1,
+     10
+    ]
+   ],
+   "svm_char": [
+    "C",
+    [
+     0.1,
+     1
+    ]
+   ],
+   "lr_word": [
+    "C",
+    [
+     1,
+     10,
+     100
+    ]
+   ],
+   "nb_word": [
+    "alpha",
+    [
+     0.03,
+     0.3,
+     3
+    ]
+   ],
+   "knn_word": [
+    "k",
+    [
+     3,
+     5,
+     15
+    ]
+   ],
+   "centroid_word": [
+    null,
+    [
+     null
+    ]
+   ]
+  },
+  "file": "SIEVE_00",
+  "splits": "groups_v3"
+ },
+ "code_version": "A1",
+ "result": {
+  "svm_word": {
+   "f1A": 0.5392330140335788,
+   "f1_30": 0.4444173121026732,
+   "acc": 0.4880952380952381,
+   "param": 0.1,
+   "seconds": 11.6
+  },
+  "svm_char": {
+   "f1A": 0.5324792271124136,
+   "f1_30": 0.46595590885268684,
+   "acc": 0.469187675070028,
+   "param": 0.1,
+   "seconds": 106.3
+  },
+  "lr_word": {
+   "f1A": 0.5697789488726831,
+   "f1_30": 0.46722626312058746,
+   "acc": 0.5071778711484594,
+   "param": 10,
+   "seconds": 17.1
+  },
+  "nb_word": {
+   "f1A": 0.4785797269041422,
+   "f1_30": 0.36612930046080805,
+   "acc": 0.44003851540616246,
+   "param": 3,
+   "seconds": 0.4
+  },
+  "knn_word": {
+   "f1A": 0.5145163563825706,
+   "f1_30": 0.3468818399122692,
+   "acc": 0.44992997198879553,
+   "param": 15,
+   "seconds": 158.9
+  },
+  "centroid_word": {
+   "f1A": 0.47544562757128045,
+   "f1_30": 0.38899915288397724,
+   "acc": 0.3864670868347339,
+   "param": null,
+   "seconds": 3.0
+  },
+  "_info": {
+   "n_train": 41015,
+   "n_test": 11424,
+   "n_test_groups": 51,
+   "twin_share": 0.0,
+   "median_nn_cos": 0.4616473377131508
+  }
+ },
+ "seconds": 325.7,
+ "machine": {
+  "host": "MacBook-Pro-de-Madeniyou.local",
+  "platform": "macOS-27.0.1-arm64-arm-64bit",
+  "python": "3.12.16"
+ },
+ "commit": "f225050",
+ "date": "2026-11-07 21:54:43"
+}

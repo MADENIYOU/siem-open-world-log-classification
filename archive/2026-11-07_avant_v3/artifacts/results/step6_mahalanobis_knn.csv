@@ -1,0 +1,15 @@
+représentation,score,AUROC,± entre rotations,FPR@95,OSCR,Δ vs MSP,rotations gagnées,verdict vs MSP
+TF-IDF mots,msp,0.7282,0.0999,0.8727,0.5657,0.0,0/5,indistinguable
+TF-IDF mots,energy,0.7273,0.0908,0.8977,0.5594,-0.0009,2/5,indistinguable
+TF-IDF mots,proto,0.7167,0.0877,0.9045,0.5433,-0.0115,3/5,indistinguable
+TF-IDF mots,maha,0.5603,0.0784,0.9351,0.3981,-0.1678,1/5,indistinguable
+TF-IDF mots,knn1,0.736,0.0639,0.7881,0.5511,0.0078,2/5,indistinguable
+TF-IDF mots,knn10,0.7289,0.0591,0.7945,0.5442,0.0007,2/5,indistinguable
+TF-IDF mots,knn50,0.7225,0.0612,0.8003,0.535,-0.0056,2/5,indistinguable
+Skip-gram pondéré IDF,msp,0.6505,0.0575,0.8731,0.5085,0.0,0/5,indistinguable
+Skip-gram pondéré IDF,energy,0.6809,0.101,0.7699,0.5147,0.0304,4/5,indistinguable
+Skip-gram pondéré IDF,proto,0.702,0.0859,0.8624,0.5274,0.0515,3/5,indistinguable
+Skip-gram pondéré IDF,maha,0.6797,0.1005,0.8617,0.4944,0.0291,3/5,indistinguable
+Skip-gram pondéré IDF,knn1,0.7285,0.1095,0.8236,0.5478,0.078,4/5,indistinguable
+Skip-gram pondéré IDF,knn10,0.7157,0.1089,0.8245,0.5356,0.0651,4/5,indistinguable
+Skip-gram pondéré IDF,knn50,0.7064,0.1079,0.836,0.5263,0.0559,4/5,indistinguable
