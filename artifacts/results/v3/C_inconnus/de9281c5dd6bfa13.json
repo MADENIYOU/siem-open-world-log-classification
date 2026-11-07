@@ -1,0 +1,292 @@
+{
+ "hash": "de9281c5dd6bfa13",
+ "block": "C_inconnus",
+ "name": "C rot4 r2 pli1",
+ "cfg": {
+  "block": "C",
+  "rotation": 3,
+  "repeat": 2,
+  "fold": 1,
+  "cap": 400,
+  "svd": 100,
+  "C_head": 4.0,
+  "file": "SIEVE_00",
+  "splits": "groups_v3"
+ },
+ "code_version": "C2",
+ "result": {
+  "scores": {
+   "msp": {
+    "auroc": 0.6971599540631301,
+    "fpr95": 1.0,
+    "aupr_in": 0.9149999497081068
+   },
+   "maxlogit": {
+    "auroc": 0.6431211405577338,
+    "fpr95": 1.0,
+    "aupr_in": 0.889078263853755
+   },
+   "energy": {
+    "auroc": 0.6151539057055999,
+    "fpr95": 1.0,
+    "aupr_in": 0.8736709862850914
+   },
+   "negent": {
+    "auroc": 0.6740726204497043,
+    "fpr95": 1.0,
+    "aupr_in": 0.9080625973930123
+   },
+   "ens_msp": {
+    "auroc": 0.6991394034009727,
+    "fpr95": 1.0,
+    "aupr_in": 0.9157762246115075
+   },
+   "hier_msp": {
+    "auroc": 0.6641257386216295,
+    "fpr95": 0.9995962858296327,
+    "aupr_in": 0.902676054013023
+   },
+   "fam_msp": {
+    "auroc": 0.6497311873686333,
+    "fpr95": 1.0,
+    "aupr_in": 0.9010959621247377
+   },
+   "openmax": {
+    "auroc": 0.7865261264254817,
+    "fpr95": 0.9241017359709326,
+    "aupr_in": 0.9393209477657836
+   },
+   "proto_cos": {
+    "auroc": 0.4066929555419415,
+    "fpr95": 1.0,
+    "aupr_in": 0.7923176712349416
+   },
+   "maha_shared": {
+    "auroc": 0.48342802288937964,
+    "fpr95": 1.0,
+    "aupr_in": 0.8055683662540777
+   },
+   "maha_class": {
+    "auroc": 0.5910130888312409,
+    "fpr95": 0.8922083165119096,
+    "aupr_in": 0.8361108139198703
+   },
+   "maha_rel": {
+    "auroc": 0.542517347142611,
+    "fpr95": 1.0,
+    "aupr_in": 0.8192045457236946
+   },
+   "knn1": {
+    "auroc": 0.550971610099379,
+    "fpr95": 0.9967702866370609,
+    "aupr_in": 0.8347399478395986
+   },
+   "knn10": {
+    "auroc": 0.5200011786089337,
+    "fpr95": 0.974566007266855,
+    "aupr_in": 0.8088750167079755
+   },
+   "pca_resid": {
+    "auroc": 0.40168422855645813,
+    "fpr95": 1.0,
+    "aupr_in": 0.7229772045455369
+   },
+   "gmm_lik": {
+    "auroc": 0.4183112781097892,
+    "fpr95": 1.0,
+    "aupr_in": 0.7691118837390369
+   },
+   "lof": {
+    "auroc": 0.5741719764608513,
+    "fpr95": 1.0,
+    "aupr_in": 0.858766150239922
+   },
+   "iforest": {
+    "auroc": 0.36335026628575157,
+    "fpr95": 0.9959628582963262,
+    "aupr_in": 0.7391384454694025
+   },
+   "tmpl_dist": {
+    "auroc": 0.46454388308054984,
+    "fpr95": 0.939442874444893,
+    "aupr_in": 0.791620410788876
+   },
+   "tmpl_radius": {
+    "auroc": 0.565957721961911,
+    "fpr95": 0.9006863140896245,
+    "aupr_in": 0.8184930646519073
+   },
+   "energy_z": {
+    "auroc": 0.6334983310635786,
+    "fpr95": 1.0,
+    "aupr_in": 0.8847555951977635
+   },
+   "ash_s": {
+    "auroc": 0.6530516879128375,
+    "fpr95": 1.0,
+    "aupr_in": 0.865003943260188
+   },
+   "scale": {
+    "auroc": 0.6095809625598086,
+    "fpr95": 1.0,
+    "aupr_in": 0.8600215645709918
+   },
+   "dice": {
+    "auroc": 0.5917299556049781,
+    "fpr95": 0.9919257165926524,
+    "aupr_in": 0.8668860069790716
+   },
+   "nnguide": {
+    "auroc": 0.6078159370218529,
+    "fpr95": 1.0,
+    "aupr_in": 0.8803302550616099
+   },
+   "she": {
+    "auroc": 0.6047864788827979,
+    "fpr95": 1.0,
+    "aupr_in": 0.8683755336307424
+   },
+   "vim": {
+    "auroc": 0.3698468065586428,
+    "fpr95": 1.0,
+    "aupr_in": 0.7502439812203935
+   },
+   "rank_mean3": {
+    "auroc": 0.5691354086747513,
+    "fpr95": 0.988292289059346,
+    "aupr_in": 0.855669854982096
+   }
+  },
+  "by_class": {
+   "msp": {
+    "process-shutdown": [
+     0.6882870589635366,
+     834
+    ],
+    "hardware-monitoring": [
+     0.6484972616519503,
+     800
+    ],
+    "user-logout": [
+     0.7371613789139217,
+     525
+    ],
+    "ids-alert": [
+     0.7768121565641974,
+     318
+    ]
+   },
+   "energy": {
+    "process-shutdown": [
+     0.5990442249977821,
+     834
+    ],
+    "hardware-monitoring": [
+     0.7027817983681681,
+     800
+    ],
+    "user-logout": [
+     0.4079239117128913,
+     525
+    ],
+    "ids-alert": [
+     0.7790812844050885,
+     318
+    ]
+   },
+   "maha_class": {
+    "process-shutdown": [
+     0.2966908243830776,
+     834
+    ],
+    "hardware-monitoring": [
+     0.6738561808427406,
+     800
+    ],
+    "user-logout": [
+     0.9238073948703209,
+     525
+    ],
+    "ids-alert": [
+     0.6050800204980694,
+     318
+    ]
+   },
+   "knn10": {
+    "process-shutdown": [
+     0.4712265059976162,
+     834
+    ],
+    "hardware-monitoring": [
+     0.2631735497932268,
+     800
+    ],
+    "user-logout": [
+     0.7641231165540991,
+     525
+    ],
+    "ids-alert": [
+     0.8909954005875269,
+     318
+    ]
+   },
+   "tmpl_radius": {
+    "process-shutdown": [
+     0.5239379302414781,
+     834
+    ],
+    "hardware-monitoring": [
+     0.3186123840393428,
+     800
+    ],
+    "user-logout": [
+     0.7842143415989398,
+     525
+    ],
+    "ids-alert": [
+     0.9380836695199473,
+     318
+    ]
+   }
+  },
+  "info": {
+   "n_known_test": 8947,
+   "n_unknown_test": 2477,
+   "n_train": 32124,
+   "closed_acc": 0.5203978987370068,
+   "masked": [
+    "file-modification",
+    "file-read",
+    "hardware-monitoring",
+    "ids-alert",
+    "process-shutdown",
+    "user-logout"
+   ],
+   "n_templates_train": 155
+  }
+ },
+ "seconds": 46.55,
+ "machine": {
+  "host": "MacBook-Pro-de-Madeniyou.local",
+  "platform": "macOS-27.0.1-arm64-arm-64bit",
+  "python": "3.12.16"
+ },
+ "commit": "6f8058f",
+ "code": {
+  "v3_blockC.py": "4bbdfc4001fa",
+  "tp2_attacks.py": "37a5b3530f02",
+  "tp2_data.py": "7f392cbaae6e",
+  "tp2_encoder.py": "faec7df763bf",
+  "tp2_journal.py": "d98d2c73b0a1",
+  "tp2_logtext.py": "2b5360ac2128",
+  "tp2_new_figs.py": "e48636202d7c",
+  "tp2_openset.py": "05d7b8a91592",
+  "tp2_runner.py": "7765735476e7",
+  "tp2_sota_figs.py": "4ba8388989c4",
+  "tp2_split_v3.py": "d9a4181a2a60",
+  "tp2_stats.py": "0a90cfa961ba",
+  "tp2_vec.py": "6d09bf373fd2",
+  "tp2_versions.py": "b7dd47bdb2f6"
+ },
+ "date": "2026-11-07 23:37:30"
+}

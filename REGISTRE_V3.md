@@ -162,6 +162,14 @@ Pour la phase 2, la confiance au niveau de la FAMILLE devient le candidat princi
 
 *Preuve.* RC2 ; HC1 ; HC2 ; HC8
 
+### D13 : Plan de la vectorisation × bruit (bloc V) et de la grille complète du Transformer (bloc T)  (version 1, 2026-11-07 23:25:34)
+
+**Bloc V (modèles linéaires).** Trois vectorisations (TF-IDF mots, TF-IDF caractères 3 à 5, Skip-gram pondéré IDF) × les six fichiers SIEVE (p = 0 à 0,5, entraînement et test dans le MÊME fichier) × 5 rotations × 2 répétitions (0 et 1) × 5 plis de groupes = 300 unités, développement seul, 400 logs au plus par gabarit et par fichier. Dans chaque unité, MÊMES logs pour deux familles de mesures : macro-F1 des classes connues (palier A) et AUROC de détection d'inconnus (MSP, énergie, MSP de la famille). **Bloc T (Transformer, grille complète).** DistilBERT sans casse (256 jetons, 2 époques, taux 3e-5) × 6 fichiers × 5 rotations × 3 graines (42, 43, 44) = 90 modèles, une seule découpe du développement (répétition 0, pli 0 : mêmes gabarits de test pour tous), 140 logs d'entraînement par classe connue et jusqu'à 133 logs de test par classe, tirage fixe. Chaque unité compare sur LES MÊMES LOGS DE TEST le Transformer et une baseline TF-IDF entraînée sur les mêmes logs d'entraînement. Scores du Transformer : MSP, logit maximal, énergie, MSP de la famille, MSP Monte-Carlo (10 passages), Mahalanobis et kNN sur les vecteurs de 768 valeurs. Les poids ne sont pas conservés (266 Mo par modèle) ; les logits le sont.
+
+*Justification.* Demande de l'étudiant (2026-11-07) : comparer les vectorisations selon le bruit et mener en parallèle la grille complète du Transformer. Deux familles de mesures sur les mêmes unités pour que le monde connu et le monde inconnu soient comparables (demande antérieure). La grille complète est réalisable : l'encodeur s'entraîne sur environ 3 400 logs par modèle (environ 3 minutes sur le GPU du Mac).
+
+*Preuve.* scripts/v3_blockV.py ; scripts/v3_transformer_grid.py
+
 ## Hypothèses (préinscrites, puis confirmées ou réfutées)
 
 ### HA1 : Le découpage au hasard gonfle le score  (version 4, 2026-11-07 22:29:59 ; **statut : confirmée**)
@@ -484,6 +492,78 @@ Le FPR@95 moyen (inconnus acceptés quand on garde 95 % des connus) est d'au moi
 
 *Historique des versions précédentes (conservées) :*
 - v1 (2026-11-07 22:55:54) : statut préinscrite ; Le FPR@95 moyen (inconnus acceptés quand on garde 95 % des connus) est d'au moins 0,70 pour chacun des 28 scores.
+
+### HV1 : Les caractères résistent mieux au bruit que les mots  (version 1, 2026-11-07 23:25:34 ; **statut : préinscrite**)
+
+La perte de macro-F1 des classes connues entre p = 0 et p = 0,5 est plus petite pour TF-IDF caractères que pour TF-IDF mots (Wilcoxon apparié sur les unités rotation × répétition × pli, Holm p < 0,05).
+
+*Justification.* Une lettre abîmée ne détruit qu'une partie des n-grammes d'un mot ; un mot déplacé ou collé disparaît entièrement du sac de mots.
+
+*Note.* Écrit le 2026-11-07 avant tout calcul des blocs V et T.
+
+### HV2 : Le bruit dégrade chaque vectorisation  (version 1, 2026-11-07 23:25:34 ; **statut : préinscrite**)
+
+Pour chacune des trois vectorisations, le macro-F1 des classes connues décroît avec p (tendance de Spearman négative, p Holm < 0,05, sur les moyennes par unité).
+
+*Justification.* Notebook v1 (8.3) : TF-IDF mots 0,49 à p = 0 contre 0,47 à p = 0,5 sur la validation croisée ; la baisse est faible mais attendue.
+
+*Note.* Écrit le 2026-11-07 avant tout calcul des blocs V et T.
+
+### HV3 : Skip-gram est moins bon que TF-IDF mots à tous les niveaux de bruit  (version 1, 2026-11-07 23:25:34 ; **statut : préinscrite**)
+
+À chacun des six niveaux de p, le macro-F1 de Skip-gram pondéré IDF est inférieur à celui de TF-IDF mots (Wilcoxon, Holm p < 0,05 sur les six).
+
+*Justification.* Notebook v1 : 0,376 contre 0,459 (30 classes, test) ; des vecteurs appris sur peu de contextes distincts.
+
+*Note.* Écrit le 2026-11-07 avant tout calcul des blocs V et T.
+
+### HV4 : Le meilleur au propre reste le meilleur au bruit maximal  (version 1, 2026-11-07 23:25:34 ; **statut : préinscrite**)
+
+La vectorisation au macro-F1 le plus élevé à p = 0 est aussi la meilleure à p = 0,5 (rangs moyens de Friedman).
+
+*Justification.* Pas de renversement de classement avec le bruit.
+
+*Note.* Écrit le 2026-11-07 avant tout calcul des blocs V et T.
+
+### HV5 : Le bruit abaisse la détection d'inconnus  (version 1, 2026-11-07 23:25:34 ; **statut : préinscrite**)
+
+L'AUROC du MSP décroît avec p pour TF-IDF mots (Spearman négatif, p < 0,05 sur les moyennes par unité).
+
+*Justification.* Hypothèse exploratoire : un texte plus abîmé rend tous les logs moins typiques de leur classe.
+
+*Note.* Écrit le 2026-11-07 avant tout calcul des blocs V et T.
+
+### HT1 : Le Transformer n'améliore pas la classification des classes connues  (version 1, 2026-11-07 23:25:34 ; **statut : préinscrite**)
+
+Sur les mêmes logs de test, le macro-F1 des classes connues du Transformer dépasse celui de la baseline TF-IDF d'au plus 0,02 (Wilcoxon sur les 30 couples fichier × rotation, moyenne des graines, Holm).
+
+*Justification.* Notebook v1 : encodeur 0,46 contre TF-IDF 0,49 au test (l'encodeur ne fait pas mieux), hypothèse de décalage de domaine.
+
+*Note.* Écrit le 2026-11-07 avant tout calcul des blocs V et T.
+
+### HT2 : Mahalanobis aide sur les vecteurs du Transformer  (version 1, 2026-11-07 23:25:34 ; **statut : préinscrite**)
+
+L'AUROC de Mahalanobis (vecteurs de 768 valeurs) dépasse celui du MSP du même Transformer d'au moins 0,03 (Wilcoxon sur les 30 couples, Holm p < 0,05).
+
+*Justification.* Notebook v1 (10.4c) : +0,057 dans les cinq rotations ; Podolskiy et al. et Zhou et al. (sources v1) la donnent efficace sur des Transformers affinés.
+
+*Note.* Écrit le 2026-11-07 avant tout calcul des blocs V et T.
+
+### HT3 : La confiance sur la famille aide aussi pour le Transformer  (version 1, 2026-11-07 23:25:34 ; **statut : préinscrite**)
+
+L'AUROC de la confiance sur la FAMILLE du Transformer dépasse celui de son MSP d'au moins 0,02 (Wilcoxon sur les 30 couples, Holm p < 0,05).
+
+*Justification.* Extension de la décision D12 (comparaison exploratoire du bloc C, à confirmer sur un autre modèle).
+
+*Note.* Écrit le 2026-11-07 avant tout calcul des blocs V et T.
+
+### HT4 : Le Transformer perd moins avec le bruit que TF-IDF  (version 1, 2026-11-07 23:25:34 ; **statut : préinscrite**)
+
+La perte de macro-F1 des classes connues entre p = 0 et p = 0,5 est plus petite pour le Transformer que pour la baseline TF-IDF (Wilcoxon sur les 15 couples rotation × graine, p < 0,05).
+
+*Justification.* Les sous-mots d'un Transformer tolèrent mieux les mots abîmés que le sac de mots.
+
+*Note.* Écrit le 2026-11-07 avant tout calcul des blocs V et T.
 
 ## Résultats
 

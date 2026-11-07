@@ -137,16 +137,43 @@ Généré à partir de `artifacts/results/v3/versions.jsonl` (append-only, ne pa
 
 | Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
 |---|---|---|---|---|---|
-| **C1** | 2026-11-07 22:58 | 28 scores d'inconnu (tête TF-IDF, espace SVD, tête SVD, fusion) sur 5 rotations × 5 répétitions × 5 plis de groupes ; développement seul ; ASH, SCALE, DICE, NNGuide, SHE et ViM adaptés à des vecteurs signés. | première version | **version courante** | `versions/scripts/v3_blockC__C1.py` |
+| **C1** | 2026-11-07 22:58 | 28 scores d'inconnu (tête TF-IDF, espace SVD, tête SVD, fusion) sur 5 rotations × 5 répétitions × 5 plis de groupes ; développement seul ; ASH, SCALE, DICE, NNGuide, SHE et ViM adaptés à des vecteurs signés. | première version | OpenMax de C1 lisait la formule de l'article à l'envers (probabilité de Weibull utilisée dans le mauvais sens) : AUROC de 0,465, sans valeur. Preuve : les versions C1 et corrigée sont presque des images miroirs unité par unité (diagnostic sur 15 unités, fichier artifacts/results/v3/C_diagnostic_openmax_lof.csv). (par C2) | `versions/scripts/v3_blockC__C1.py` |
+| **C2** | 2026-11-07 23:24 | Comme C1, avec OpenMax corrigé selon le code de référence de Bendale et Boult ; tous les autres scores identiques. | OpenMax de C1 lisait la formule de l'article à l'envers (probabilité de Weibull utilisée dans le mauvais sens) : AUROC de 0,465, sans valeur. Preuve : les versions C1 et corrigée sont presque des images miroirs unité par unité (diagnostic sur 15 unités, fichier artifacts/results/v3/C_diagnostic_openmax_lof.csv). | **version courante** | `versions/scripts/v3_blockC__C2.py` |
+|  |  | *Note : Correction du 2026-11-07 23:25 (le shell avait supprimé le nom du fichier de diagnostic dans le texte (accents graves)) : ancienne valeur {'pourquoi': "OpenMax de C1 lisait la formule de l'article à l'envers (probabilité de Weibull utilisée dans le mauvais sens) : AUROC de 0,465, sans valeur. Preuve : les versions C1 et corrigée sont presque des images miroirs unité par unité (diagnostic sur 15 unités, )."}.* |  |  |  |
 
 ## scripts/v3_analyze_C.py (analyse du bloc C)
 
 | Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
 |---|---|---|---|---|---|
-| **AC1** | 2026-11-07 22:58 | Tableaux et tests des hypothèses HC1 à HC9 (Wilcoxon apparié, Holm, Friedman et Nemenyi, Mann-Whitney, variabilité entre rotations). | première version | **version courante** | `versions/scripts/v3_analyze_C__AC1.py` |
+| **AC1** | 2026-11-07 22:58 | Tableaux et tests des hypothèses HC1 à HC9 (Wilcoxon apparié, Holm, Friedman et Nemenyi, Mann-Whitney, variabilité entre rotations). | première version | Le calcul du bloc C a été refait (C2) après la correction d'OpenMax : il faut analyser C2 sans écraser les sorties de C1, conservées côte à côte. (par AC2) | `versions/scripts/v3_analyze_C__AC1.py` |
+| **AC2** | 2026-11-07 23:39 | Comme AC1, avec la version du calcul en paramètre (par défaut C2) ; chaque version écrit ses propres fichiers (suffixe _C2) et ne réécrit jamais ceux de la version précédente. | Le calcul du bloc C a été refait (C2) après la correction d'OpenMax : il faut analyser C2 sans écraser les sorties de C1, conservées côte à côte. | **version courante** | `versions/scripts/v3_analyze_C__AC2.py` |
 
 ## scripts/v3_register_C.py et v3_register_B.py (préinscriptions)
 
 | Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
 |---|---|---|---|---|---|
 | **P1** | 2026-11-07 22:58 | Inscription au journal des décisions et hypothèses des blocs avant tout calcul. | première version | **version courante** | `versions/scripts/v3_register_C__P1.py` |
+
+## scripts/v3_blockV.py (bloc V : vectorisation × bruit)
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **V1** | 2026-11-07 23:39 | 3 vectorisations × 6 fichiers × 5 rotations × 2 répétitions × 5 plis (300 unités) ; macro-F1 des classes connues et AUROC (MSP, énergie, MSP de la famille) sur les mêmes logs. | première version | **version courante** | `versions/scripts/v3_blockV__V1.py` |
+
+## scripts/v3_transformer_grid.py (bloc T : grille du Transformer)
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **T1** | 2026-11-07 23:39 | DistilBERT × 6 fichiers × 5 rotations × 3 graines (90 modèles) ; baseline TF-IDF sur les mêmes logs ; logits conservés ; reprise à deux niveaux (unité et point de contrôle). | première version | **version courante** | `versions/scripts/v3_transformer_grid__T1.py` |
+
+## scripts/v3_diag_C.py (diagnostic d'OpenMax et de LOF)
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **DG1** | 2026-11-07 23:39 | Décompose le LOF (sparsité propre, densité du voisinage, rapport ; sensibilité à k et à la banque) et compare OpenMax C1 à la version du code de référence, sur 15 unités. | première version | **version courante** | `versions/scripts/v3_diag_C__DG1.py` |
+
+## scripts/v3_register_VT.py (préinscriptions V et T)
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **P2** | 2026-11-07 23:39 | Décision D13 et hypothèses HV1 à HV5, HT1 à HT4 inscrites avant tout calcul ; correction du texte de C2. | première version | **version courante** | `versions/scripts/v3_register_VT__P2.py` |

@@ -33,6 +33,8 @@ def maha2(Z, mu, prec):
 
 
 def openmax_score(Ltr, ytr_idx, Lte, K, alpha=5, tail=20):
+    """OpenMax selon le code de référence de Bendale et Boult : v_hat_i = v_i (1 - w_i (alpha+1-rang)/alpha) avec w = CDF de Weibull de la distance au signe moyen de la classe
+    (probabilité d'être dans la queue, donc LOIN du signe moyen) ; v_0 = somme des activations retirées ; activations décalées pour être positives. (La version C1 lisait la formule de l'article à l'envers.)"""
     mav, params = [], []
     pred = Ltr.argmax(1)
     for j in range(K):
@@ -42,10 +44,10 @@ def openmax_score(Ltr, ytr_idx, Lte, K, alpha=5, tail=20):
         except Exception: params.append((2.0, float(d.mean()) + 1e-6))
     mav = np.array(mav); n = Lte.shape[0]; cdf = np.zeros((n, K))
     for j in range(K): cdf[:, j] = weibull_min.cdf(np.linalg.norm(Lte - mav[j], axis=1), params[j][0], 0, params[j][1])
-    order = np.argsort(-Lte, axis=1); w = np.ones((n, K)); rows = np.arange(n)
-    for i in range(1, alpha + 1): j = order[:, i - 1]; w[rows, j] = 1 - ((alpha - i) / alpha) * (1 - cdf[rows, j])
-    vhat = Lte * w; v0 = (Lte * (1 - w)).sum(1); full = np.hstack([vhat, v0[:, None]]); pu = softmax(full, axis=1)[:, -1]
-    return 1 - pu
+    order = np.argsort(-Lte, axis=1); rows = np.arange(n); aw = np.zeros((n, K))
+    for i in range(1, alpha + 1): aw[rows, order[:, i - 1]] = (alpha + 1 - i) / alpha
+    v = Lte - Lte.min(1, keepdims=True); vhat = v * (1 - cdf * aw); v0 = (v * cdf * aw).sum(1)
+    return 1 - softmax(np.hstack([vhat, v0[:, None]]), axis=1)[:, -1]
 
 
 def task(rot, r, k, dev, tierA):
@@ -101,7 +103,7 @@ def task(rot, r, k, dev, tierA):
 
 def unit(rot, r, k, dev, tierA):
     cfg = {"block": "C", "rotation": rot, "repeat": r, "fold": k, "cap": A.CAP, "svd": SVD_DIM, "C_head": C_HEAD, "file": "SIEVE_00", "splits": "groups_v3"}
-    return R.run_unit("C_inconnus", f"C rot{rot + 1} r{r} pli{k}", cfg, lambda: task(rot, r, k, dev, tierA), code_version="C1")[1]
+    return R.run_unit("C_inconnus", f"C rot{rot + 1} r{r} pli{k}", cfg, lambda: task(rot, r, k, dev, tierA), code_version="C2")[1]
 
 
 if __name__ == "__main__":
