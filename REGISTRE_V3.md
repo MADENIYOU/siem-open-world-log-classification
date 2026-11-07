@@ -138,6 +138,14 @@ Mise en œuvre de R9 : runner R3, versions V2 et V3, contrôle CV1 ; pas de croc
 
 *Preuve.* VERSIONS.md ; scripts/check_versions.py ; src/tp2_runner.py R3
 
+### D10 : Crochet git pre-commit installé  (version 1, 2026-11-07 22:22:52)
+
+Le crochet `scripts/hooks/pre-commit` est installé dans `.git/hooks/` ; il lance `scripts/check_versions.py --fix` et ajoute `versions/auto` au commit.
+
+*Justification.* Complète R9 sans dépendre d'un oubli. Il avait d'abord été refusé par le contrôle d'autorisation car il exécute du code à chaque commit ; l'étudiant l'a ensuite demandé explicitement (2026-11-07).
+
+*Preuve.* scripts/hooks/pre-commit ; VERSIONS.md (H1)
+
 ## Hypothèses (préinscrites, puis confirmées ou réfutées)
 
 ### HA1 : Le découpage au hasard gonfle le score  (version 3, 2026-11-07 22:06:03 ; **statut : non tranchée**)

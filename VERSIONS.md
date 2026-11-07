@@ -111,3 +111,9 @@ Généré à partir de `artifacts/results/v3/versions.jsonl` (append-only, ne pa
 | Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
 |---|---|---|---|---|---|
 | **CV1** | 2026-11-07 22:18 | Vérifie que l'état courant de chaque script, module, générateur de présentation et notebook est conservé (copie ou commit) ; `--fix` fige dans `versions/auto/` ceux qui ne le sont pas. | première version | **version courante** | `versions/scripts/check_versions__CV1.py` |
+
+## scripts/hooks/pre-commit (crochet git de conservation)
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **H1** | 2026-11-07 22:22 | Avant chaque commit, fige dans `versions/auto/` tout état de script, module, notebook ou générateur non conservé et l'ajoute au commit ; ne bloque jamais le commit. Copie versionnée ; installation : `cp scripts/hooks/pre-commit .git/hooks/pre-commit`. | première version | **version courante** | `versions/scripts/hooks/pre-commit__H1` |

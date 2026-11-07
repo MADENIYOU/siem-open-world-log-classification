@@ -1,0 +1,8 @@
+#!/bin/sh
+# Crochet git « pre-commit » (installé avec l'accord de l'étudiant, 2026-11-07) : fige dans versions/auto tout état de script, module, notebook ou
+# générateur de présentation non encore conservé, puis l'ajoute au commit. Ne bloque jamais le commit. Installation : cp scripts/hooks/pre-commit .git/hooks/pre-commit
+ROOT="$(git rev-parse --show-toplevel)"
+PY="$ROOT/../../TP1/.venv312/bin/python"
+[ -x "$PY" ] || PY="$(command -v python3)"
+"$PY" "$ROOT/scripts/check_versions.py" --fix >/dev/null 2>&1 && git add "$ROOT/versions/auto" 2>/dev/null
+exit 0
