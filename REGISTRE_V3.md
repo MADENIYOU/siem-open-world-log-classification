@@ -51,6 +51,14 @@ Chaque itération de la phase 2 a un numéro, une hypothèse, une configuration,
 
 *Justification.* Rend l'affinage traçable et évite de s'arrêter trop tôt ou de tourner en rond.
 
+### R9 : Aucune version de code ne se perd  (version 1, 2026-11-07 22:20:11)
+
+Le code qui produit un résultat est conservé automatiquement : copie par contenu dans `versions/auto/` au premier calcul de chaque processus (`src/tp2_runner.py` R3), empreinte du code dans chaque résultat et dans le registre, vérification `scripts/check_versions.py` (avec `--fix`) à lancer avant chaque commit et en fin de session. Un hachage de commit inexistant est refusé par `tp2_versions.register`.
+
+*Justification.* La première version du script du bloc B (B1) avait été modifiée avant tout commit et n'a pu être conservée ; l'étudiant a demandé que cela ne se reproduise pas. Une faute de frappe sur un hachage (ccd459e au lieu de ccc459e) avait aussi été enregistrée dans VERSIONS.md : trois copies n'avaient pas été créées ; corrigé par ajout d'une correction (journal des versions), sans réécriture.
+
+*Note.* Un crochet git automatique `pre-commit` a été envisagé puis non installé : il exécuterait du code à chaque commit sans accord explicite de l'étudiant. À décider avec lui.
+
 ## Décisions
 
 ### D1 : Nouveau test scellé v2  (version 1, 2026-11-07 21:54:05)
@@ -121,6 +129,14 @@ Protocole P2 (5 plis de groupes × 5 répétitions), SIEVE_00, 400 logs au plus 
 
 *Historique des versions précédentes (conservées) :*
 - v1 (2026-11-07 22:06:03) : statut None ; Protocole P2 (5 plis de groupes × 5 répétitions), SIEVE_00, 400 logs au plus par gabarit, baseline = SVM sur mots. Plats : SVM mots, régression logistique. Hiérarchique local p(famille) × p(classe | f…
+
+### D9 : Garde-fou de conservation du code  (version 1, 2026-11-07 22:20:11)
+
+Mise en œuvre de R9 : runner R3, versions V2 et V3, contrôle CV1 ; pas de crochet git automatique (à décider).
+
+*Justification.* Voir R9 ; le garde-fou ne dépend plus d'un oubli ni d'un commit, mais le contrôle `check_versions.py` reste à lancer avant de commiter.
+
+*Preuve.* VERSIONS.md ; scripts/check_versions.py ; src/tp2_runner.py R3
 
 ## Hypothèses (préinscrites, puis confirmées ou réfutées)
 

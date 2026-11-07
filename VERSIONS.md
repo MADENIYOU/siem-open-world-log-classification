@@ -27,8 +27,9 @@ Généré à partir de `artifacts/results/v3/versions.jsonl` (append-only, ne pa
 | Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
 |---|---|---|---|---|---|
 | **R1** | 2026-11-07 21:24 | Une unité = une configuration ; si le résultat existe on le recharge, sinon on calcule ; registre append-only ; écriture atomique. | première version | Règle R3 de l'étudiant : on ne supprime jamais un résultat précédent. (par R2) | `versions/src/tp2_runner__R1.py`, commit dd53267 |
-| **R2** | 2026-11-07 21:54 | Comme R1, et un recalcul forcé archive l'ancien résultat au lieu de l'écraser ; `load_block` ignore les fichiers archivés. | Règle R3 de l'étudiant : on ne supprime jamais un résultat précédent. | **version courante** | commit ccd459e |
-|  |  | *Note :  Fichier non retrouvé dans git.* |  |  |  |
+| **R2** | 2026-11-07 21:54 | Comme R1, et un recalcul forcé archive l'ancien résultat au lieu de l'écraser ; `load_block` ignore les fichiers archivés. | Règle R3 de l'étudiant : on ne supprime jamais un résultat précédent. | L'étudiant a demandé que la perte d'une version de script (B1) ne se reproduise pas : la conservation ne doit plus dépendre d'un commit ni d'un oubli. (par R3) | `versions/src/tp2_runner__R2.py`, commit ccc459e |
+|  |  | *Note : Fichier non retrouvé dans git. Correction du 2026-11-07 22:18 (faute de frappe sur le hachage du commit : ccc459e et non ccd459e ; copie figée créée depuis le bon commit) : ancienne valeur {'commit': 'ccd459e', 'fichier': None}.* |  |  |  |
+| **R3** | 2026-11-07 22:18 | Comme R2, et copie automatique du code exact (script lancé et modules `src/tp2_*.py`) dans `versions/auto/` au premier calcul de chaque processus ; l'empreinte du code est enregistrée dans chaque résultat et dans le registre. | L'étudiant a demandé que la perte d'une version de script (B1) ne se reproduise pas : la conservation ne doit plus dépendre d'un commit ni d'un oubli. | **version courante** | `versions/src/tp2_runner__R3.py` |
 
 ## src/tp2_stats.py (outils statistiques)
 
@@ -67,15 +68,15 @@ Généré à partir de `artifacts/results/v3/versions.jsonl` (append-only, ne pa
 
 | Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
 |---|---|---|---|---|---|
-| **J1** | 2026-11-07 21:54 | Règles, décisions, hypothèses et résultats ; une nouvelle version d'une entrée ne remplace jamais l'ancienne. | première version | **version courante** | commit ccd459e |
-|  |  | *Note :  Fichier non retrouvé dans git.* |  |  |  |
+| **J1** | 2026-11-07 21:54 | Règles, décisions, hypothèses et résultats ; une nouvelle version d'une entrée ne remplace jamais l'ancienne. | première version | **version courante** | `versions/src/tp2_journal__J1.py`, commit ccc459e |
+|  |  | *Note : Fichier non retrouvé dans git. Correction du 2026-11-07 22:18 (faute de frappe sur le hachage du commit : ccc459e et non ccd459e ; copie figée créée depuis le bon commit) : ancienne valeur {'commit': 'ccd459e', 'fichier': None}.* |  |  |  |
 
 ## scripts/archive_state.py (archives non écrasables)
 
 | Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
 |---|---|---|---|---|---|
-| **AR1** | 2026-11-07 21:54 | Copie un état du projet dans archive/ avec empreintes ; refuse d'écraser une archive. | première version | **version courante** | commit ccd459e |
-|  |  | *Note :  Fichier non retrouvé dans git.* |  |  |  |
+| **AR1** | 2026-11-07 21:54 | Copie un état du projet dans archive/ avec empreintes ; refuse d'écraser une archive. | première version | **version courante** | `versions/scripts/archive_state__AR1.py`, commit ccc459e |
+|  |  | *Note : Fichier non retrouvé dans git. Correction du 2026-11-07 22:18 (faute de frappe sur le hachage du commit : ccc459e et non ccd459e ; copie figée créée depuis le bon commit) : ancienne valeur {'commit': 'ccd459e', 'fichier': None}.* |  |  |  |
 
 ## etat_de_l_art/sources_v3_stats_repro.md
 
@@ -95,3 +96,18 @@ Généré à partir de `artifacts/results/v3/versions.jsonl` (append-only, ne pa
 |---|---|---|---|---|---|
 | **SRC1** | 2026-11-07 22:20 | 50 références vérifiées sur les types de clustering (k-means, hiérarchique, mélanges gaussiens, densité, BIRCH et spectral, clustering pour classer ou détecter l'inconnu, évaluation, documentation scikit-learn 1.9.1). | première version | **version courante** | `versions/etat_de_l_art/sources_v3_clustering__SRC1.md` |
 |  |  | *Note : 10 références n'ont que titre, auteurs, revue et année (notice Crossref ; éditeurs inaccessibles). Contrôle par sondage : 3 pages rouvertes, conformes.* |  |  |  |
+
+## src/tp2_versions.py (versionnage)
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **V1** | 2026-11-07 22:14 | Registre append-only des versions (ce que fait la version, pourquoi elle remplace la précédente) et copies figées. | première version | Une faute de frappe sur un hachage de commit avait été enregistrée (ccd459e au lieu de ccc459e) : le registre doit refuser ce cas et permettre de corriger sans réécrire. (par V2) | `versions/src/tp2_versions__V1.py`, commit 4126e97 |
+|  |  | *Note : Correction du 2026-11-07 22:19 (la date de V1 était celle de l'enregistrement tardif ; la vraie date est celle du commit 4126e97) : ancienne valeur {'date': '2026-11-07 22:30'}.* |  |  |  |
+| **V2** | 2026-11-07 22:18 | Comme V1, avec refus d'un commit inexistant et fonction `correct` (correction ajoutée au journal, ancienne valeur conservée). | Une faute de frappe sur un hachage de commit avait été enregistrée (ccd459e au lieu de ccc459e) : le registre doit refuser ce cas et permettre de corriger sans réécrire. | Une version enregistrée après coup (V1) s'affichait après V2 et semblait lui succéder : l'ordre doit suivre les dates. (par V3) | `versions/src/tp2_versions__V2.py` |
+| **V3** | 2026-11-07 22:19 | Comme V2, avec tri chronologique des versions à l'affichage. | Une version enregistrée après coup (V1) s'affichait après V2 et semblait lui succéder : l'ordre doit suivre les dates. | **version courante** | `versions/src/tp2_versions__V3.py` |
+
+## scripts/check_versions.py (contrôle de conservation)
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **CV1** | 2026-11-07 22:18 | Vérifie que l'état courant de chaque script, module, générateur de présentation et notebook est conservé (copie ou commit) ; `--fix` fige dans `versions/auto/` ceux qui ne le sont pas. | première version | **version courante** | `versions/scripts/check_versions__CV1.py` |

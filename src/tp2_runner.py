@@ -5,7 +5,7 @@ donne le nom du fichier de résultat. Si ce fichier existe, on le recharge ; sin
 ajoute une ligne au registre (append-only) : empreinte, configuration, métriques, durée, machine, commit, date.
 Une interruption ne coûte donc que l'unité en cours ; relancer le même script reprend où l'on s'était arrêté.
 """
-import hashlib, json, os, platform, socket, subprocess, time
+import hashlib, json, os, platform, shutil, socket, subprocess, sys, time
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -28,6 +28,30 @@ def machine():
     return {"host": socket.gethostname(), "platform": platform.platform(), "python": platform.python_version()}
 
 
+AUTO = ROOT / "versions" / "auto"
+_CODE = None
+
+
+def snapshot_code():
+    """Garde-fou (règle : aucune version de code ne se perd) : au premier calcul d'un processus, copie le script lancé et les modules `src/tp2_*.py`
+    dans versions/auto/<nom>__<empreinte>.<ext> (adressage par contenu : jamais d'écrasement, une copie par état distinct) et renvoie leurs empreintes.
+    Ainsi le code qui a produit un résultat est conservé même s'il n'a jamais été commité."""
+    global _CODE
+    if _CODE is not None: return _CODE
+    files = [Path(sys.argv[0]).resolve()] if sys.argv and sys.argv[0] else []
+    files += sorted((ROOT / "src").glob("tp2_*.py")); shas = {}
+    for f in files:
+        try:
+            if ROOT not in f.parents: continue
+            data = f.read_bytes(); sha = hashlib.sha256(data).hexdigest()[:12]; shas[f.name] = sha
+            dest = AUTO / f"{f.stem}__{sha}{f.suffix}"
+            if not dest.exists():
+                AUTO.mkdir(parents=True, exist_ok=True); tmp = dest.with_suffix(dest.suffix + f".tmp{os.getpid()}"); tmp.write_bytes(data); os.replace(tmp, dest)
+        except OSError:
+            pass
+    _CODE = shas; return _CODE
+
+
 def _atomic_write(path, text):
     tmp = path.with_suffix(path.suffix + ".tmp"); tmp.write_text(text, encoding="utf-8"); os.replace(tmp, path)
 
@@ -42,12 +66,13 @@ def run_unit(block, name, cfg, fn, code_version="1", force=False, quiet=False):
         return json.loads(path.read_text(encoding="utf-8"))["result"], "rechargé"
     if path.exists() and force:                                                               # règle : on ne supprime jamais un résultat précédent
         os.replace(path, path.with_name(f"{h}.ancien-{time.strftime('%Y%m%d-%H%M%S')}.json"))
+    snapshot_code()                                                                          # le code est conservé AVANT de calculer
     t0 = time.time(); result = fn(); sec = round(time.time() - t0, 2)
     rec = {"hash": h, "block": block, "name": name, "cfg": cfg, "code_version": code_version, "result": result, "seconds": sec,
-           "machine": machine(), "commit": git_commit(), "date": time.strftime("%Y-%m-%d %H:%M:%S")}
+           "machine": machine(), "commit": git_commit(), "code": snapshot_code(), "date": time.strftime("%Y-%m-%d %H:%M:%S")}
     _atomic_write(path, json.dumps(rec, ensure_ascii=False, indent=1, default=float))
     with open(REGISTRY, "a", encoding="utf-8") as fh:
-        fh.write(json.dumps({k: rec[k] for k in ("hash", "block", "name", "seconds", "machine", "commit", "date")}, ensure_ascii=False) + "\n")
+        fh.write(json.dumps({k: rec[k] for k in ("hash", "block", "name", "seconds", "machine", "commit", "code", "date")}, ensure_ascii=False) + "\n")
     if not quiet: print(f"[{block}] {name} : calculé en {sec} s ({h})")
     return result, "calculé"
 
