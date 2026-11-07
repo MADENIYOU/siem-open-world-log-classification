@@ -129,8 +129,9 @@ Généré à partir de `artifacts/results/v3/versions.jsonl` (append-only, ne pa
 
 | Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
 |---|---|---|---|---|---|
-| **E1** | 2026-11-07 22:30 | Huit explications en mots simples : origine des 440 gabarits, F1 et macro-F1, explications orales des diapositives, bloc A, Wilcoxon, Friedman et Holm, pourquoi HA1 a été rejouée, méthodes du bloc B (dont le clustering), résultats du bloc B. | première version | **version courante** | `versions/EXPLICATIONS_V3__E1.md` |
+| **E1** | 2026-11-07 22:30 | Huit explications en mots simples : origine des 440 gabarits, F1 et macro-F1, explications orales des diapositives, bloc A, Wilcoxon, Friedman et Holm, pourquoi HA1 a été rejouée, méthodes du bloc B (dont le clustering), résultats du bloc B. | première version | Nouvelle explication à noter après le bloc C (règle : toute explication est notée) ; l'index est complété, rien n'est retiré. (par E2) | `versions/EXPLICATIONS_V3__E1.md` |
 |  |  | *Note : Document qui s'allonge : toute nouvelle explication demandée y est ajoutée dans une nouvelle version, sans rien retirer.* |  |  |  |
+| **E2** | 2026-11-07 23:12 | E1 plus E9 : les scores d'inconnu du bloc C, leur principe et leurs résultats en mots simples. | Nouvelle explication à noter après le bloc C (règle : toute explication est notée) ; l'index est complété, rien n'est retiré. | **version courante** | `versions/EXPLICATIONS_V3__E2.md` |
 
 ## scripts/v3_blockC.py (bloc C : détection d'inconnus)
 

@@ -154,6 +154,14 @@ Protocole : 5 rotations de classes masquées (6 classes cachées à l'entraînem
 
 *Preuve.* scripts/v3_blockC.py
 
+### D12 : Piste retenue pour la phase 2 : rejet hiérarchique  (version 1, 2026-11-07 23:12:01)
+
+Pour la phase 2, la confiance au niveau de la FAMILLE devient le candidat principal de détection d'inconnus ; on préinscrira une hypothèse la confirmant ou la réfutant sur de nouvelles données (autres répétitions et rotations, puis le test v2 en une seule ouverture).
+
+*Justification.* RC2 : meilleur score, seul à rester nettement au-dessus du hasard dans la pire rotation ; les méthodes de distance, de densité et de la vision n'ont pas fait mieux que la confiance. La conclusion exploratoire doit être confirmée avant d'être affirmée.
+
+*Preuve.* RC2 ; HC1 ; HC2 ; HC8
+
 ## Hypothèses (préinscrites, puis confirmées ou réfutées)
 
 ### HA1 : Le découpage au hasard gonfle le score  (version 4, 2026-11-07 22:29:59 ; **statut : confirmée**)
@@ -360,77 +368,122 @@ Au moins une méthode de clustering supervisé par classe (k-means, mélange gau
 *Historique des versions précédentes (conservées) :*
 - v1 (2026-11-07 22:06:03) : statut préinscrite ; Au moins une méthode de clustering supervisé par classe (k-means, mélange gaussien, Ward) ou les gabarits-prototypes est indiscernable du kNN (Friedman puis Nemenyi : différence de rang moyen inférieu…
 
-### HC1 : Aucun score n'atteint la cible  (version 1, 2026-11-07 22:55:54 ; **statut : préinscrite**)
+### HC1 : Aucun score n'atteint la cible  (version 2, 2026-11-07 23:12:01 ; **statut : confirmée**)
 
 L'AUROC moyen (125 unités) de chacun des 28 scores est inférieur à 0,80, la valeur « acceptable » du critère S2 posé au notebook.
 
-*Justification.* Notebook v1 : AUROC de 0,60 au test et 0,73 en validation pour les modèles linéaires.
+*Justification.* Verdict établi avec la règle de décision préinscrite (voir la version précédente).
 
-*Note.* Écrit le 2026-11-07 avant tout calcul du bloc C.
+*Preuve.* AUROC moyen maximal sur 125 unités : 0,666 (probabilité maximale de la famille) ; l'énergie 0,639 ; le MSP 0,623. Aucun des 28 scores n'atteint 0,80.  Fichiers : artifacts/results/v3/C_resume.csv ; C_tests_pairs.csv ; C_nemenyi.csv ; C_msp_par_rotation.csv ; C_msp_par_classe.csv ; C_all_units.csv
 
-### HC2 : Distance et densité ne battent pas le MSP  (version 1, 2026-11-07 22:55:54 ; **statut : préinscrite**)
+*Note.* Le notebook v1 donnait 0,60 au test et 0,73 en validation pour les modèles linéaires. Une unité (rotation 1, répétition 0, pli 0) avait été vue au test de fumée, avant le calcul complet ; le verdict repose sur les 125 unités.
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-07 22:55:54) : statut préinscrite ; L'AUROC moyen (125 unités) de chacun des 28 scores est inférieur à 0,80, la valeur « acceptable » du critère S2 posé au notebook.
+
+### HC2 : Distance et densité ne battent pas le MSP  (version 2, 2026-11-07 23:12:01 ; **statut : confirmée**)
 
 Aucun score de distance ou de densité de l'espace SVD (Mahalanobis commune, par classe, relative ; kNN 1 et 10 ; résidu de PCA ; mélange gaussien ; LOF ; forêt d'isolation) ne dépasse le MSP d'au moins 0,02 d'AUROC (Wilcoxon apparié, Holm p < 0,05).
 
-*Justification.* Notebook v1 (6.4b, 6.4c) : Mahalanobis échoue avec TF-IDF (0,56) ; les modèles linéaires n'ont pas de vecteurs aux classes bien resserrées, contrairement à un Transformer affiné.
+*Justification.* Verdict établi avec la règle de décision préinscrite (voir la version précédente).
 
-*Note.* Écrit le 2026-11-07 avant tout calcul du bloc C.
+*Preuve.* Aucun score de distance ou de densité ne dépasse le MSP. Tous sont significativement MOINS bons (Wilcoxon, p Holm < 0,012) : Mahalanobis commune −0,027 ; par classe −0,082 ; relative −0,043 ; kNN 1 −0,027 ; kNN 10 −0,033 ; résidu de PCA −0,045 ; mélange gaussien −0,045 ; LOF −0,155 ; forêt d'isolation −0,074.  Fichiers : artifacts/results/v3/C_resume.csv ; C_tests_pairs.csv ; C_nemenyi.csv ; C_msp_par_rotation.csv ; C_msp_par_classe.csv ; C_all_units.csv
 
-### HC3 : Les méthodes de la vision n'apportent rien sur ces vecteurs  (version 1, 2026-11-07 22:55:54 ; **statut : préinscrite**)
+*Note.* Cohérent avec le notebook v1 (Mahalanobis échoue avec TF-IDF). La covariance par classe est la pire des Mahalanobis : peu de logs par classe et par pli pour estimer une matrice 100 × 100. Une unité (rotation 1, répétition 0, pli 0) avait été vue au test de fumée, avant le calcul complet ; le verdict repose sur les 125 unités.
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-07 22:55:54) : statut préinscrite ; Aucun score de distance ou de densité de l'espace SVD (Mahalanobis commune, par classe, relative ; kNN 1 et 10 ; résidu de PCA ; mélange gaussien ; LOF ; forêt d'isolation) ne dépasse le MSP d'au moin…
+
+### HC3 : Les méthodes de la vision n'apportent rien sur ces vecteurs  (version 2, 2026-11-07 23:12:01 ; **statut : confirmée**)
 
 Aucune des méthodes ASH, SCALE, DICE, NNGuide, SHE, ViM ne dépasse l'énergie de la tête SVD d'au moins 0,02 d'AUROC (Holm p < 0,05).
 
-*Justification.* Ces méthodes supposent des activations positives de réseaux profonds ; nos composantes SVD sont signées et peu nombreuses.
+*Justification.* Verdict établi avec la règle de décision préinscrite (voir la version précédente).
 
-*Note.* Écrit le 2026-11-07 avant tout calcul du bloc C.
+*Preuve.* Écart de chaque méthode de la vision contre l'énergie de la tête SVM : ASH −0,005 [−0,015 ; +0,004] ; SCALE −0,008 ; DICE −0,047 (p Holm 0,0007) ; NNGuide +0,011 [+0,003 ; +0,020] (p Holm 0,039, donc significatif mais inférieur au seuil de 0,02) ; SHE −0,024 ; ViM +0,004 [−0,012 ; +0,020].  Fichiers : artifacts/results/v3/C_resume.csv ; C_tests_pairs.csv ; C_nemenyi.csv ; C_msp_par_rotation.csv ; C_msp_par_classe.csv ; C_all_units.csv
 
-### HC4 : Notre F3 (gabarits-prototypes avec rayon) bat le MSP  (version 1, 2026-11-07 22:55:54 ; **statut : préinscrite**)
+*Note.* Ces méthodes sont ADAPTÉES à des vecteurs signés (D11) : ce résultat ne dit rien de leur performance sur les réseaux profonds en vision. NNGuide est la seule à apporter un petit gain. Une unité (rotation 1, répétition 0, pli 0) avait été vue au test de fumée, avant le calcul complet ; le verdict repose sur les 125 unités.
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-07 22:55:54) : statut préinscrite ; Aucune des méthodes ASH, SCALE, DICE, NNGuide, SHE, ViM ne dépasse l'énergie de la tête SVD d'au moins 0,02 d'AUROC (Holm p < 0,05).
+
+### HC4 : Notre F3 (gabarits-prototypes avec rayon) bat le MSP  (version 2, 2026-11-07 23:12:01 ; **statut : réfutée**)
 
 Le score « distance au gabarit le plus proche normalisée par son rayon » dépasse le MSP d'au moins 0,02 d'AUROC (Holm p < 0,05).
 
-*Justification.* Hypothèse exploratoire : un log de gabarit nouveau est loin de tous les gabarits connus, ce que la distance normalisée par la dispersion du gabarit capte mieux que la confiance du classifieur.
+*Justification.* Verdict établi avec la règle de décision préinscrite (voir la version précédente).
 
-*Note.* Écrit le 2026-11-07 avant tout calcul du bloc C.
+*Preuve.* Score F3 (distance au gabarit le plus proche normalisée par son rayon) moins MSP : −0,043, IC 95 % [−0,060 ; −0,027], p Holm 1e-5. Il est significativement moins bon, et l'IC exclut +0,02.  Fichiers : artifacts/results/v3/C_resume.csv ; C_tests_pairs.csv ; C_nemenyi.csv ; C_msp_par_rotation.csv ; C_msp_par_classe.csv ; C_all_units.csv
 
-### HC5 : Le rayon du gabarit est utile  (version 1, 2026-11-07 22:55:54 ; **statut : préinscrite**)
+*Note.* Notre proposition F3 n'est pas retenue en l'état pour détecter l'inconnu ; son principe (prototypes par gabarit) reste utile pour classer (HB5). Une unité (rotation 1, répétition 0, pli 0) avait été vue au test de fumée, avant le calcul complet ; le verdict repose sur les 125 unités.
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-07 22:55:54) : statut préinscrite ; Le score « distance au gabarit le plus proche normalisée par son rayon » dépasse le MSP d'au moins 0,02 d'AUROC (Holm p < 0,05).
+
+### HC5 : Le rayon du gabarit est utile  (version 2, 2026-11-07 23:12:01 ; **statut : réfutée**)
 
 Le score avec rayon (F3) dépasse le même score sans rayon (distance brute au gabarit le plus proche) d'au moins 0,01 d'AUROC (Holm p < 0,05).
 
-*Justification.* Les gabarits n'ont pas tous la même dispersion : une distance brute traite pareil un gabarit serré et un gabarit étalé.
+*Justification.* Verdict établi avec la règle de décision préinscrite (voir la version précédente).
 
-*Note.* Écrit le 2026-11-07 avant tout calcul du bloc C.
+*Preuve.* Score avec rayon moins score sans rayon : −0,018, IC [−0,029 ; −0,007], p Holm 0,007. Le rayon NUIT (distance brute 0,598 contre 0,580 avec rayon).  Fichiers : artifacts/results/v3/C_resume.csv ; C_tests_pairs.csv ; C_nemenyi.csv ; C_msp_par_rotation.csv ; C_msp_par_classe.csv ; C_all_units.csv
 
-### HC6 : La fusion bat ses composants  (version 1, 2026-11-07 22:55:54 ; **statut : préinscrite**)
+*Note.* Normaliser par la dispersion du gabarit donne un poids exagéré aux gabarits très serrés. Une unité (rotation 1, répétition 0, pli 0) avait été vue au test de fumée, avant le calcul complet ; le verdict repose sur les 125 unités.
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-07 22:55:54) : statut préinscrite ; Le score avec rayon (F3) dépasse le même score sans rayon (distance brute au gabarit le plus proche) d'au moins 0,01 d'AUROC (Holm p < 0,05).
+
+### HC6 : La fusion bat ses composants  (version 2, 2026-11-07 23:12:01 ; **statut : réfutée**)
 
 La fusion par moyenne de rangs de MSP, Mahalanobis commune et kNN 10 dépasse le meilleur de ses trois composants d'au moins 0,01 d'AUROC (Holm p < 0,05).
 
-*Justification.* Des scores de nature différente (confiance, distance, voisinage) se trompent sur des logs différents.
+*Justification.* Verdict établi avec la règle de décision préinscrite (voir la version précédente).
 
-*Note.* Écrit le 2026-11-07 avant tout calcul du bloc C.
+*Preuve.* Fusion par moyenne de rangs (MSP, Mahalanobis commune, kNN 10) moins le MSP, meilleur de ses composants : −0,005, IC [−0,016 ; +0,006], p 0,45 ; l'IC exclut +0,01.  Fichiers : artifacts/results/v3/C_resume.csv ; C_tests_pairs.csv ; C_nemenyi.csv ; C_msp_par_rotation.csv ; C_msp_par_classe.csv ; C_all_units.csv
 
-### HC7 : Un frère connu cache l'inconnu  (version 1, 2026-11-07 22:55:54 ; **statut : préinscrite**)
+*Note.* Les composants de distance sont moins bons que le MSP (HC2) : les fusionner ne rattrape pas le meilleur. Une unité (rotation 1, répétition 0, pli 0) avait été vue au test de fumée, avant le calcul complet ; le verdict repose sur les 125 unités.
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-07 22:55:54) : statut préinscrite ; La fusion par moyenne de rangs de MSP, Mahalanobis commune et kNN 10 dépasse le meilleur de ses trois composants d'au moins 0,01 d'AUROC (Holm p < 0,05).
+
+### HC7 : Un frère connu cache l'inconnu  (version 2, 2026-11-07 23:12:01 ; **statut : non tranchée**)
 
 L'AUROC du MSP est plus faible d'au moins 0,05 pour les classes masquées dont la famille contient une autre classe connue que pour celles sans classe sœur connue (Mann-Whitney sur les couples classe × rotation, p < 0,05).
 
-*Justification.* Notebook v1 : 0,51 (même famille) contre 0,66 (autre famille) ; une classe masquée ressemble à sa sœur connue et reçoit sa classe avec confiance.
+*Justification.* Verdict établi avec la règle de décision préinscrite (voir la version précédente).
 
-*Note.* Écrit le 2026-11-07 avant tout calcul du bloc C.
+*Preuve.* Test impossible avec ce plan : sur les 30 couples classe masquée × rotation, 29 ont une classe sœur connue et un seul n'en a pas (la famille « alerte de sécurité » n'a qu'une classe). AUROC du MSP : 0,616 avec sœur connue (n = 29), 0,773 sans (n = 1) ; Mann-Whitney p = 0,53, sans valeur.  Fichiers : artifacts/results/v3/C_resume.csv ; C_tests_pairs.csv ; C_nemenyi.csv ; C_msp_par_rotation.csv ; C_msp_par_classe.csv ; C_all_units.csv
 
-### HC8 : Forte variabilité entre rotations  (version 1, 2026-11-07 22:55:54 ; **statut : préinscrite**)
+*Note.* À refaire avec un autre critère, par exemple la ressemblance de la classe masquée à la classe connue la plus proche (itération de la phase 2). Notebook v1 : la comparaison 0,51 contre 0,66 portait sur la famille de la classe de REMPLACEMENT, ce que ce plan ne mesure pas. Une unité (rotation 1, répétition 0, pli 0) avait été vue au test de fumée, avant le calcul complet ; le verdict repose sur les 125 unités.
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-07 22:55:54) : statut préinscrite ; L'AUROC du MSP est plus faible d'au moins 0,05 pour les classes masquées dont la famille contient une autre classe connue que pour celles sans classe sœur connue (Mann-Whitney sur les couples classe ×…
+
+### HC8 : Forte variabilité entre rotations  (version 2, 2026-11-07 23:12:01 ; **statut : confirmée**)
 
 L'écart-type de l'AUROC du MSP entre les cinq rotations (moyennes par rotation) est d'au moins 0,05.
 
-*Justification.* Notebook v1 : 0,05 à 0,14 ; les conclusions par classe sont instables.
+*Justification.* Verdict établi avec la règle de décision préinscrite (voir la version précédente).
 
-*Note.* Écrit le 2026-11-07 avant tout calcul du bloc C.
+*Preuve.* AUROC du MSP par rotation : 0,790 ; 0,636 ; 0,584 ; 0,601 ; 0,506 ; écart-type entre rotations 0,104 (>= 0,05). La rotation 5 est à peine au-dessus du hasard.  Fichiers : artifacts/results/v3/C_resume.csv ; C_tests_pairs.csv ; C_nemenyi.csv ; C_msp_par_rotation.csv ; C_msp_par_classe.csv ; C_all_units.csv
 
-### HC9 : Trop d'inconnus acceptés  (version 1, 2026-11-07 22:55:54 ; **statut : préinscrite**)
+*Note.* Le résultat dépend fortement des classes cachées : une conclusion sur une seule rotation n'est pas fiable. Une unité (rotation 1, répétition 0, pli 0) avait été vue au test de fumée, avant le calcul complet ; le verdict repose sur les 125 unités.
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-07 22:55:54) : statut préinscrite ; L'écart-type de l'AUROC du MSP entre les cinq rotations (moyennes par rotation) est d'au moins 0,05.
+
+### HC9 : Trop d'inconnus acceptés  (version 2, 2026-11-07 23:12:01 ; **statut : confirmée**)
 
 Le FPR@95 moyen (inconnus acceptés quand on garde 95 % des connus) est d'au moins 0,70 pour chacun des 28 scores.
 
-*Justification.* Critère S3 du notebook (acceptable : au plus 0,50) ; v1 : environ 0,92.
+*Justification.* Verdict établi avec la règle de décision préinscrite (voir la version précédente).
 
-*Note.* Écrit le 2026-11-07 avant tout calcul du bloc C.
+*Preuve.* FPR@95 moyen (inconnus acceptés quand on garde 95 % des connus) : minimum 0,827 (probabilité maximale de la famille), maximum 0,983 (OpenMax) ; les 28 scores sont au-dessus de 0,82, loin du critère S3 (au plus 0,50).  Fichiers : artifacts/results/v3/C_resume.csv ; C_tests_pairs.csv ; C_nemenyi.csv ; C_msp_par_rotation.csv ; C_msp_par_classe.csv ; C_all_units.csv
+
+*Note.* En pratique : pour garder 95 % des logs connus, on laisse passer 83 à 98 % des inconnus. Une unité (rotation 1, répétition 0, pli 0) avait été vue au test de fumée, avant le calcul complet ; le verdict repose sur les 125 unités.
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-07 22:55:54) : statut préinscrite ; Le FPR@95 moyen (inconnus acceptés quand on garde 95 % des connus) est d'au moins 0,70 pour chacun des 28 scores.
 
 ## Résultats
 
@@ -453,3 +506,23 @@ Le FPR@95 moyen (inconnus acceptés quand on garde 95 % des connus) est d'au moi
 *Preuve.* artifacts/results/v3/A_apparie_HA1b.csv ; A_HA1_reanalyse_non_appariee.csv ; B_resume.csv ; B_tests_pairs.csv ; B_nemenyi_tous.csv ; B_repli.csv
 
 *Note.* Cas particulier : les sorties avec rejet de DBSCAN et HDBSCAN comptent un rejet comme une erreur ; elles mesurent surtout que les logs de nouveaux gabarits sont loin de tous les points d'entraînement (utile au bloc C).
+
+### RC1 : Bloc C : AUROC de détection d'inconnus (précédent v1 et actuel v3)  (version 1, 2026-11-07 23:12:01)
+
+**Actuel (v3, développement, P2, 5 rotations × 25 plis = 125 unités, AUROC moyen) :** probabilité maximale de la famille 0,666 ; énergie 0,639 ; logit maximal 0,636 ; MSP hiérarchique 0,633 ; entropie négative 0,632 ; NNGuide 0,625 ; ensemble 0,624 ; MSP (baseline) 0,623 ; fusion de rangs 0,618 ; ViM 0,618 ; énergie de la tête SVD 0,614 ; ASH 0,608 ; SCALE 0,606 ; distance au gabarit 0,598 ; Mahalanobis commune 0,597 ; kNN 1 0,597 ; centroïde 0,594 ; kNN 10 0,591 ; SHE 0,590 ; Mahalanobis relative 0,580 ; F3 avec rayon 0,580 ; mélange gaussien 0,579 ; résidu de PCA 0,579 ; DICE 0,567 ; forêt d'isolation 0,550 ; Mahalanobis par classe 0,541 ; LOF 0,469 ; OpenMax 0,465. Écart-types entre unités de 0,11 à 0,14.  **Précédent (notebook v1, étape 7.5, test v1 consommé, TF-IDF mots, 5 rotations) :** MSP 0,599 ; énergie 0,598 ; prototype 0,625 ; ensemble 0,601 ; MSP hiérarchique 0,609 ; MSP famille 0,623 ; (validation : MSP 0,728). Skip-gram : MSP 0,594.  Les deux séries sont conservées.
+
+*Justification.* Les valeurs v1 au test (0,59 à 0,63) sont dans la fourchette des valeurs v3 ; la valeur de validation v1 (0,73) était optimiste (36 gabarits de validation), comme le notebook l'avait déjà analysé. Le plafond d'environ 0,65 se retrouve avec un protocole indépendant et 28 scores.
+
+*Preuve.* artifacts/results/v3/C_resume.csv ; C_tests_pairs.csv ; C_nemenyi.csv ; C_msp_par_rotation.csv ; C_msp_par_classe.csv ; C_all_units.csv
+
+*Note.* Cas des scores sous 0,5 : OpenMax (0,465, version simplifiée de notre cru, à ne pas interpréter) et LOF (0,469) sont pires que le hasard, c'est-à-dire qu'ils jugent les logs inconnus plus « normaux » que les connus. Explication possible, non testée : les logs d'un même nouveau gabarit forment des grappes très denses, que la densité locale prend pour du normal.
+
+### RC2 : Bloc C, comparaisons exploratoires (NON préinscrites, décidées après lecture des résultats)  (version 1, 2026-11-07 23:12:01)
+
+Contre le MSP, sur 125 unités, Holm sur 3 comparaisons : probabilité maximale de la famille +0,043, IC 95 % [+0,030 ; +0,056], meilleure dans 90 unités sur 125, p Holm < 1e-5 ; énergie +0,016 [+0,009 ; +0,022], 83 unités sur 125 ; logit maximal +0,012 [+0,008 ; +0,017], 94 unités sur 125. Nemenyi : famille contre MSP p = 0,0003 ; famille contre énergie p = 0,72 (indiscernables). Par rotation, la famille bat le MSP dans les cinq rotations (0,788 contre 0,790 en rotation 1, 0,683 contre 0,636, 0,624 contre 0,584, 0,624 contre 0,601, 0,613 contre 0,506).
+
+*Justification.* Exploratoire : ces trois comparaisons n'avaient pas été préinscrites ; elles sont signalées comme telles et devront être confirmées par une hypothèse préinscrite à la prochaine itération (cela évite de choisir l'hypothèse après coup, règle R2).
+
+*Preuve.* artifacts/results/v3/C_exploratoire_vs_msp.csv
+
+*Note.* Lecture en mots simples : si le modèle ne sait pas dans QUELLE FAMILLE ranger un log, c'est probablement un inconnu. La hiérarchie n'aide pas à classer (HB1) mais aide à rejeter, ce qui rejoint l'idée de repli sur la famille de Linderman et al. (S34 des sources). Dans la rotation 5, où le MSP est au hasard (0,506), la famille garde 0,613.
