@@ -1,0 +1,5 @@
+protocol,blocs,chi2,p Friedman,différence critique (rangs),meilleur
+P0,25,121.06857,0.0,1.50792,svm_char
+P1,5,18.14286,0.00277,3.37182,svm_word
+P2,25,74.44,0.0,1.50792,svm_word
+P3,15,37.59048,0.0,1.94672,svm_char
