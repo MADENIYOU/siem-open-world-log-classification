@@ -28,6 +28,17 @@ Règles communes : baseline, variantes de l'état de l'art, mêmes données et m
 ## 3. Phase 2, solution maison
 Pistes de l'étudiant : remplacer les valeurs variables par des marqueurs ; étiqueter (baliser) les champs pertinents ; combiner mots, lettres et Transformer ; fusionner plusieurs scores d'inconnu ; Mahalanobis régularisé ; calibration adaptée ; entraînement adversarial avec la table officielle ; **nos propres formules**, chacune expliquée, démontrée, justifiée, et mesurée avec les mêmes tests.
 
+### 3.1 Lacunes de la littérature, donc contributions visées (remarque de l'étudiant, 2026-11-07)
+Les agents de recherche n'ont rien trouvé de récent sur trois points : c'est une raison de plus de s'en inspirer et de proposer les nôtres.
+
+| Lacune constatée | Notre proposition (à mesurer avec la batterie statistique) | Fiche formule maison |
+|---|---|---|
+| Les méthodes récentes de détection d'inconnus (ASH, SCALE, DICE, NNGuide, SHE, Gram, ViM, Mahalanobis relatif) sont évaluées en vision ; leur transfert aux logs n'est pas démontré | **Premier banc d'essai de ces méthodes sur des vecteurs de logs** (DistilBERT 768 valeurs, SVD de TF-IDF) sur les 5 rotations ; puis **variantes adaptées au texte** : parcimonie sur les vecteurs, covariance régularisée par classe, **fusion de scores par rangs pondérés par la fiabilité mesurée sur des classes cachées pour de faux** | F1 : score de fusion pondéré ; F2 : Mahalanobis à covariance rétrécie par classe |
+| Rien de récent sur le k-means ou les prototypes pour classer, avec rejet | **Classification par gabarits-prototypes** : les logs viennent de gabarits, donc les groupes naturels existent ; on classe par le prototype de gabarit le plus proche et on rejette si on est loin de tous, avec un rayon propre à chaque gabarit | F3 : distance normalisée par le rayon du gabarit |
+| Rien sur l'étiquetage des champs variables propre aux logs de sécurité | **Étiquetage typé des champs** (IP, utilisateur, chemin, port, nombre, date) remplaçant les valeurs par des marqueurs ; **TF-IDF « conscient des champs »** (vocabulaire des mots fixes séparé de celui des champs) ; mesure de l'effet sur la fuite et sur les scores | F4 : pondération des mots fixes contre les champs |
+
+Chaque ligne devient une famille d'expériences de la phase 2, avec baseline, tests statistiques, justification écrite (motivation, propriété, ablation) et trace dans le journal des itérations (section 6).
+
 **Boucle d'affinage** (sur plusieurs jours, n'importe où dans le pipeline) : mesurer sur le développement, trouver le maillon le plus faible, proposer une amélioration, la tester avec la même batterie statistique, garder ou rejeter, consigner (hypothèse, configuration, résultat, décision). Chaque itération a un numéro et une empreinte. Critère d'arrêt : fin de la semaine, ou gain non significatif sur trois itérations de suite.
 
 **Fiche d'une formule maison** : motivation, définition, propriétés, justification (argument ou ablation), test statistique contre la baseline et contre la meilleure méthode existante.
