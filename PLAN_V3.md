@@ -58,3 +58,9 @@ Pistes de l'étudiant : remplacer les valeurs variables par des marqueurs ; éti
 Pour **chaque aspect** de l'étude, du début à la toute fin du pipeline, il faut des sources vérifiées **en plus** des 73 références existantes (`etat_de_l_art/sources_verifiees.md`) : page ouverte et lue, avec le niveau de vérification (texte intégral lu, résumé lu, page lue, confirmée seulement), la date et l'adresse.
 Aspects couverts : découpage et fuite ; tests statistiques ; classification hiérarchique ; clustering et voisinage ; détection d'inconnus (méthodes récentes) ; analyse et normalisation de logs, valeurs variables et marqueurs ; vectorisation ; calibration (dont monde ouvert) ; attaques et défenses (homoglyphes, entraînement adversarial) ; fusion de scores et ensembles ; reproductibilité et traçabilité.
 Fichiers : `etat_de_l_art/sources_v3_stats_repro.md` et `etat_de_l_art/sources_v3_methodes.md` (puis fusion dans le notebook, section 0.1b, et dans les références de la présentation).
+
+### 7.1 État des sources (2026-11-07)
+- `etat_de_l_art/sources_v3_stats_repro.md` : 62 références vérifiées (S1 à S62) + 1 complément (S63) : découpage et fuite, tests statistiques, reproductibilité, métriques.
+- `etat_de_l_art/sources_v3_methodes.md` : 89 références vérifiées (M1 à M89) : hiérarchie, prototypes, voisinage, Naive Bayes ; inconnus et conformel ; analyse de logs ; vectorisation ; calibration ; attaques et défenses ; fusion et ensembles.
+- Niveau : presque toutes « résumé lu » ; les lieux de publication non affichés par la page sont marqués et **à recouper avant le dépôt**. Contrôle par sondage fait (9 entrées rouvertes, conformes).
+- À faire : fusionner dans le notebook (section 0.1b) et dans les références de la présentation, au fur et à mesure que chaque méthode est utilisée.

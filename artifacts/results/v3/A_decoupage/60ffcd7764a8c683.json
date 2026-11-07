@@ -1,0 +1,128 @@
+{
+ "hash": "60ffcd7764a8c683",
+ "block": "A_decoupage",
+ "name": "P1 r1 pli0",
+ "cfg": {
+  "protocol": "P1",
+  "repeat": 1,
+  "fold": 0,
+  "cap": 400,
+  "models": [
+   "svm_word",
+   "svm_char",
+   "lr_word",
+   "nb_word",
+   "knn_word",
+   "centroid_word"
+  ],
+  "grid": {
+   "svm_word": [
+    "C",
+    [
+     0.1,
+     1,
+     10
+    ]
+   ],
+   "svm_char": [
+    "C",
+    [
+     0.1,
+     1
+    ]
+   ],
+   "lr_word": [
+    "C",
+    [
+     1,
+     10,
+     100
+    ]
+   ],
+   "nb_word": [
+    "alpha",
+    [
+     0.03,
+     0.3,
+     3
+    ]
+   ],
+   "knn_word": [
+    "k",
+    [
+     3,
+     5,
+     15
+    ]
+   ],
+   "centroid_word": [
+    null,
+    [
+     null
+    ]
+   ]
+  },
+  "file": "SIEVE_00",
+  "splits": "groups_v3"
+ },
+ "code_version": "A1",
+ "result": {
+  "svm_word": {
+   "f1A": 0.4817690071758552,
+   "f1_30": 0.40760292487958155,
+   "acc": 0.46249433106575966,
+   "param": 1,
+   "seconds": 1.3
+  },
+  "svm_char": {
+   "f1A": 0.402242777599065,
+   "f1_30": 0.32737083880685675,
+   "acc": 0.39555555555555555,
+   "param": 1,
+   "seconds": 19.8
+  },
+  "lr_word": {
+   "f1A": 0.43987460455200067,
+   "f1_30": 0.36453339528400047,
+   "acc": 0.4328344671201814,
+   "param": 10,
+   "seconds": 2.7
+  },
+  "nb_word": {
+   "f1A": 0.43847382836119675,
+   "f1_30": 0.3436803286396328,
+   "acc": 0.4554195011337869,
+   "param": 0.3,
+   "seconds": 0.0
+  },
+  "knn_word": {
+   "f1A": 0.48067692526426975,
+   "f1_30": 0.3357531009660432,
+   "acc": 0.4054421768707483,
+   "param": 5,
+   "seconds": 4.4
+  },
+  "centroid_word": {
+   "f1A": 0.36685875452872324,
+   "f1_30": 0.3266849278551697,
+   "acc": 0.3684353741496599,
+   "param": null,
+   "seconds": 4.6
+  },
+  "_info": {
+   "n_train": 41414,
+   "n_test": 11025,
+   "n_test_groups": 52,
+   "twin_share": 0.0,
+   "median_nn_cos": 0.41611995700863125
+  }
+ },
+ "seconds": 58.91,
+ "machine": {
+  "host": "MacBook-Pro-de-Madeniyou.local",
+  "platform": "macOS-27.0.1-arm64-arm-64bit",
+  "python": "3.12.16"
+ },
+ "commit": "34fda6a",
+ "date": "2026-11-07 21:33:58"
+}
