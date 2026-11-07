@@ -5,6 +5,7 @@ import numpy as np, pandas as pd
 import tp2_runner as R, tp2_stats as S
 out = ROOT / "artifacts" / "results" / "v3"; rows = []
 for rec in R.load_block("B_classification"):
+    if rec["code_version"] != "B2": continue                          # exclut l'unité de fumée B1 (autre liste de modèles, DBSCAN sans variante sans rejet)
     c = rec["cfg"]
     for m, v in rec["result"].items():
         if m in ("_info", "hier_repli"): continue
@@ -27,4 +28,4 @@ rk = pd.Series(f["avg_ranks"], index=f["names"]).sort_values(); print("\nFriedma
 best_knn = "knn15" if tab.loc["knn15", "f1A"] >= tab.loc["knn5", "f1A"] else "knn5"; S7 = [best_knn, "kmeans_pc3", "kmeans_pc10", "gmm_pc3", "ward_pc5", "tmpl_proto"]; f7 = S.friedman_nemenyi(M("f1A")[S7].values, S7)
 print("\nHB7 (kNN contre clustering par classe et gabarits-prototypes) : Friedman p = %.2g, différence critique = %.2f" % (f7["p"], f7["cd"]))
 for nme, r in zip(f7["names"], f7["avg_ranks"]): print(f"  {nme:12s} rang moyen {r:.2f}  écart au kNN {abs(r - f7['avg_ranks'][0]):.2f}  indiscernable du kNN : {abs(r - f7['avg_ranks'][0]) < f7['cd']}")
-rep = [rec["result"]["hier_repli"] for rec in R.load_block("B_classification")]; rp = pd.DataFrame(rep).mean().round(4); rp.to_csv(out / "B_repli.csv"); print("\nrepli sur la famille (seuil 0,5), moyenne des plis :\n", rp.to_string())
+rep = [rec["result"]["hier_repli"] for rec in R.load_block("B_classification") if rec["code_version"] == "B2"]; rp = pd.DataFrame(rep).mean().round(4); rp.to_csv(out / "B_repli.csv"); print("\nrepli sur la famille (seuil 0,5), moyenne des plis :\n", rp.to_string())

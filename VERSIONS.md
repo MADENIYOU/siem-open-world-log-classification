@@ -117,3 +117,17 @@ Généré à partir de `artifacts/results/v3/versions.jsonl` (append-only, ne pa
 | Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
 |---|---|---|---|---|---|
 | **H1** | 2026-11-07 22:22 | Avant chaque commit, fige dans `versions/auto/` tout état de script, module, notebook ou générateur non conservé et l'ajoute au commit ; ne bloque jamais le commit. Copie versionnée ; installation : `cp scripts/hooks/pre-commit .git/hooks/pre-commit`. | première version | **version courante** | `versions/scripts/hooks/pre-commit__H1` |
+
+## scripts/v3_analyze_B.py (analyse du bloc B)
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **AB1** | 2026-11-07 22:28 | Analyse des hypothèses HB1 à HB7 sur toutes les unités du dossier B_classification. | première version | Le dossier du bloc B contenait aussi l'unité de fumée B1 (répétition 0, pli 0, autre liste de modèles) : elle aurait été moyennée avec l'unité B2 du même pli et aurait faussé les valeurs de ce pli, surtout pour DBSCAN et HDBSCAN. (par AB2) | `versions/scripts/v3_analyze_B__AB1.py` |
+| **AB2** | 2026-11-07 22:29 | Comme AB1, en ne lisant que les unités du script B2 (exclut l'unité de fumée B1). | Le dossier du bloc B contenait aussi l'unité de fumée B1 (répétition 0, pli 0, autre liste de modèles) : elle aurait été moyennée avec l'unité B2 du même pli et aurait faussé les valeurs de ce pli, surtout pour DBSCAN et HDBSCAN. | **version courante** | `versions/scripts/v3_analyze_B__AB2.py` |
+
+## EXPLICATIONS_V3.md (explications demandées par l'étudiant)
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **E1** | 2026-11-07 22:30 | Huit explications en mots simples : origine des 440 gabarits, F1 et macro-F1, explications orales des diapositives, bloc A, Wilcoxon, Friedman et Holm, pourquoi HA1 a été rejouée, méthodes du bloc B (dont le clustering), résultats du bloc B. | première version | **version courante** | `versions/EXPLICATIONS_V3__E1.md` |
+|  |  | *Note : Document qui s'allonge : toute nouvelle explication demandée y est ajoutée dans une nouvelle version, sans rien retirer.* |  |  |  |

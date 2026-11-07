@@ -148,19 +148,20 @@ Le crochet `scripts/hooks/pre-commit` est installé dans `.git/hooks/` ; il lanc
 
 ## Hypothèses (préinscrites, puis confirmées ou réfutées)
 
-### HA1 : Le découpage au hasard gonfle le score  (version 3, 2026-11-07 22:06:03 ; **statut : non tranchée**)
+### HA1 : Le découpage au hasard gonfle le score  (version 4, 2026-11-07 22:29:59 ; **statut : confirmée**)
 
 Pour chaque modèle, macro-F1 du palier A sous P0 moins sous P2 d'au moins 0,20 (Wilcoxon apparié, Holm p < 0,05).
 
-*Justification.* Remise en cause par l'étudiant (2026-11-07) : le test de Wilcoxon apparié comparait P0 et P2 pli par pli, alors que ces deux protocoles n'évaluent pas les mêmes logs ; la différence de plis peut influer sur les scores et les écarts. L'appariement n'était donc pas justifié.
+*Justification.* Rejouée comme demandé par l'étudiant : l'appariement de la version 2 n'était pas justifié ; les deux nouvelles analyses n'en dépendent pas.
 
-*Preuve.* Écarts P0 moins P2 : centroïde 0,468 ; kNN 0,551 ; LR 0,491 ; Naive Bayes 0,511 ; SVM caractères 0,488 ; SVM mots 0,483. Les six dépassent 0,20 ; Wilcoxon sur 25 plis, p ajusté < 1e-6, Cliff delta = 1 pour tous.  Fichiers : artifacts/results/v3/A_*.csv ; A_all_units.csv ; journal.jsonl
+*Preuve.* Deux preuves indépendantes de l'écart entre découpage au hasard et par groupes : (1) HA1b, montage apparié sur les mêmes logs de test (voir HA1b) ; (2) réanalyse non appariée des anciennes données par le test de Mann-Whitney : pour les six modèles, le plus petit score sous P0 dépasse le plus grand sous P2 (écart de 0,47 à 0,55, Cliff delta = 1, p ajusté < 1e-6).  Fichiers : artifacts/results/v3/A_apparie_HA1b.csv ; A_HA1_reanalyse_non_appariee.csv ; B_resume.csv ; B_tests_pairs.csv ; B_nemenyi_tous.csv ; B_repli.csv
 
-*Note.* Le verdict « confirmée » de la version 2 est conservé dans l'historique. Rejouée de deux façons : (a) réanalyse des mêmes données avec un test NON apparié (Mann-Whitney) ; (b) HA1b, montage apparié sur les mêmes logs de test.
+*Note.* Version 4. La version 2 (« confirmée », appariement injustifié) et la version 3 (« non tranchée ») restent dans l'historique ; le verdict final repose sur HA1b et la réanalyse non appariée, pas sur l'appariement initial.
 
 *Historique des versions précédentes (conservées) :*
 - v1 (2026-11-07 21:54:05) : statut préinscrite ; Pour chaque modèle, le macro-F1 du palier A est plus élevé sous P0 (au hasard) que sous P2 (par groupes) d'au moins 0,20 (Wilcoxon apparié par pli, Holm p < 0,05).
 - v2 (2026-11-07 21:58:55) : statut confirmée ; Pour chaque modèle, macro-F1 du palier A sous P0 moins sous P2 d'au moins 0,20 (Wilcoxon apparié, Holm p < 0,05).
+- v3 (2026-11-07 22:06:03) : statut non tranchée ; Pour chaque modèle, macro-F1 du palier A sous P0 moins sous P2 d'au moins 0,20 (Wilcoxon apparié, Holm p < 0,05).
 
 ### HA2 : Les protocoles par gabarit classent les modèles de la même façon  (version 2, 2026-11-07 21:58:55 ; **statut : confirmée**)
 
@@ -249,69 +250,107 @@ Sous P2, SVM caractères supérieur au SVM mots (Holm p < 0,05).
 
 *Note.* Écrit le 2026-11-07 (soir) avant lecture de l'analyse du bloc A ; seul un pli (P2, répétition 0, pli 0) avait été vu lors du test de fumée.
 
-### HA1b : Effet pur de la fuite, sur les mêmes logs de test  (version 1, 2026-11-07 22:06:03 ; **statut : préinscrite**)
+### HA1b : Effet pur de la fuite, sur les mêmes logs de test  (version 2, 2026-11-07 22:29:59 ; **statut : confirmée**)
 
 Montage apparié : pour chaque pli de groupes (répétition r, pli k), le test est une moitié tirée au hasard des logs du pli (T_b). Condition G : entraînement = logs des autres plis (aucun log des gabarits de test). Condition H : entraînement = G plus l'autre moitié des logs du pli (T_a), donc des logs des mêmes gabarits que T_b. Les deux conditions sont évaluées sur les MÊMES logs T_b. Hypothèse : pour chacun des six modèles, le macro-F1 du palier A est plus élevé en H qu'en G d'au moins 0,20 (Wilcoxon apparié sur 25 plis, Holm p < 0,05).
 
-*Justification.* Seule la présence de logs du même gabarit dans l'entraînement change : c'est l'effet pur de la fuite, mesuré sans que les plis ni les logs de test diffèrent. Le seuil de 0,20 est fixé par prudence, très en dessous de l'écart de 0,48 à 0,55 observé entre P0 et P2.
+*Justification.* Verdict établi avec la règle de décision préinscrite (voir la version précédente).
 
-*Note.* Écrit le 2026-11-07 avant tout calcul de ce montage.
+*Preuve.* Écart H moins G (macro-F1 du palier A, mêmes logs de test, 25 plis) : centroïde +0,294 [0,261 ; 0,323] ; kNN +0,521 [0,497 ; 0,543] ; régression logistique +0,483 [0,461 ; 0,504] ; Naive Bayes +0,430 [0,404 ; 0,454] ; SVM caractères +0,477 [0,453 ; 0,502] ; SVM mots +0,474 [0,457 ; 0,491]. Les six dépassent 0,20 ; plus petit écart observé sur un pli : +0,117 (centroïde). Wilcoxon sur 25 plis, p ajusté de Holm < 1e-6, Cliff delta = 1 pour les six. Sans fuite (G), le SVM mots donne 0,504, soit le score de P2 (0,503) : le montage reproduit bien P2.  Fichiers : artifacts/results/v3/A_apparie_HA1b.csv ; A_HA1_reanalyse_non_appariee.csv ; B_resume.csv ; B_tests_pairs.csv ; B_nemenyi_tous.csv ; B_repli.csv
 
-### HB1 : La hiérarchie n'améliore pas le macro-F1 des classes  (version 1, 2026-11-07 22:06:03 ; **statut : préinscrite**)
+*Note.* Plus un modèle mémorise, plus la fuite le gonfle : le kNN passe de 0,41 à 0,93 (+0,52), le centroïde, qui résume chaque classe par un seul centre, ne gagne que +0,29.
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-07 22:06:03) : statut préinscrite ; Montage apparié : pour chaque pli de groupes (répétition r, pli k), le test est une moitié tirée au hasard des logs du pli (T_b). Condition G : entraînement = logs des autres plis (aucun log des gabar…
+
+### HB1 : La hiérarchie n'améliore pas le macro-F1 des classes  (version 2, 2026-11-07 22:29:59 ; **statut : confirmée**)
 
 Sous P2, le macro-F1 des classes (palier A) du modèle hiérarchique ne diffère pas significativement du modèle plat de même famille (régression logistique) : Wilcoxon, Holm p >= 0,05, ou |écart| < 0,03.
 
-*Justification.* Notebook v1 : gain « non démontré », signe qui change entre validation et test.
+*Justification.* Verdict établi avec la règle de décision préinscrite (voir la version précédente).
 
-*Note.* Écrit le 2026-11-07 avant tout calcul du bloc B (hormis les modèles kNN, centroïde et Naive Bayes déjà vus au bloc A, sous le même protocole).
+*Preuve.* Macro-F1 des classes (palier A), hiérarchique moins plat (régression logistique) : −0,014, IC 95 % [−0,024 ; −0,004], p Holm 0,037. La hiérarchie n'améliore pas : elle est même très légèrement moins bonne (significatif après Holm), mais |écart| = 0,014 < 0,03, donc la règle (« ne diffère pas, ou |écart| < 0,03 ») est satisfaite.  Fichiers : artifacts/results/v3/A_apparie_HA1b.csv ; A_HA1_reanalyse_non_appariee.csv ; B_resume.csv ; B_tests_pairs.csv ; B_nemenyi_tous.csv ; B_repli.csv
 
-### HB2 : La hiérarchie améliore le F1 des familles  (version 1, 2026-11-07 22:06:03 ; **statut : préinscrite**)
+*Note.* Précédent (notebook v1, étape 7.3, test v1 consommé, palier A) : plat 0,4832 contre hiérarchique 0,5153, écart +0,023, IC [−0,010 ; +0,047], non tranchée. Actuel (v3, développement, P2) : plat 0,4947 contre hiérarchique 0,4806, écart −0,014. Le signe de l'écart diffère, comme le notebook v1 le soupçonnait (H1 : signe qui change) ; les deux sont proches de zéro. Les deux séries sont conservées.
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-07 22:06:03) : statut préinscrite ; Sous P2, le macro-F1 des classes (palier A) du modèle hiérarchique ne diffère pas significativement du modèle plat de même famille (régression logistique) : Wilcoxon, Holm p >= 0,05, ou |écart| < 0,03…
+
+### HB2 : La hiérarchie améliore le F1 des familles  (version 2, 2026-11-07 22:29:59 ; **statut : réfutée**)
 
 Le macro-F1 des familles (famille déduite de la classe prédite pour le plat) est plus élevé avec la hiérarchie d'au moins 0,03 (Wilcoxon, Holm p < 0,05).
 
-*Justification.* La tête famille est entraînée directement sur la famille, plus facile (0,67 contre 0,46 au notebook v1).
+*Justification.* Verdict établi avec la règle de décision préinscrite (voir la version précédente).
 
-*Note.* Écrit le 2026-11-07 avant tout calcul du bloc B (hormis les modèles kNN, centroïde et Naive Bayes déjà vus au bloc A, sous le même protocole).
+*Preuve.* F1 des familles (famille déduite de la classe prédite), hiérarchique moins plat : +0,013, IC 95 % [+0,002 ; +0,024], p Holm 0,055. Le gain n'est ni d'au moins 0,03 ni significatif après Holm ; l'IC exclut un gain de 0,03.  Fichiers : artifacts/results/v3/A_apparie_HA1b.csv ; A_HA1_reanalyse_non_appariee.csv ; B_resume.csv ; B_tests_pairs.csv ; B_nemenyi_tous.csv ; B_repli.csv
 
-### HB3 : La hiérarchie réduit la gravité des erreurs  (version 1, 2026-11-07 22:06:03 ; **statut : préinscrite**)
+*Note.* La tête « famille » directe est un peu meilleure (0,706 contre 0,693 en F1 famille moyen) mais pas assez pour la règle.
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-07 22:06:03) : statut préinscrite ; Le macro-F1 des familles (famille déduite de la classe prédite pour le plat) est plus élevé avec la hiérarchie d'au moins 0,03 (Wilcoxon, Holm p < 0,05).
+
+### HB3 : La hiérarchie réduit la gravité des erreurs  (version 2, 2026-11-07 22:29:59 ; **statut : réfutée**)
 
 La distance moyenne d'erreur dans l'arbre (0 même classe, 1 même famille, 2 autre famille) est plus petite avec la hiérarchie (Wilcoxon, Holm p < 0,05).
 
-*Justification.* Une classe prédite cohérente avec la famille prédite rapproche les erreurs ; notebook v1 : 0,83 contre 0,86 pour TF-IDF.
+*Justification.* Verdict établi avec la règle de décision préinscrite (voir la version précédente).
 
-*Note.* Écrit le 2026-11-07 avant tout calcul du bloc B (hormis les modèles kNN, centroïde et Naive Bayes déjà vus au bloc A, sous le même protocole).
+*Preuve.* Distance moyenne d'erreur dans l'arbre, hiérarchique moins plat : −0,001, IC [−0,022 ; +0,020], p Holm 0,94. Aucune réduction de la gravité des erreurs.  Fichiers : artifacts/results/v3/A_apparie_HA1b.csv ; A_HA1_reanalyse_non_appariee.csv ; B_resume.csv ; B_tests_pairs.csv ; B_nemenyi_tous.csv ; B_repli.csv
 
-### HB4 : Plusieurs prototypes valent mieux qu'un  (version 1, 2026-11-07 22:06:03 ; **statut : préinscrite**)
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-07 22:06:03) : statut préinscrite ; La distance moyenne d'erreur dans l'arbre (0 même classe, 1 même famille, 2 autre famille) est plus petite avec la hiérarchie (Wilcoxon, Holm p < 0,05).
+
+### HB4 : Plusieurs prototypes valent mieux qu'un  (version 2, 2026-11-07 22:29:59 ; **statut : non tranchée**)
 
 Le k-means par classe à 10 prototypes dépasse le centroïde unique (Wilcoxon, Holm p < 0,05).
 
-*Justification.* Une classe contient plusieurs gabarits : un seul centre les moyenne et se place entre eux.
+*Justification.* Verdict établi avec la règle de décision préinscrite (voir la version précédente).
 
-*Note.* Écrit le 2026-11-07 avant tout calcul du bloc B (hormis les modèles kNN, centroïde et Naive Bayes déjà vus au bloc A, sous le même protocole).
+*Preuve.* k-means par classe à 10 prototypes moins centroïde unique : +0,026, IC 95 % [−0,000 ; +0,051], p Holm 0,067. Le critère (p Holm < 0,05) n'est pas atteint, mais l'IC ne se distingue de zéro que par un cheveu et n'exclut pas un gain jusqu'à 0,05.  Fichiers : artifacts/results/v3/A_apparie_HA1b.csv ; A_HA1_reanalyse_non_appariee.csv ; B_resume.csv ; B_tests_pairs.csv ; B_nemenyi_tous.csv ; B_repli.csv
 
-### HB5 : Les gabarits-prototypes (F3) dépassent le centroïde mais pas le SVM  (version 1, 2026-11-07 22:06:03 ; **statut : préinscrite**)
+*Note.* Règle de classement des verdicts : « réfutée » seulement si l'IC exclut un effet notable (cas de HA6, HB2, HB3) ; ici l'effet reste plausible, donc « non tranchée ». À rejouer avec plus de graines ou une autre dimension SVD (itération de la phase 2).
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-07 22:06:03) : statut préinscrite ; Le k-means par classe à 10 prototypes dépasse le centroïde unique (Wilcoxon, Holm p < 0,05).
+
+### HB5 : Les gabarits-prototypes (F3) dépassent le centroïde mais pas le SVM  (version 2, 2026-11-07 22:29:59 ; **statut : confirmée**)
 
 Sous P2, gabarits-prototypes meilleur que le centroïde (Holm p < 0,05) et inférieur au SVM sur mots d'au moins 0,03.
 
-*Justification.* Les gabarits sont les groupes naturels, mais un nouveau gabarit n'a pas de prototype proche : on s'attend à mieux que le centroïde sans égaler un classifieur discriminant.
+*Justification.* Verdict établi avec la règle de décision préinscrite (voir la version précédente).
 
-*Note.* Écrit le 2026-11-07 avant tout calcul du bloc B (hormis les modèles kNN, centroïde et Naive Bayes déjà vus au bloc A, sous le même protocole).
+*Preuve.* Gabarits-prototypes moins centroïde : +0,044, IC [+0,020 ; +0,069], p Holm 0,007 ; SVM mots moins gabarits-prototypes : +0,054, IC [+0,035 ; +0,073], p Holm 8e-5 (>= 0,03). Les gabarits-prototypes (0,449) battent le centroïde (0,406) mais pas le SVM (0,503).  Fichiers : artifacts/results/v3/A_apparie_HA1b.csv ; A_HA1_reanalyse_non_appariee.csv ; B_resume.csv ; B_tests_pairs.csv ; B_nemenyi_tous.csv ; B_repli.csv
 
-### HB6 : Le clustering non supervisé n'atteint pas le SVM  (version 1, 2026-11-07 22:06:03 ; **statut : préinscrite**)
+*Note.* Notre proposition F3 donne le meilleur résultat des méthodes de ressemblance après le k-means global à 150 groupes, sans être entraînée de façon discriminante.
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-07 22:06:03) : statut préinscrite ; Sous P2, gabarits-prototypes meilleur que le centroïde (Holm p < 0,05) et inférieur au SVM sur mots d'au moins 0,03.
+
+### HB6 : Le clustering non supervisé n'atteint pas le SVM  (version 2, 2026-11-07 22:29:59 ; **statut : non tranchée**)
 
 Aucun des clustering globaux non supervisés (k-means global, Birch, DBSCAN, HDBSCAN) n'atteint le SVM sur mots : écart d'au moins 0,05, Holm p < 0,05, pour chacun.
 
-*Justification.* Sans les étiquettes, les groupes se forment sur les gabarits et non sur les classes ; l'étiquette majoritaire est une approximation.
+*Justification.* Verdict établi avec la règle de décision préinscrite (voir la version précédente).
 
-*Note.* Écrit le 2026-11-07 avant tout calcul du bloc B (hormis les modèles kNN, centroïde et Naive Bayes déjà vus au bloc A, sous le même protocole).
+*Preuve.* Écart SVM mots moins chaque clustering global (macro-F1 palier A) : k-means 60 groupes +0,096 ; Birch +0,111 ; DBSCAN +0,092 ; HDBSCAN +0,086 ; k-means 150 groupes +0,049 [0,026 ; 0,072]. Les cinq sont significativement inférieurs au SVM (p Holm < 5e-4), mais k-means 150 manque le seuil préinscrit de 0,05 de 0,001 et son IC contient 0,05.  Fichiers : artifacts/results/v3/A_apparie_HA1b.csv ; A_HA1_reanalyse_non_appariee.csv ; B_resume.csv ; B_tests_pairs.csv ; B_nemenyi_tous.csv ; B_repli.csv
 
-### HB7 : Un clustering par classe rivalise avec le kNN  (version 1, 2026-11-07 22:06:03 ; **statut : préinscrite**)
+*Note.* L'essentiel de l'hypothèse (aucun clustering global n'atteint le SVM) est confirmé ; le seuil quantitatif ne l'est pas pour un des cinq. Constat additionnel : k-means à 150 groupes (0,454) fait mieux que k-means à 60 groupes (0,408) : des groupes plus fins, proches du nombre de gabarits, aident, ce qui va dans le sens des gabarits-prototypes.
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-07 22:06:03) : statut préinscrite ; Aucun des clustering globaux non supervisés (k-means global, Birch, DBSCAN, HDBSCAN) n'atteint le SVM sur mots : écart d'au moins 0,05, Holm p < 0,05, pour chacun.
+
+### HB7 : Un clustering par classe rivalise avec le kNN  (version 2, 2026-11-07 22:29:59 ; **statut : confirmée**)
 
 Au moins une méthode de clustering supervisé par classe (k-means, mélange gaussien, Ward) ou les gabarits-prototypes est indiscernable du kNN (Friedman puis Nemenyi : différence de rang moyen inférieure à la différence critique).
 
-*Justification.* Ces méthodes utilisent les mêmes distances que le kNN avec un résumé des classes.
+*Justification.* Verdict établi avec la règle de décision préinscrite (voir la version précédente).
 
-*Note.* Écrit le 2026-11-07 avant tout calcul du bloc B (hormis les modèles kNN, centroïde et Naive Bayes déjà vus au bloc A, sous le même protocole).
+*Preuve.* Friedman sur kNN (k = 15), k-means par classe (3 et 10), mélange gaussien, Ward et gabarits-prototypes : p = 0,23 ; différence critique de Nemenyi 1,51 rang ; les cinq méthodes sont à moins de 1,12 rang du kNN : indiscernables.  Fichiers : artifacts/results/v3/A_apparie_HA1b.csv ; A_HA1_reanalyse_non_appariee.csv ; B_resume.csv ; B_tests_pairs.csv ; B_nemenyi_tous.csv ; B_repli.csv
+
+*Note.* Réserve : les rangs moyens dépendent de l'ensemble des méthodes comparées (Benavoli et al. 2016, S13 dans sources_v3_stats_repro.md). Dans le Friedman sur les 19 sorties, la différence critique monte à 5,60 rangs et kNN (10,2) et gabarits-prototypes (7,6) restent aussi indiscernables.
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-07 22:06:03) : statut préinscrite ; Au moins une méthode de clustering supervisé par classe (k-means, mélange gaussien, Ward) ou les gabarits-prototypes est indiscernable du kNN (Friedman puis Nemenyi : différence de rang moyen inférieu…
 
 ## Résultats
 
@@ -324,3 +363,13 @@ Au moins une méthode de clustering supervisé par classe (k-means, mélange gau
 *Preuve.* artifacts/results/v3/A_*.csv ; A_all_units.csv ; journal.jsonl
 
 *Note.* Conformément à R3, ni la série v1 ni la série v3 n'est écartée.
+
+### RB1 : Bloc B : macro-F1 du palier A sous P2 (précédent v1 et actuel v3)  (version 1, 2026-11-07 22:29:59)
+
+**Actuel (v3, développement, P2, 25 plis) :** SVM mots 0,503 ; régression logistique 0,495 ; hiérarchique 0,481 ; k-means global 150 groupes 0,454 ; gabarits-prototypes 0,449 ; k-means par classe 3 prototypes 0,441 ; Ward 0,439 ; Naive Bayes 0,434 ; k-means par classe 10 prototypes 0,431 ; kNN 15 0,423 ; mélange gaussien 0,422 ; HDBSCAN (sans rejet) 0,418 ; DBSCAN (sans rejet) 0,411 ; kNN 5 0,410 ; k-means 60 groupes 0,408 ; centroïde 0,406 ; Birch 0,392 ; HDBSCAN avec rejet 0,110 ; DBSCAN avec rejet 0,089 (les deux rejettent 82 à 85 % des logs de test).  Repli sur la famille (seuil 0,5) : répond au niveau de la classe pour 72,9 % des logs, justesse de classe sur ces logs 61,7 % ; justesse de famille 71,1 % avec ou sans repli.  **Précédent (notebook v1, étape 7.3, test v1 consommé) :** TF-IDF plat 0,4832, hiérarchique 0,5153 (palier A) ; Skip-gram 0,4027 et 0,4635 (validation).  Les deux séries sont conservées ; aucun modèle ne dépasse 0,51 dans l'une ou l'autre.
+
+*Justification.* Le plafond d'environ 0,50 se retrouve avec un protocole indépendant et 19 méthodes de natures très différentes : le goulot est la représentation (mots) face à des gabarits nouveaux, pas le choix du classifieur. C'est la motivation des pistes de la phase 2 (marqueurs typés, combinaison mots, lettres, Transformer).
+
+*Preuve.* artifacts/results/v3/A_apparie_HA1b.csv ; A_HA1_reanalyse_non_appariee.csv ; B_resume.csv ; B_tests_pairs.csv ; B_nemenyi_tous.csv ; B_repli.csv
+
+*Note.* Cas particulier : les sorties avec rejet de DBSCAN et HDBSCAN comptent un rejet comme une erreur ; elles mesurent surtout que les logs de nouveaux gabarits sont loin de tous les points d'entraînement (utile au bloc C).

@@ -1,0 +1,97 @@
+{
+ "hash": "ddfaa7c01182b24e",
+ "block": "A_decoupage_apparie",
+ "name": "HA1b r4 pli4",
+ "cfg": {
+  "hypothese": "HA1b",
+  "repeat": 4,
+  "fold": 4,
+  "cap": 400,
+  "models": [
+   "svm_word",
+   "svm_char",
+   "lr_word",
+   "nb_word",
+   "knn_word",
+   "centroid_word"
+  ],
+  "default": {
+   "svm_word": 1,
+   "svm_char": 1,
+   "lr_word": 10,
+   "nb_word": 0.3,
+   "knn_word": 5,
+   "centroid_word": null
+  },
+  "file": "SIEVE_00",
+  "splits": "groups_v3"
+ },
+ "code_version": "HA1b-1",
+ "result": {
+  "G": {
+   "svm_word": {
+    "f1A": 0.4840100331107898,
+    "f1_30": 0.35962157460960903
+   },
+   "svm_char": {
+    "f1A": 0.3754735605269415,
+    "f1_30": 0.3076503806197566
+   },
+   "lr_word": {
+    "f1A": 0.3959041327364873,
+    "f1_30": 0.2901384395615
+   },
+   "nb_word": {
+    "f1A": 0.4263920095927465,
+    "f1_30": 0.3550816514781482
+   },
+   "knn_word": {
+    "f1A": 0.33689945794249954,
+    "f1_30": 0.24053314573029036
+   },
+   "centroid_word": {
+    "f1A": 0.3064442719640253,
+    "f1_30": 0.26063987581409825
+   }
+  },
+  "H": {
+   "svm_word": {
+    "f1A": 0.999239170358377,
+    "f1_30": 0.9993775030204902
+   },
+   "svm_char": {
+    "f1A": 1.0,
+    "f1_30": 1.0
+   },
+   "lr_word": {
+    "f1A": 0.9990483021804663,
+    "f1_30": 0.9992213381476542
+   },
+   "nb_word": {
+    "f1A": 0.9506875761860345,
+    "f1_30": 0.7330412938311156
+   },
+   "knn_word": {
+    "f1A": 0.9248809810731188,
+    "f1_30": 0.7294496044709151
+   },
+   "centroid_word": {
+    "f1A": 0.7177342573573899,
+    "f1_30": 0.69224759224877
+   }
+  },
+  "_info": {
+   "n_test": 5366,
+   "n_train_G": 41707,
+   "n_train_H": 47073
+  }
+ },
+ "seconds": 136.5,
+ "machine": {
+  "host": "MacBook-Pro-de-Madeniyou.local",
+  "platform": "macOS-27.0.1-arm64-arm-64bit",
+  "python": "3.12.16"
+ },
+ "commit": "db43ccc",
+ "date": "2026-11-07 22:27:43"
+}
