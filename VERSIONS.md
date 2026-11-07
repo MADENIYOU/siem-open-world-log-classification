@@ -88,3 +88,10 @@ Généré à partir de `artifacts/results/v3/versions.jsonl` (append-only, ne pa
 | Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
 |---|---|---|---|---|---|
 | **SRC1** | 2026-11-07 21:40 | 89 références vérifiées (hiérarchie, prototypes, inconnus, logs, vectorisation, calibration, attaques, fusion). | première version | **version courante** | `versions/etat_de_l_art/sources_v3_methodes__SRC1.md`, commit 51154ea |
+
+## etat_de_l_art/sources_v3_clustering.md
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **SRC1** | 2026-11-07 22:20 | 50 références vérifiées sur les types de clustering (k-means, hiérarchique, mélanges gaussiens, densité, BIRCH et spectral, clustering pour classer ou détecter l'inconnu, évaluation, documentation scikit-learn 1.9.1). | première version | **version courante** | `versions/etat_de_l_art/sources_v3_clustering__SRC1.md` |
+|  |  | *Note : 10 références n'ont que titre, auteurs, revue et année (notice Crossref ; éditeurs inaccessibles). Contrôle par sondage : 3 pages rouvertes, conformes.* |  |  |  |
