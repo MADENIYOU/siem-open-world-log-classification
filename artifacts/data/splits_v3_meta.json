@@ -1,0 +1,22 @@
+{
+ "version": 3,
+ "created": "2026-11-07 21:23:39",
+ "test2_seed": 1,
+ "refused_before": 0,
+ "frac": 0.15,
+ "min_dev_groups": 2,
+ "share_range": [
+  0.1,
+  0.22
+ ],
+ "twin_max": 0.02,
+ "twin_cos": 0.9,
+ "twin_share": 0.0022170139988598216,
+ "median_nn_cos": 0.33870623168229136,
+ "n_splits": 5,
+ "n_repeats": 5,
+ "n_groups": 311,
+ "n_test2_groups": 57,
+ "test2_log_share": 0.17646833333333334,
+ "test2_groups_sha256": "a6b9eb3329322e17"
+}
