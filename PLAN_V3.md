@@ -6,6 +6,7 @@ Priorités fixées par l'étudiant : **reproductibilité, traçabilité, documen
 ## 0. Règles de conduite (demande de l'étudiant, 2026-11-07)
 - **Méthodique de bout en bout** ; chaque choix, décision et résultat est **justifié** ; chaque hypothèse est préinscrite puis **confirmée ou réfutée**.
 - **On ne supprime jamais un résultat précédent, dans aucun document** : on garde le précédent et l'actuel. Mise en œuvre : journal append-only et `REGISTRE_V3.md`, archives non écrasables (`archive/`, `scripts/archive_state.py`), étiquette git `etat-2026-11-07-avant-v3`, archivage automatique du notebook (`run_notebook.py`) et de la présentation (`build.sh`), recalcul forcé qui archive l'ancien fichier.
+- **Versionnage de tout fichier, script ou document** (demande de l'étudiant, 2026-11-07) : chaque version dit **ce qu'elle fait**, **pourquoi elle remplace la précédente** et, par la version suivante, **pourquoi elle a été remplacée**. Mise en œuvre : `src/tp2_versions.py`, registre append-only `artifacts/results/v3/versions.jsonl` rendu en **`VERSIONS.md`**, copies figées dans `versions/` (jamais écrasées). Pratique : *avant* de modifier un fichier, `python scripts/version_file.py freeze CHEMIN VERSION` ; *après*, `python scripts/version_file.py register ARTEFACT VERSION "ce que fait" "pourquoi" CHEMIN`. Les résultats de calcul portent le `code_version` du script qui les a produits (A1, B2, HA1b-1…).
 - Le registre complet (règles R1 à R8, décisions D1 à D6, hypothèses HA1 à HA8) est dans `REGISTRE_V3.md`.
 
 ## 1. Décisions prises
