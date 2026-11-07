@@ -146,6 +146,14 @@ Le crochet `scripts/hooks/pre-commit` est installé dans `.git/hooks/` ; il lanc
 
 *Preuve.* scripts/hooks/pre-commit ; VERSIONS.md (H1)
 
+### D11 : Bloc C : détection d'inconnus, plan et protocole  (version 1, 2026-11-07 22:55:54)
+
+Protocole : 5 rotations de classes masquées (6 classes cachées à l'entraînement) × 5 répétitions × 5 plis de groupes (P2) = 125 unités, SIEVE_00, développement seul (test v2 jamais lu), 400 logs au plus par gabarit. On entraîne sur les logs des 24 classes connues des plis d'entraînement ; le test du pli contient les logs des classes connues (positifs « connu ») et des classes masquées (« inconnu »), tous de gabarits jamais vus. Baseline : probabilité maximale (MSP) d'une régression logistique sur TF-IDF mots (C = 4, comme le notebook v1). Scores comparés (28) : tête TF-IDF (MSP, logit maximal, énergie, entropie négative, ensemble de 5 régressions bootstrap, MSP hiérarchique, MSP famille, OpenMax) ; espace SVD à 100 dimensions normalisé (cosinus au centroïde, Mahalanobis à covariance commune, par classe avec rétrécissement de Ledoit-Wolf, relative, kNN k = 1 et 10, résidu de PCA, densité de mélange gaussien, LOF, forêt d'isolation, distance au gabarit le plus proche avec et sans rayon : notre proposition F3) ; tête sur l'espace SVD (énergie, ASH, SCALE, DICE, NNGuide, SHE, ViM, méthodes de la vision adaptées à des vecteurs signés) ; fusion par moyenne de rangs (MSP, Mahalanobis, kNN). Mesures : AUROC (principale), FPR@95 (inconnus acceptés quand on garde 95 % des connus), AUPR. Tests : Wilcoxon apparié contre le MSP avec correction de Holm, Friedman et Nemenyi sur les 125 unités.
+
+*Justification.* Demande de l'étudiant (2026-11-07) : comparer des scores de détection par le score et par la distance, plus des méthodes récentes, avec une baseline et des tests statistiques ; sources dans sources_v3_methodes.md. Les méthodes de la vision (ASH, SCALE, DICE, NNGuide, SHE) sont ADAPTÉES à des vecteurs signés de logs (activations remplacées par les composantes SVD, magnitude par valeur absolue) : ce sont des adaptations de leur principe, non des reproductions, et le résultat n'établit pas leur performance en vision. OpenMax est une version simplifiée (Weibull sur les 20 plus grandes distances par classe).
+
+*Preuve.* scripts/v3_blockC.py
+
 ## Hypothèses (préinscrites, puis confirmées ou réfutées)
 
 ### HA1 : Le découpage au hasard gonfle le score  (version 4, 2026-11-07 22:29:59 ; **statut : confirmée**)
@@ -351,6 +359,78 @@ Au moins une méthode de clustering supervisé par classe (k-means, mélange gau
 
 *Historique des versions précédentes (conservées) :*
 - v1 (2026-11-07 22:06:03) : statut préinscrite ; Au moins une méthode de clustering supervisé par classe (k-means, mélange gaussien, Ward) ou les gabarits-prototypes est indiscernable du kNN (Friedman puis Nemenyi : différence de rang moyen inférieu…
+
+### HC1 : Aucun score n'atteint la cible  (version 1, 2026-11-07 22:55:54 ; **statut : préinscrite**)
+
+L'AUROC moyen (125 unités) de chacun des 28 scores est inférieur à 0,80, la valeur « acceptable » du critère S2 posé au notebook.
+
+*Justification.* Notebook v1 : AUROC de 0,60 au test et 0,73 en validation pour les modèles linéaires.
+
+*Note.* Écrit le 2026-11-07 avant tout calcul du bloc C.
+
+### HC2 : Distance et densité ne battent pas le MSP  (version 1, 2026-11-07 22:55:54 ; **statut : préinscrite**)
+
+Aucun score de distance ou de densité de l'espace SVD (Mahalanobis commune, par classe, relative ; kNN 1 et 10 ; résidu de PCA ; mélange gaussien ; LOF ; forêt d'isolation) ne dépasse le MSP d'au moins 0,02 d'AUROC (Wilcoxon apparié, Holm p < 0,05).
+
+*Justification.* Notebook v1 (6.4b, 6.4c) : Mahalanobis échoue avec TF-IDF (0,56) ; les modèles linéaires n'ont pas de vecteurs aux classes bien resserrées, contrairement à un Transformer affiné.
+
+*Note.* Écrit le 2026-11-07 avant tout calcul du bloc C.
+
+### HC3 : Les méthodes de la vision n'apportent rien sur ces vecteurs  (version 1, 2026-11-07 22:55:54 ; **statut : préinscrite**)
+
+Aucune des méthodes ASH, SCALE, DICE, NNGuide, SHE, ViM ne dépasse l'énergie de la tête SVD d'au moins 0,02 d'AUROC (Holm p < 0,05).
+
+*Justification.* Ces méthodes supposent des activations positives de réseaux profonds ; nos composantes SVD sont signées et peu nombreuses.
+
+*Note.* Écrit le 2026-11-07 avant tout calcul du bloc C.
+
+### HC4 : Notre F3 (gabarits-prototypes avec rayon) bat le MSP  (version 1, 2026-11-07 22:55:54 ; **statut : préinscrite**)
+
+Le score « distance au gabarit le plus proche normalisée par son rayon » dépasse le MSP d'au moins 0,02 d'AUROC (Holm p < 0,05).
+
+*Justification.* Hypothèse exploratoire : un log de gabarit nouveau est loin de tous les gabarits connus, ce que la distance normalisée par la dispersion du gabarit capte mieux que la confiance du classifieur.
+
+*Note.* Écrit le 2026-11-07 avant tout calcul du bloc C.
+
+### HC5 : Le rayon du gabarit est utile  (version 1, 2026-11-07 22:55:54 ; **statut : préinscrite**)
+
+Le score avec rayon (F3) dépasse le même score sans rayon (distance brute au gabarit le plus proche) d'au moins 0,01 d'AUROC (Holm p < 0,05).
+
+*Justification.* Les gabarits n'ont pas tous la même dispersion : une distance brute traite pareil un gabarit serré et un gabarit étalé.
+
+*Note.* Écrit le 2026-11-07 avant tout calcul du bloc C.
+
+### HC6 : La fusion bat ses composants  (version 1, 2026-11-07 22:55:54 ; **statut : préinscrite**)
+
+La fusion par moyenne de rangs de MSP, Mahalanobis commune et kNN 10 dépasse le meilleur de ses trois composants d'au moins 0,01 d'AUROC (Holm p < 0,05).
+
+*Justification.* Des scores de nature différente (confiance, distance, voisinage) se trompent sur des logs différents.
+
+*Note.* Écrit le 2026-11-07 avant tout calcul du bloc C.
+
+### HC7 : Un frère connu cache l'inconnu  (version 1, 2026-11-07 22:55:54 ; **statut : préinscrite**)
+
+L'AUROC du MSP est plus faible d'au moins 0,05 pour les classes masquées dont la famille contient une autre classe connue que pour celles sans classe sœur connue (Mann-Whitney sur les couples classe × rotation, p < 0,05).
+
+*Justification.* Notebook v1 : 0,51 (même famille) contre 0,66 (autre famille) ; une classe masquée ressemble à sa sœur connue et reçoit sa classe avec confiance.
+
+*Note.* Écrit le 2026-11-07 avant tout calcul du bloc C.
+
+### HC8 : Forte variabilité entre rotations  (version 1, 2026-11-07 22:55:54 ; **statut : préinscrite**)
+
+L'écart-type de l'AUROC du MSP entre les cinq rotations (moyennes par rotation) est d'au moins 0,05.
+
+*Justification.* Notebook v1 : 0,05 à 0,14 ; les conclusions par classe sont instables.
+
+*Note.* Écrit le 2026-11-07 avant tout calcul du bloc C.
+
+### HC9 : Trop d'inconnus acceptés  (version 1, 2026-11-07 22:55:54 ; **statut : préinscrite**)
+
+Le FPR@95 moyen (inconnus acceptés quand on garde 95 % des connus) est d'au moins 0,70 pour chacun des 28 scores.
+
+*Justification.* Critère S3 du notebook (acceptable : au plus 0,50) ; v1 : environ 0,92.
+
+*Note.* Écrit le 2026-11-07 avant tout calcul du bloc C.
 
 ## Résultats
 

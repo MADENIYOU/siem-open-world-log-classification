@@ -131,3 +131,21 @@ Généré à partir de `artifacts/results/v3/versions.jsonl` (append-only, ne pa
 |---|---|---|---|---|---|
 | **E1** | 2026-11-07 22:30 | Huit explications en mots simples : origine des 440 gabarits, F1 et macro-F1, explications orales des diapositives, bloc A, Wilcoxon, Friedman et Holm, pourquoi HA1 a été rejouée, méthodes du bloc B (dont le clustering), résultats du bloc B. | première version | **version courante** | `versions/EXPLICATIONS_V3__E1.md` |
 |  |  | *Note : Document qui s'allonge : toute nouvelle explication demandée y est ajoutée dans une nouvelle version, sans rien retirer.* |  |  |  |
+
+## scripts/v3_blockC.py (bloc C : détection d'inconnus)
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **C1** | 2026-11-07 22:58 | 28 scores d'inconnu (tête TF-IDF, espace SVD, tête SVD, fusion) sur 5 rotations × 5 répétitions × 5 plis de groupes ; développement seul ; ASH, SCALE, DICE, NNGuide, SHE et ViM adaptés à des vecteurs signés. | première version | **version courante** | `versions/scripts/v3_blockC__C1.py` |
+
+## scripts/v3_analyze_C.py (analyse du bloc C)
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **AC1** | 2026-11-07 22:58 | Tableaux et tests des hypothèses HC1 à HC9 (Wilcoxon apparié, Holm, Friedman et Nemenyi, Mann-Whitney, variabilité entre rotations). | première version | **version courante** | `versions/scripts/v3_analyze_C__AC1.py` |
+
+## scripts/v3_register_C.py et v3_register_B.py (préinscriptions)
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **P1** | 2026-11-07 22:58 | Inscription au journal des décisions et hypothèses des blocs avant tout calcul. | première version | **version courante** | `versions/scripts/v3_register_C__P1.py` |
