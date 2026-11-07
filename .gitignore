@@ -25,3 +25,4 @@ presentation/node_modules/
 presentation/.venv/
 presentation/_render/
 presentation/script_oral.md
+.claude/
