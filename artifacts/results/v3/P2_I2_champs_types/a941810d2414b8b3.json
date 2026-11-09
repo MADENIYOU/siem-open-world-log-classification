@@ -1,0 +1,77 @@
+{
+ "hash": "a941810d2414b8b3",
+ "block": "P2_I2_champs_types",
+ "name": "I2 r3 pli3",
+ "cfg": {
+  "phase": 2,
+  "iteration": "I2",
+  "repeat": 3,
+  "fold": 3,
+  "cap": 400,
+  "variants": [
+   "V0",
+   "FT",
+   "FTo",
+   "FTE"
+  ],
+  "file": "SIEVE_00",
+  "splits": "groups_v3",
+  "fields": "tp2_fields F1"
+ },
+ "code_version": "I2.1",
+ "result": {
+  "V0": {
+   "f1A": 0.6268165743812056,
+   "f1_30": 0.48435826202184074,
+   "acc": 0.5008144980655671,
+   "f1_fam": 0.6658402736065425,
+   "tree_dist": 0.7701079209936876
+  },
+  "FT": {
+   "f1A": 0.6056715548665047,
+   "f1_30": 0.46801892876048085,
+   "acc": 0.48096110771736916,
+   "f1_fam": 0.6740949425819543,
+   "tree_dist": 0.7843616371411118
+  },
+  "FTo": {
+   "f1A": 0.34480744433321303,
+   "f1_30": 0.26644211607566465,
+   "acc": 0.30859295459173286,
+   "f1_fam": 0.4635921682333222,
+   "tree_dist": 1.2015882712278558
+  },
+  "FTE": {
+   "f1A": 0.611141019933667,
+   "f1_30": 0.4722453335851063,
+   "acc": 0.4812665444919568,
+   "f1_fam": 0.6624129386188248,
+   "tree_dist": 0.7926084300549786
+  }
+ },
+ "seconds": 35.16,
+ "machine": {
+  "host": "MacBook-Pro-de-Madeniyou.local",
+  "platform": "macOS-27.0.1-arm64-arm-64bit",
+  "python": "3.12.16"
+ },
+ "commit": "ff3a863",
+ "code": {
+  "v3_phase2_I2.py": "341de8c8cee1",
+  "tp2_attacks.py": "37a5b3530f02",
+  "tp2_data.py": "7f392cbaae6e",
+  "tp2_encoder.py": "faec7df763bf",
+  "tp2_fields.py": "70b8fa07b590",
+  "tp2_journal.py": "d98d2c73b0a1",
+  "tp2_logtext.py": "2b5360ac2128",
+  "tp2_new_figs.py": "e48636202d7c",
+  "tp2_openset.py": "05d7b8a91592",
+  "tp2_runner.py": "7765735476e7",
+  "tp2_sota_figs.py": "4ba8388989c4",
+  "tp2_split_v3.py": "d9a4181a2a60",
+  "tp2_stats.py": "0a90cfa961ba",
+  "tp2_vec.py": "6d09bf373fd2",
+  "tp2_versions.py": "b7dd47bdb2f6"
+ },
+ "date": "2026-11-09 13:24:32"
+}
