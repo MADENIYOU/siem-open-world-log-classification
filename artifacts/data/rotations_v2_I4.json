@@ -1,0 +1,45 @@
+{
+ "seed": 20261109,
+ "rotations": [
+  [
+   "authentication-failed",
+   "connection-closed",
+   "file-action-failure",
+   "network-filtered",
+   "network-traffic",
+   "user-creation"
+  ],
+  [
+   "connection-failed",
+   "directory-created",
+   "directory-deleted",
+   "file-deleted",
+   "file-write",
+   "system-configuration-changed"
+  ],
+  [
+   "database-operation",
+   "file-read",
+   "process-info",
+   "process-started",
+   "user-deletion",
+   "user-logout"
+  ],
+  [
+   "authentication-success",
+   "connection-opened",
+   "directory-changed",
+   "process-ended",
+   "process-error",
+   "process-shutdown"
+  ],
+  [
+   "file-modification",
+   "hardware-monitoring",
+   "http-request-failure",
+   "http-request-success",
+   "ids-alert",
+   "user-session-open"
+  ]
+ ]
+}

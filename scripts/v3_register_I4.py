@@ -1,0 +1,16 @@
+"""Journal : décision D19 (itération I4 : confirmation du rejet au niveau de la famille sur de nouvelles rotations et de nouveaux plis) et hypothèses HI1 à HI4, préinscrites avant tout calcul. Idempotent."""
+import sys, pathlib
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1] / "src"))
+import tp2_journal as J
+N = "Écrit le 2026-11-09 avant tout calcul de l'itération I4."
+if not J.exists("D19"):
+    J.add("D19", "decision", "Itération I4 : le rejet par la confiance de FAMILLE est-il meilleur que le MSP sur de nouvelles rotations ?",
+          "Constat exploratoire du bloc C (125 unités, vu après les chiffres) : AUROC d'inconnu de la probabilité maximale de la famille 0,666 contre 0,623 pour le MSP, 0,639 pour l'énergie, 0,633 pour le MSP hiérarchique. HD7 (bloc D) a de plus montré que ce détecteur perd davantage que le MSP sous attaque. Confirmation : 5 NOUVELLES rotations de 6 classes masquées (tirage aléatoire de graine 20261109 de partitions des 30 classes, refusé si un ensemble de 6 classes est identique à une rotation du v1) × 25 NOUVEAUX plis (répétitions 5 à 9, StratifiedGroupKFold par gabarit, graines 5 à 9 comme en I1b), SIEVE_00, développement seul, même modèle (régression logistique C = 4 sur TF-IDF mots, entraînement sur les classes connues, 400 logs au plus par gabarit). Scores comparés : msp, maxlogit, energy, hier_msp, fam_msp. Unité de statistique = (rotation, répétition), AUROC moyenné sur les 5 plis : 25 unités. Le test v2 reste scellé ; la confirmation sur de nouveaux gabarits revient à l'ouverture finale.",
+          justification="D12 : la confiance de famille est le candidat principal et exige une hypothèse préinscrite sur de nouvelles données. Règle R2 : un constat vu dans les données ne se confirme pas sur les mêmes données.", note=N)
+H = [("HI1", "La confiance de famille bat le MSP", "AUROC d'inconnu de fam_msp supérieur à celui du msp d'au moins 0,02 (Wilcoxon apparié unilatéral sur 25 unités (rotation, répétition), Holm sur trois comparaisons : fam_msp contre msp, contre energy, contre hier_msp, p < 0,05). Réfutée si l'IC95 bootstrap de l'écart avec le msp exclut +0,02.", "Un inconnu dont un frère est connu reste confiant sur la famille ; l'hypothèse est que la confiance sur la famille est moins bruitée que celle sur 24 classes."),
+     ("HI2", "L'avantage de famille tient dans au moins 4 rotations sur 5", "L'AUROC moyen de fam_msp dépasse celui du msp dans au moins 4 des 5 nouvelles rotations.", "Le bloc C montre une forte variabilité entre rotations (HC8 confirmée) : un effet moyen peut venir d'une rotation."),
+     ("HI3", "Moins d'inconnus acceptés", "FPR@95 moyen de fam_msp inférieur à celui du msp d'au moins 0,03 (Wilcoxon apparié, p < 0,05).", "Mesure d'usage : inconnus acceptés quand on garde 95 % des connus."),
+     ("HI4", "Le niveau absolu reste insuffisant", "AUROC moyen de fam_msp inférieur à 0,80 (valeur « acceptable » du critère S2) : IC95 bootstrap de la moyenne entièrement sous 0,80.", "Cohérent avec HC1 : même le meilleur score reste faible ; fixe honnêtement la limite avant le test v2.")]
+for i, t, tx, j in H:
+    if not J.exists(i): J.add(i, "hypothese", t, tx, justification=j, statut="préinscrite", note=N)
+print("ok")

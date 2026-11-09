@@ -1,0 +1,92 @@
+{
+ "hash": "0531dad78faf7275",
+ "block": "P2_I4_rejet_famille",
+ "name": "I4 rot1 r6 pli3",
+ "cfg": {
+  "phase": 2,
+  "iteration": "I4",
+  "rotation_v2": 0,
+  "masked": [
+   "authentication-failed",
+   "connection-closed",
+   "file-action-failure",
+   "network-filtered",
+   "network-traffic",
+   "user-creation"
+  ],
+  "repeat": 6,
+  "fold": 3,
+  "cap": 400,
+  "C_head": 4.0,
+  "rot_seed": 20261109,
+  "file": "SIEVE_00",
+  "folds": "StratifiedGroupKFold graine = répétition (5 à 9)"
+ },
+ "code_version": "I4.1",
+ "result": {
+  "scores": {
+   "msp": {
+    "auroc": 0.7007475009331511,
+    "aupr_in": 0.8930739642308088,
+    "fpr95": 0.9294781382228491
+   },
+   "maxlogit": {
+    "auroc": 0.6933625445329386,
+    "aupr_in": 0.8882281951802342,
+    "fpr95": 0.9769628584861307
+   },
+   "energy": {
+    "auroc": 0.6801701821191729,
+    "aupr_in": 0.8855051483986094,
+    "fpr95": 1.0
+   },
+   "hier_msp": {
+    "auroc": 0.6937307646966748,
+    "aupr_in": 0.88752794318028,
+    "fpr95": 0.8598965679360602
+   },
+   "fam_msp": {
+    "auroc": 0.7779809942392446,
+    "aupr_in": 0.9220262676539625,
+    "fpr95": 0.7926657263751763
+   }
+  },
+  "info": {
+   "n_known_test": 8395,
+   "n_unknown_test": 2127,
+   "masked": [
+    "authentication-failed",
+    "connection-closed",
+    "file-action-failure",
+    "network-filtered",
+    "network-traffic",
+    "user-creation"
+   ]
+  }
+ },
+ "seconds": 1.36,
+ "machine": {
+  "host": "MacBook-Pro-de-Madeniyou.local",
+  "platform": "macOS-27.0.1-arm64-arm-64bit",
+  "python": "3.12.16"
+ },
+ "commit": "ff3a863",
+ "code": {
+  "v3_phase2_I4.py": "3fac26afbbe3",
+  "tp2_attacks.py": "37a5b3530f02",
+  "tp2_data.py": "7f392cbaae6e",
+  "tp2_encoder.py": "faec7df763bf",
+  "tp2_fields.py": "70b8fa07b590",
+  "tp2_journal.py": "d98d2c73b0a1",
+  "tp2_logtext.py": "2b5360ac2128",
+  "tp2_new_figs.py": "e48636202d7c",
+  "tp2_openset.py": "05d7b8a91592",
+  "tp2_runner.py": "7765735476e7",
+  "tp2_sota_figs.py": "4ba8388989c4",
+  "tp2_split_v3.py": "d9a4181a2a60",
+  "tp2_stats.py": "0a90cfa961ba",
+  "tp2_vec.py": "6d09bf373fd2",
+  "tp2_versions.py": "b7dd47bdb2f6"
+ },
+ "date": "2026-11-09 14:01:08"
+}
