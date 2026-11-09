@@ -1,0 +1,120 @@
+{
+ "hash": "0ee07727d7132f2e",
+ "block": "E_calibration",
+ "name": "E rot2 r0 pli4",
+ "cfg": {
+  "block": "E",
+  "rotation": 1,
+  "repeat": 0,
+  "fold": 4,
+  "cap": 400,
+  "C_head": 4.0,
+  "alpha_conforme": 0.1,
+  "bins": 15,
+  "calibration_groupes": 0.25,
+  "calibration_memes_gabarits": 0.1,
+  "splits": "groups_v3"
+ },
+ "code_version": "E2",
+ "result": {
+  "aucune": {
+   "ece": 0.13180832416685556,
+   "brier": 0.17227404498852025,
+   "nll": 0.5671917132897687,
+   "auroc_msp": 0.5237620879928842
+  },
+  "temperature": {
+   "ece": 0.1604651474948076,
+   "brier": 0.18537712389456368,
+   "nll": 0.552416504122708,
+   "auroc_msp": 0.5011904181251714,
+   "T": 1.7309473287543853
+  },
+  "vector_scaling": {
+   "ece": 0.1925897947069223,
+   "brier": 0.13912273873129855,
+   "nll": 0.4835802956072747,
+   "auroc_msp": 0.38356699001811334
+  },
+  "isotonique": {
+   "ece": 0.1590092203858825,
+   "brier": 0.18097405662511581,
+   "nll": 0.6850209533396878,
+   "auroc_msp": 0.5357113479377187
+  },
+  "binning": {
+   "ece": 0.1896498290694531,
+   "brier": 0.20475746689033134,
+   "nll": 0.655523580432885,
+   "auroc_msp": 0.5577082282312491
+  },
+  "platt": {
+   "ece": 0.14691007060664257,
+   "brier": 0.17579563591526337,
+   "nll": 0.5336815396893364,
+   "auroc_msp": 0.5237620879928842
+  },
+  "temperature_classes_cachees": {
+   "ece": 0.33107023296347604,
+   "brier": 0.3189945047116754,
+   "nll": 0.8992922433416766,
+   "auroc_msp": 0.49716058588675993,
+   "T": 4.0,
+   "auroc_pseudo": 0.5573279039353227
+  },
+  "temperature_memes_gabarits": {
+   "ece": 0.289892321162865,
+   "brier": 0.25522764170130363,
+   "nll": 0.8930003680650751,
+   "auroc_msp": 0.554957920634395,
+   "T": 0.6049669145744392
+  },
+  "conforme": {
+   "gabarits_distincts": {
+    "q": 0.9946724856250604,
+    "couverture": 0.9370374587270864,
+    "taille_moy": 14.771831948081521,
+    "vides_connus": 0.0,
+    "vides_inconnus": 0.0
+   },
+   "memes_gabarits": {
+    "q": 0.04097415324150022,
+    "couverture": 0.11715814641921894,
+    "taille_moy": 0.13879084595240807,
+    "vides_connus": 0.8612091540475919,
+    "vides_inconnus": 0.991725015913431
+   }
+  },
+  "_info": {
+   "n_fit": 21892,
+   "n_cal": 8811,
+   "n_leak": 2432,
+   "n_known_test": 8783,
+   "n_unknown_test": 1571
+  }
+ },
+ "seconds": 20.37,
+ "machine": {
+  "host": "MacBook-Pro-de-Madeniyou.local",
+  "platform": "macOS-27.0.1-arm64-arm-64bit",
+  "python": "3.12.16"
+ },
+ "commit": "ee22378",
+ "code": {
+  "v3_blockE.py": "e8c0b2101401",
+  "tp2_attacks.py": "37a5b3530f02",
+  "tp2_data.py": "7f392cbaae6e",
+  "tp2_encoder.py": "faec7df763bf",
+  "tp2_journal.py": "d98d2c73b0a1",
+  "tp2_logtext.py": "2b5360ac2128",
+  "tp2_new_figs.py": "e48636202d7c",
+  "tp2_openset.py": "05d7b8a91592",
+  "tp2_runner.py": "7765735476e7",
+  "tp2_sota_figs.py": "4ba8388989c4",
+  "tp2_split_v3.py": "d9a4181a2a60",
+  "tp2_stats.py": "0a90cfa961ba",
+  "tp2_vec.py": "6d09bf373fd2",
+  "tp2_versions.py": "b7dd47bdb2f6"
+ },
+ "date": "2026-11-09 12:48:14"
+}

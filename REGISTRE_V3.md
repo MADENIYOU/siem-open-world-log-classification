@@ -170,6 +170,22 @@ Pour la phase 2, la confiance au niveau de la FAMILLE devient le candidat princi
 
 *Preuve.* scripts/v3_blockV.py ; scripts/v3_transformer_grid.py
 
+### D14 : Bloc D : attaques sur le texte, trois attaques × cinq degrés, comparées à « sans attaque »  (version 1, 2026-11-09 12:40:19)
+
+Protocole : 5 rotations de classes masquées × répétition 0 × 5 plis de groupes = 25 unités, SIEVE_00, développement seul, 400 logs au plus par gabarit ; attaque d'évasion : seuls les logs de TEST sont attaqués, jamais l'entraînement. Trois attaques de `src/tp2_attacks.py` : fautes de frappe (taux 0,05 ; 0,10 ; 0,20 ; 0,30 ; 0,50), lettres trompeuses ou homoglyphes (mêmes taux), mots ajoutés (taux 0,1 ; 0,3 ; 0,5 ; 1,0 ; 2,0). Modèles : TF-IDF mots et TF-IDF caractères 3 à 5 (régression logistique, C = 4). Pour chaque unité : une mesure « sans attaque » (baseline), 15 mesures attaquées, et 5 mesures « homoglyphes + normalisation UTS #39 » (défense par la table officielle, `unconfuse`). Mesures, sur les mêmes logs : macro-F1 des classes connues (palier A), AUROC de détection d'inconnus (MSP et confiance de la famille), part de connus rejetés à tort avec le seuil réglé sur le test propre (5 % de rejet sans attaque). Analyse : chaque attaque contre « sans attaque » à chaque degré (Wilcoxon apparié, Holm) ; tendance avec le degré (Spearman par unité puis Wilcoxon) ; moyenne sur les degrés par attaque ; PUIS comparaison entre attaques (Friedman, Nemenyi) sur la perte moyenne.
+
+*Justification.* Demande de l'étudiant (2026-11-07) : pour chacune des trois attaques, comparer à « sans attaque », varier le degré, comparer chaque attaque en interne selon le degré, faire la moyenne, puis comparer les attaques entre elles ; tout par rapport à la baseline. Sources : sources_v3_methodes.md (Lowd et Meek, Boucher et al., UTS #39).
+
+*Preuve.* scripts/v3_blockD.py
+
+### D15 : Bloc E : calibration, plusieurs méthodes dont des variantes pour le monde ouvert  (version 1, 2026-11-09 12:40:19)
+
+Protocole : 5 rotations × répétition 0 × 5 plis de groupes = 25 unités, SIEVE_00, développement seul. Dans chaque unité, les gabarits d'entraînement sont partagés en deux : 75 % servent à entraîner la régression logistique (C = 4, TF-IDF mots), 25 % à CALIBRER (jeu de calibration formé de gabarits que le modèle n'a pas vus, comme le test). Méthodes : aucune (baseline) ; température ; vector scaling ; calibration isotonique (probabilité de la classe prédite) ; histogram binning (15 bacs) ; Platt sur la probabilité de la classe prédite ; température ajustée sur des classes cachées pour de faux (notre variante pour le monde ouvert : on cache 4 classes connues à l'intérieur du jeu de calibration et on ajuste T pour maximiser l'AUROC d'inconnu du MSP) ; prédiction conforme (couverture visée 90 %, rejet quand l'ensemble de prédiction est vide ou trop grand). Témoin « fuite de calibration » : température ajustée sur des logs des MÊMES gabarits que l'entraînement. Mesures sur les classes connues du test (nouveaux gabarits) : ECE (15 bacs de même effectif), score de Brier, log-vraisemblance négative ; AUROC d'inconnu du MSP calibré ; couverture et taille moyenne des ensembles conformes. Tests : Wilcoxon apparié contre « aucune », Holm ; Friedman et Nemenyi entre méthodes.
+
+*Justification.* Demande de l'étudiant (2026-11-07) : tester plusieurs types de calibration, dont des variantes adaptées au monde ouvert, avec tests statistiques. Sources : Guo et al., Kull et al. (Dirichlet), Zadrozny et Elkan, Nixon et al., Ovadia et al., Angelopoulos et Bates (sources_v3_methodes.md).
+
+*Preuve.* scripts/v3_blockE.py
+
 ## Hypothèses (préinscrites, puis confirmées ou réfutées)
 
 ### HA1 : Le découpage au hasard gonfle le score  (version 4, 2026-11-07 22:29:59 ; **statut : confirmée**)
@@ -589,6 +605,110 @@ La perte de macro-F1 des classes connues entre p = 0 et p = 0,5 est plus petite 
 *Justification.* Les sous-mots d'un Transformer tolèrent mieux les mots abîmés que le sac de mots.
 
 *Note.* Écrit le 2026-11-07 avant tout calcul des blocs V et T.
+
+### HD1 : Chaque attaque dégrade le monde connu  (version 1, 2026-11-09 12:40:19 ; **statut : préinscrite**)
+
+Pour le modèle TF-IDF mots, au degré maximal, chacune des trois attaques fait baisser le macro-F1 des classes connues par rapport à « sans attaque » (Wilcoxon apparié sur 25 unités, Holm sur 3, p < 0,05).
+
+*Justification.* Notebook v1 (8.6) : pertes de 7,8 %, 21,5 % et 12,5 % à l'intensité forte.
+
+*Note.* Écrit le 2026-11-09 avant tout calcul des blocs D et E.
+
+### HD2 : La perte croît avec le degré  (version 1, 2026-11-09 12:40:19 ; **statut : préinscrite**)
+
+Pour chaque attaque (modèle mots), la perte de macro-F1 augmente avec le degré (Spearman par unité sur les cinq degrés, puis Wilcoxon unilatéral sur les 25 unités, Holm sur 3).
+
+*Justification.* Une attaque plus forte modifie plus de logs ou plus de mots.
+
+*Note.* Écrit le 2026-11-09 avant tout calcul des blocs D et E.
+
+### HD3 : Les lettres trompeuses sont la pire attaque  (version 1, 2026-11-09 12:40:19 ; **statut : préinscrite**)
+
+La perte moyenne de macro-F1 sur les cinq degrés (modèle mots) est la plus grande pour les homoglyphes ; Friedman puis Nemenyi : les homoglyphes sont au-delà de la différence critique des deux autres attaques.
+
+*Justification.* Notebook v1 : 21,5 % contre 7,8 % et 12,5 %.
+
+*Note.* Écrit le 2026-11-09 avant tout calcul des blocs D et E.
+
+### HD4 : Les caractères résistent mieux aux fautes et aux homoglyphes, pas au remplissage  (version 1, 2026-11-09 12:40:19 ; **statut : préinscrite**)
+
+La perte moyenne de macro-F1 du modèle caractères est plus petite que celle du modèle mots pour les fautes et pour les homoglyphes (Wilcoxon apparié, Holm sur 3), mais pas pour les mots ajoutés.
+
+*Justification.* Notebook v1 : 10,6 % contre 21,5 % (homoglyphes), 14,4 % contre 12,5 % (remplissage).
+
+*Note.* Écrit le 2026-11-09 avant tout calcul des blocs D et E.
+
+### HD5 : La normalisation UTS #39 annule les homoglyphes  (version 1, 2026-11-09 12:40:19 ; **statut : préinscrite**)
+
+Avec la normalisation, la perte résiduelle de macro-F1 des homoglyphes (modèle mots) est inférieure à 0,01 à chacun des cinq degrés.
+
+*Justification.* Notebook v1 (9.12) : 0,2 % de perte avec la table officielle complète.
+
+*Note.* Écrit le 2026-11-09 avant tout calcul des blocs D et E.
+
+### HD6 : Les attaques font rejeter à tort des logs connus  (version 1, 2026-11-09 12:40:19 ; **statut : préinscrite**)
+
+Le taux de logs connus rejetés à tort (seuil réglé sur le test propre) augmente avec le degré des homoglyphes (Spearman par unité puis Wilcoxon unilatéral, p < 0,05) pour le MSP du modèle mots.
+
+*Justification.* Notebook v1 : 13 % à 22,5 % de connus rejetés à tort aux homoglyphes forts.
+
+*Note.* Écrit le 2026-11-09 avant tout calcul des blocs D et E.
+
+### HD7 : La confiance sur la famille résiste mieux que le MSP  (version 1, 2026-11-09 12:40:19 ; **statut : préinscrite**)
+
+Au degré maximal de chaque attaque, la perte d'AUROC d'inconnu de la confiance sur la famille est plus petite que celle du MSP (Wilcoxon apparié, Holm sur 3).
+
+*Justification.* Extension de D12 : le niveau de la famille est plus grossier, donc moins sensible aux petites altérations.
+
+*Note.* Écrit le 2026-11-09 avant tout calcul des blocs D et E.
+
+### HE1 : Toute calibration réduit l'ECE  (version 1, 2026-11-09 12:40:19 ; **statut : préinscrite**)
+
+Chacune des méthodes de calibration (température, vector scaling, isotonique, binning, Platt, température sur classes cachées) a un ECE plus petit que « aucune » sur les classes connues du test (Wilcoxon apparié sur 25 unités, Holm sur 6).
+
+*Justification.* Notebook v1 : température 0,150 → 0,095 pour TF-IDF.
+
+*Note.* Écrit le 2026-11-09 avant tout calcul des blocs D et E.
+
+### HE2 : Température et vector scaling sont équivalentes  (version 1, 2026-11-09 12:40:19 ; **statut : préinscrite**)
+
+L'ECE du vector scaling diffère de celui de la température de moins de 0,01 en moyenne et la différence n'est pas significative (Wilcoxon, p >= 0,05).
+
+*Justification.* Un seul paramètre contre un par classe : sous décalage, plus de paramètres ne protègent pas mieux (Ovadia et al.).
+
+*Note.* Écrit le 2026-11-09 avant tout calcul des blocs D et E.
+
+### HE3 : Isotonique et binning ne battent pas la température  (version 1, 2026-11-09 12:40:19 ; **statut : préinscrite**)
+
+Sous décalage de gabarits, l'ECE de l'isotonique et du binning n'est pas inférieur à celui de la température (Wilcoxon, p >= 0,05 ou ECE supérieur).
+
+*Justification.* Les méthodes non paramétriques surajustent un jeu de calibration de taille limitée.
+
+*Note.* Écrit le 2026-11-09 avant tout calcul des blocs D et E.
+
+### HE4 : La calibration ne change pas la détection d'inconnus  (version 1, 2026-11-09 12:40:19 ; **statut : préinscrite**)
+
+Aucune méthode de calibration monotone (température, Platt, vector scaling) ne modifie l'AUROC d'inconnu du MSP de plus de 0,01.
+
+*Justification.* Notebook v1 : l'AUROC reste à 0,603 après température.
+
+*Note.* Écrit le 2026-11-09 avant tout calcul des blocs D et E.
+
+### HE5 : Calibrer sur les mêmes gabarits trompe  (version 1, 2026-11-09 12:40:19 ; **statut : préinscrite**)
+
+La température ajustée sur des logs des mêmes gabarits que l'entraînement donne un ECE plus grand, sur le test de nouveaux gabarits, que la température ajustée sur des gabarits distincts (Wilcoxon apparié, p < 0,05).
+
+*Justification.* Un jeu de calibration qui ressemble à l'entraînement mesure une confiance trop optimiste, la même fuite qu'au bloc A.
+
+*Note.* Écrit le 2026-11-09 avant tout calcul des blocs D et E.
+
+### HE6 : La prédiction conforme tient sa couverture seulement avec des gabarits distincts  (version 1, 2026-11-09 12:40:19 ; **statut : préinscrite**)
+
+Calibrée sur des gabarits distincts, la prédiction conforme à 90 % couvre au moins 87 % des logs connus du test ; calibrée sur les mêmes gabarits que l'entraînement, elle couvre moins de 87 % (moyenne sur 25 unités).
+
+*Justification.* La garantie suppose l'échangeabilité entre calibration et test, brisée par la fuite de gabarits.
+
+*Note.* Écrit le 2026-11-09 avant tout calcul des blocs D et E.
 
 ## Résultats
 

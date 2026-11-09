@@ -190,3 +190,33 @@ Généré à partir de `artifacts/results/v3/versions.jsonl` (append-only, ne pa
 | Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
 |---|---|---|---|---|---|
 | **VV1** | 2026-11-09 12:38 | Verdicts HV1 à HV5, résultat RV1, corrections RC1 version 2, RC3 (OpenMax) et RC4 (LOF). | première version | **version courante** | `versions/scripts/v3_verdicts_V__VV1.py` |
+
+## scripts/v3_blockE.py (bloc E : calibration)
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **E2** | 2026-11-09 12:45 | Comme E1, en écartant du test les logs « connus » dont la classe n'a aucun gabarit dans l'ensemble d'ajustement (classe non apprise par le modèle) et des jeux de calibration les logs de classes non apprises. | E1 s'arrêtait avec une erreur d'indice : certaines classes connues, ayant peu de gabarits, voyaient tous leurs gabarits tomber dans les jeux de calibration, donc le modèle ne les apprenait pas (22 classes au lieu de 24). L'unité de fumée E1 (rotation 1, pli 0) reste dans les résultats, avec la version E1. | **version courante** | `versions/scripts/v3_blockE__E2.py` |
+
+## scripts/v3_blockD.py (bloc D : attaques par degré)
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **D1** | 2026-11-09 12:48 | Trois attaques × cinq degrés + normalisation par la table officielle UTS #39, modèles mots et caractères, 25 unités ; mesures sur les mêmes logs (macro-F1 connu, AUROC MSP et famille, faux rejets). | première version | **version courante** | `versions/scripts/v3_blockD__D1.py` |
+
+## scripts/v3_analyze_D.py (analyse du bloc D)
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **AD1** | 2026-11-09 12:48 | Tableaux et tests de HD1 à HD7 (Wilcoxon, Spearman par unité, Friedman et Nemenyi, Holm). | première version | **version courante** | `versions/scripts/v3_analyze_D__AD1.py` |
+
+## scripts/v3_analyze_E.py (analyse du bloc E)
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **AE1** | 2026-11-09 12:48 | Tableaux et tests de HE1 à HE6 (Wilcoxon contre « aucune », Holm, Friedman, couverture conforme). | première version | **version courante** | `versions/scripts/v3_analyze_E__AE1.py` |
+
+## scripts/v3_register_DE.py (préinscriptions D et E)
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **P3** | 2026-11-09 12:48 | Décisions D14 et D15 et hypothèses HD1 à HD7 et HE1 à HE6 inscrites avant tout calcul. | première version | **version courante** | `versions/scripts/v3_register_DE__P3.py` |
