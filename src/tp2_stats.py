@@ -136,3 +136,28 @@ def kendall_concordance(rank_lists):
     """Concordance moyenne (tau de Kendall) entre plusieurs classements des mêmes méthodes (un classement par protocole)."""
     taus = [stats.kendalltau(a, b)[0] for i, a in enumerate(rank_lists) for b in rank_lists[i + 1:]]
     return float(np.nanmean(taus))
+
+
+def sign_test(a, b):
+    """Test des signes apparié (bilatéral) ; les égalités sont écartées. Retourne (n_plus, n_moins, p)."""
+    import numpy as np
+    from scipy.stats import binomtest
+    d = np.asarray(a, float) - np.asarray(b, float); d = d[d != 0]; npos = int((d > 0).sum()); n = len(d)
+    return npos, n - npos, (float(binomtest(npos, n, 0.5).pvalue) if n else 1.0)
+
+
+def permutation_paired(a, b, n_perm=10000, seed=0, shift=0.0):
+    """Test de permutation apparié par retournement de signes des différences (a - b - shift) ; retourne (moyenne observée, p unilatéral H1 : moyenne > 0)."""
+    import numpy as np
+    d = np.asarray(a, float) - np.asarray(b, float) - shift; rng = np.random.default_rng(seed); obs = d.mean()
+    signs = rng.choice([-1.0, 1.0], size=(n_perm, len(d))); null = (signs * d).mean(1)
+    return float(obs), float((null >= obs).mean())
+
+
+def multi_paired(a, b, shift=0.0, n_boot=10000, seed=0):
+    """Plusieurs tests appariés d'un même écart a - b contre un seuil `shift` : IC95 bootstrap, Wilcoxon (unilatéral), signes, permutation (unilatéral). Retourne un dict."""
+    import numpy as np
+    a, b = np.asarray(a, float), np.asarray(b, float); d = a - b; rng = np.random.default_rng(seed); bs = [d[rng.integers(0, len(d), len(d))].mean() for _ in range(n_boot)]
+    w, p2, _ = wilcoxon_paired(a - shift, b); pw = p2 / 2 if (d - shift).mean() > 0 else 1 - p2 / 2
+    npos, nneg, ps = sign_test(a - shift, b); obs, pp = permutation_paired(a, b, shift=shift)
+    return {"écart moyen": float(d.mean()), "IC95_bas": float(np.percentile(bs, 2.5)), "IC95_haut": float(np.percentile(bs, 97.5)), "p_wilcoxon_unilat": float(pw), "signes +/-": f"{npos}/{nneg}", "p_signes_bilat": ps, "p_permutation_unilat": pp, "n": len(d)}

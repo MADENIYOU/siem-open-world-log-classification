@@ -1,0 +1,8 @@
+{
+ "config": "W1_lr30",
+ "gain_dev": 0.0085,
+ "f1A_dev": 0.5117,
+ "porte_HF17": false,
+ "friedman_p": 6.294853955484446e-15,
+ "n_indiscernables": 25
+}
