@@ -1,0 +1,4 @@
+attaque,perte AUROC MSP,perte AUROC famille,famille - MSP,p,p Holm
+typos,0.03671,0.04913,0.01242,0.12665,0.12665
+homoglyphs,0.07639,0.11092,0.03453,0.03668,0.07652
+padding,0.04688,0.0943,0.04741,0.02551,0.07652

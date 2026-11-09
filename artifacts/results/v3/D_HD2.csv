@@ -1,0 +1,4 @@
+attaque,rho médian,unités rho>0,n,p,pertes moyennes par degré,p Holm
+typos,1.0,25,25,0.0,"[np.float64(0.01), np.float64(0.018), np.float64(0.034), np.float64(0.05), np.float64(0.088)]",0.0
+homoglyphs,1.0,25,25,0.0,"[np.float64(0.024), np.float64(0.044), np.float64(0.089), np.float64(0.142), np.float64(0.254)]",0.0
+padding,1.0,24,25,0.0,"[np.float64(0.007), np.float64(0.016), np.float64(0.026), np.float64(0.053), np.float64(0.128)]",0.0
