@@ -1,0 +1,20 @@
+"""Journal : décision D16 (phase 2, itération I1 : représentation) et hypothèses HF1 à HF6, préinscrites avant tout calcul. Idempotent."""
+import sys, pathlib
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1] / "src"))
+import tp2_journal as J
+if not J.exists("D16"):
+    J.add("D16", "decision", "Phase 2, itération I1 : corriger la représentation pour généraliser à de nouveaux gabarits",
+          "Constat des blocs A à V : environ 0,50 de macro-F1 des classes connues pour toutes les méthodes (19 classifieurs, 3 vectorisations) : le goulot est la représentation face à des gabarits nouveaux. Hypothèse de travail : un mot qui n'apparaît que dans UN gabarit d'entraînement est une valeur (nom d'utilisateur, fichier, chemin) ou un mot propre au gabarit ; il aide à reconnaître ce gabarit mais ne peut pas se généraliser à un nouveau. Le TF-IDF actuel garde les mots présents dans au moins 2 LOGS (min_df = 2), ce qui retient les valeurs d'un gabarit de milliers de logs. Variantes comparées au SVM sur mots (baseline), classification à 30 classes, protocole P2 (25 plis), SIEVE_00, développement seul : (T2, T3, T5) vocabulaire restreint aux mots présents dans au moins 2, 3 ou 5 GABARITS d'entraînement ; (T3M) idem avec m = 3 mais les mots écartés sont remplacés par un marqueur « valeur » unique (étiquetage des champs variables détectés par les gabarits) ; (ENS) moyenne des marges du SVM mots et du SVM caractères ; (WGT) apprentissage où chaque gabarit pèse autant (poids 1 / nombre de logs du gabarit) ; (COMB) combinaison des variantes retenues. Le test v2 n'est JAMAIS lu.",
+          justification="Demande de l'étudiant (2026-11-07) : proposer une solution maison (remplacer les valeurs variables par des marqueurs, étiqueter les champs pertinents, combiner mots et lettres, formules maison) et itérer pour atteindre le score maximal. La règle de support par gabarit est notre formule F4 : elle remplace une statistique sur les logs par une statistique sur les gabarits, l'unité de généralisation. Elle découle de HB5 et du bloc A (les gabarits sont l'unité). Le masquage numérique par type est déjà testé au notebook v1 (V1 : écart −0,002, indistinguable).", preuve="scripts/v3_phase2_I1.py")
+N = "Écrit le 2026-11-09 avant tout calcul de l'itération I1."
+H = [
+ ("HF1", "Le support par gabarit améliore le macro-F1", "Pour au moins un des trois seuils m = 2, 3, 5 gabarits, le macro-F1 des classes (palier A) dépasse celui du SVM mots d'au moins 0,02 (Wilcoxon apparié sur 25 plis, Holm sur 3, p < 0,05).", "Les mots d'un seul gabarit sont des valeurs ou des mots propres au gabarit, qui encombrent le vocabulaire sans se généraliser."),
+ ("HF2", "Le marqueur « valeur » apporte quelque chose de plus que la suppression", "T3M (mots écartés remplacés par un marqueur) dépasse T3 (mots écartés supprimés) d'au moins 0,01 (Wilcoxon apparié, p < 0,05).", "Le nombre de champs variables d'un log est une information de structure qui disparaît si on supprime les mots."),
+ ("HF3", "Mots et caractères se complètent", "ENS dépasse le SVM mots d'au moins 0,02 (Wilcoxon apparié, Holm).", "Deux représentations qui se trompent différemment ; mais au bloc V, mots et caractères étaient équivalents seuls."),
+ ("HF4", "Pondérer les gabarits à égalité aide", "WGT dépasse le SVM mots d'au moins 0,02 (Wilcoxon apparié, Holm).", "Les gros gabarits dominent l'apprentissage même avec le plafond de 400 logs."),
+ ("HF5", "La combinaison dépasse chacun de ses composants", "COMB dépasse chacune des variantes qu'elle combine (Wilcoxon apparié, Holm).", "Les gains portent sur des mécanismes différents."),
+ ("HF6", "Objectif de score", "Le macro-F1 des classes (palier A) de la meilleure variante atteint au moins 0,55 en moyenne sur les 25 plis (baseline 0,503).", "Objectif de l'étudiant : viser le maximum ; 0,55 est un seuil fixé d'avance pour dire si l'itération a franchi une marche notable."),
+]
+for i, t, tx, j in H:
+    if not J.exists(i): J.add(i, "hypothese", t, tx, justification=j, statut="préinscrite", note=N)
+print(J.render())
