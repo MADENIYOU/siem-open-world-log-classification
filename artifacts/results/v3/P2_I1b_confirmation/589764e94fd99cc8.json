@@ -1,0 +1,59 @@
+{
+ "hash": "589764e94fd99cc8",
+ "block": "P2_I1b_confirmation",
+ "name": "I1b r5 pli2",
+ "cfg": {
+  "phase": 2,
+  "iteration": "I1b",
+  "repeat": 5,
+  "fold": 2,
+  "cap": 400,
+  "variants": [
+   "V0",
+   "ENS"
+  ],
+  "file": "SIEVE_00",
+  "folds": "StratifiedGroupKFold graine = répétition (5 à 9)"
+ },
+ "code_version": "I1b.1",
+ "result": {
+  "V0": {
+   "f1A": 0.49411617074062747,
+   "f1_30": 0.43333228760794446,
+   "acc": 0.43744933801675223,
+   "f1_fam": 0.6971374659957883,
+   "tree_dist": 0.9228136539673962
+  },
+  "ENS": {
+   "f1A": 0.5061093028400879,
+   "f1_30": 0.4418274228450623,
+   "acc": 0.44996847698820136,
+   "f1_fam": 0.7090646846119075,
+   "tree_dist": 0.900657479960371
+  }
+ },
+ "seconds": 26.54,
+ "machine": {
+  "host": "MacBook-Pro-de-Madeniyou.local",
+  "platform": "macOS-27.0.1-arm64-arm-64bit",
+  "python": "3.12.16"
+ },
+ "commit": "ff3a863",
+ "code": {
+  "v3_phase2_I1b.py": "91070253853b",
+  "tp2_attacks.py": "37a5b3530f02",
+  "tp2_data.py": "7f392cbaae6e",
+  "tp2_encoder.py": "faec7df763bf",
+  "tp2_journal.py": "d98d2c73b0a1",
+  "tp2_logtext.py": "2b5360ac2128",
+  "tp2_new_figs.py": "e48636202d7c",
+  "tp2_openset.py": "05d7b8a91592",
+  "tp2_runner.py": "7765735476e7",
+  "tp2_sota_figs.py": "4ba8388989c4",
+  "tp2_split_v3.py": "d9a4181a2a60",
+  "tp2_stats.py": "0a90cfa961ba",
+  "tp2_vec.py": "6d09bf373fd2",
+  "tp2_versions.py": "b7dd47bdb2f6"
+ },
+ "date": "2026-11-09 13:17:31"
+}
