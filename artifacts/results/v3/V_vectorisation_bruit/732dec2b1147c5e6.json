@@ -1,0 +1,120 @@
+{
+ "hash": "732dec2b1147c5e6",
+ "block": "V_vectorisation_bruit",
+ "name": "V p5 rot5 r0 pli3",
+ "cfg": {
+  "block": "V",
+  "file": 5,
+  "rotation": 4,
+  "repeat": 0,
+  "fold": 3,
+  "cap": 400,
+  "C_head": 4.0,
+  "vecs": [
+   "word",
+   "char",
+   "sg_idf"
+  ],
+  "splits": "groups_v3"
+ },
+ "code_version": "V1",
+ "result": {
+  "word": {
+   "f1A": 0.5656989821938752,
+   "f1_30": 0.5061500340773376,
+   "acc": 0.5636885540007176,
+   "open": {
+    "msp": {
+     "auroc": 0.49685585910850744,
+     "fpr95": 0.9937694704049844
+    },
+    "energy": {
+     "auroc": 0.4790171397316051,
+     "fpr95": 0.9981308411214953
+    },
+    "fam_msp": {
+     "auroc": 0.5939408639950877,
+     "fpr95": 0.8716510903426792
+    }
+   },
+   "seconds": 2.1
+  },
+  "char": {
+   "f1A": 0.5393123609667375,
+   "f1_30": 0.49159546747035227,
+   "acc": 0.5365386915440736,
+   "open": {
+    "msp": {
+     "auroc": 0.47337680023816253,
+     "fpr95": 0.9968847352024922
+    },
+    "energy": {
+     "auroc": 0.45193240683920044,
+     "fpr95": 0.9987538940809969
+    },
+    "fam_msp": {
+     "auroc": 0.6924921037855255,
+     "fpr95": 0.7919003115264798
+    }
+   },
+   "seconds": 1298.9
+  },
+  "sg_idf": {
+   "f1A": 0.5319181295863606,
+   "f1_30": 0.4820258317184295,
+   "acc": 0.5281664872622892,
+   "open": {
+    "msp": {
+     "auroc": 0.43793689064455543,
+     "fpr95": 0.9426791277258567
+    },
+    "energy": {
+     "auroc": 0.43568187263146174,
+     "fpr95": 0.9838006230529595
+    },
+    "fam_msp": {
+     "auroc": 0.4418958590190847,
+     "fpr95": 0.9271028037383178
+    }
+   },
+   "seconds": 6.0
+  },
+  "_info": {
+   "n_known_test": 8361,
+   "n_unknown_test": 1605,
+   "n_train": 33538,
+   "masked": [
+    "authentication-success",
+    "connection-closed",
+    "connection-opened",
+    "directory-deleted",
+    "file-write",
+    "user-deletion"
+   ]
+  }
+ },
+ "seconds": 1306.98,
+ "machine": {
+  "host": "MacBook-Pro-de-Madeniyou.local",
+  "platform": "macOS-27.0.1-arm64-arm-64bit",
+  "python": "3.12.16"
+ },
+ "commit": "c31d7fc",
+ "code": {
+  "v3_blockV.py": "3a15bfa77adc",
+  "tp2_attacks.py": "37a5b3530f02",
+  "tp2_data.py": "7f392cbaae6e",
+  "tp2_encoder.py": "faec7df763bf",
+  "tp2_journal.py": "d98d2c73b0a1",
+  "tp2_logtext.py": "2b5360ac2128",
+  "tp2_new_figs.py": "e48636202d7c",
+  "tp2_openset.py": "05d7b8a91592",
+  "tp2_runner.py": "7765735476e7",
+  "tp2_sota_figs.py": "4ba8388989c4",
+  "tp2_split_v3.py": "d9a4181a2a60",
+  "tp2_stats.py": "0a90cfa961ba",
+  "tp2_vec.py": "6d09bf373fd2",
+  "tp2_versions.py": "b7dd47bdb2f6"
+ },
+ "date": "2026-11-08 01:25:57"
+}

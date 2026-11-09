@@ -1,0 +1,120 @@
+{
+ "hash": "81b8a21d32a5cf75",
+ "block": "V_vectorisation_bruit",
+ "name": "V p5 rot4 r0 pli3",
+ "cfg": {
+  "block": "V",
+  "file": 5,
+  "rotation": 3,
+  "repeat": 0,
+  "fold": 3,
+  "cap": 400,
+  "C_head": 4.0,
+  "vecs": [
+   "word",
+   "char",
+   "sg_idf"
+  ],
+  "splits": "groups_v3"
+ },
+ "code_version": "V1",
+ "result": {
+  "word": {
+   "f1A": 0.41547622431046194,
+   "f1_30": 0.3947931967851527,
+   "acc": 0.44496719078865915,
+   "open": {
+    "msp": {
+     "auroc": 0.7760719302232162,
+     "fpr95": 0.9338274219163578
+    },
+    "energy": {
+     "auroc": 0.7092639905231889,
+     "fpr95": 0.9820010587612493
+    },
+    "fam_msp": {
+     "auroc": 0.7608613967219823,
+     "fpr95": 0.9232398094229751
+    }
+   },
+   "seconds": 2.1
+  },
+  "char": {
+   "f1A": 0.44301165427519845,
+   "f1_30": 0.41609806541765354,
+   "acc": 0.45400519995047667,
+   "open": {
+    "msp": {
+     "auroc": 0.777774049181079,
+     "fpr95": 0.8729486500794071
+    },
+    "energy": {
+     "auroc": 0.7274040431256776,
+     "fpr95": 0.9195341450502912
+    },
+    "fam_msp": {
+     "auroc": 0.7355610402339106,
+     "fpr95": 0.89571201694018
+    }
+   },
+   "seconds": 589.8
+  },
+  "sg_idf": {
+   "f1A": 0.42499687725170127,
+   "f1_30": 0.3908761296679809,
+   "acc": 0.4184722050266188,
+   "open": {
+    "msp": {
+     "auroc": 0.6756767987422279,
+     "fpr95": 0.8586553732133404
+    },
+    "energy": {
+     "auroc": 0.6914229721041907,
+     "fpr95": 0.9184753838009528
+    },
+    "fam_msp": {
+     "auroc": 0.7525274696897314,
+     "fpr95": 0.8888300688194812
+    }
+   },
+   "seconds": 7.9
+  },
+  "_info": {
+   "n_known_test": 8077,
+   "n_unknown_test": 1889,
+   "n_train": 33097,
+   "masked": [
+    "file-modification",
+    "file-read",
+    "hardware-monitoring",
+    "ids-alert",
+    "process-shutdown",
+    "user-logout"
+   ]
+  }
+ },
+ "seconds": 599.77,
+ "machine": {
+  "host": "MacBook-Pro-de-Madeniyou.local",
+  "platform": "macOS-27.0.1-arm64-arm-64bit",
+  "python": "3.12.16"
+ },
+ "commit": "c31d7fc",
+ "code": {
+  "v3_blockV.py": "3a15bfa77adc",
+  "tp2_attacks.py": "37a5b3530f02",
+  "tp2_data.py": "7f392cbaae6e",
+  "tp2_encoder.py": "faec7df763bf",
+  "tp2_journal.py": "d98d2c73b0a1",
+  "tp2_logtext.py": "2b5360ac2128",
+  "tp2_new_figs.py": "e48636202d7c",
+  "tp2_openset.py": "05d7b8a91592",
+  "tp2_runner.py": "7765735476e7",
+  "tp2_sota_figs.py": "4ba8388989c4",
+  "tp2_split_v3.py": "d9a4181a2a60",
+  "tp2_stats.py": "0a90cfa961ba",
+  "tp2_vec.py": "6d09bf373fd2",
+  "tp2_versions.py": "b7dd47bdb2f6"
+ },
+ "date": "2026-11-08 00:20:32"
+}

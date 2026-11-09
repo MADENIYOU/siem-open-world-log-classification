@@ -1,0 +1,120 @@
+{
+ "hash": "1899daedfa9c48ea",
+ "block": "V_vectorisation_bruit",
+ "name": "V p5 rot1 r0 pli2",
+ "cfg": {
+  "block": "V",
+  "file": 5,
+  "rotation": 0,
+  "repeat": 0,
+  "fold": 2,
+  "cap": 400,
+  "C_head": 4.0,
+  "vecs": [
+   "word",
+   "char",
+   "sg_idf"
+  ],
+  "splits": "groups_v3"
+ },
+ "code_version": "V1",
+ "result": {
+  "word": {
+   "f1A": 0.5178981690707544,
+   "f1_30": 0.449311647457326,
+   "acc": 0.47443059733562526,
+   "open": {
+    "msp": {
+     "auroc": 0.8051710712104714,
+     "fpr95": 0.7619047619047619
+    },
+    "energy": {
+     "auroc": 0.817227318403443,
+     "fpr95": 0.6847117794486216
+    },
+    "fam_msp": {
+     "auroc": 0.7493482847643389,
+     "fpr95": 0.6726817042606517
+    }
+   },
+   "seconds": 3.2
+  },
+  "char": {
+   "f1A": 0.5071867790333473,
+   "f1_30": 0.4513667086007704,
+   "acc": 0.4762569832402235,
+   "open": {
+    "msp": {
+     "auroc": 0.8428454570030577,
+     "fpr95": 0.6370927318295739
+    },
+    "energy": {
+     "auroc": 0.8465991472019112,
+     "fpr95": 0.5268170426065163
+    },
+    "fam_msp": {
+     "auroc": 0.7469777796446424,
+     "fpr95": 0.7368421052631579
+    }
+   },
+   "seconds": 54.7
+  },
+  "sg_idf": {
+   "f1A": 0.4576754549122365,
+   "f1_30": 0.38485205263140637,
+   "acc": 0.4030941125913193,
+   "open": {
+    "msp": {
+     "auroc": 0.6939254830242775,
+     "fpr95": 0.8355889724310777
+    },
+    "energy": {
+     "auroc": 0.7636586901288459,
+     "fpr95": 0.7283208020050125
+    },
+    "fam_msp": {
+     "auroc": 0.6119834125494226,
+     "fpr95": 0.9413533834586466
+    }
+   },
+   "seconds": 8.0
+  },
+  "_info": {
+   "n_known_test": 9308,
+   "n_unknown_test": 1995,
+   "n_train": 33917,
+   "masked": [
+    "directory-created",
+    "http-request-success",
+    "process-info",
+    "process-started",
+    "system-configuration-changed",
+    "user-session-open"
+   ]
+  }
+ },
+ "seconds": 65.98,
+ "machine": {
+  "host": "MacBook-Pro-de-Madeniyou.local",
+  "platform": "macOS-27.0.1-arm64-arm-64bit",
+  "python": "3.12.16"
+ },
+ "commit": "c31d7fc",
+ "code": {
+  "v3_blockV.py": "3a15bfa77adc",
+  "tp2_attacks.py": "37a5b3530f02",
+  "tp2_data.py": "7f392cbaae6e",
+  "tp2_encoder.py": "faec7df763bf",
+  "tp2_journal.py": "d98d2c73b0a1",
+  "tp2_logtext.py": "2b5360ac2128",
+  "tp2_new_figs.py": "e48636202d7c",
+  "tp2_openset.py": "05d7b8a91592",
+  "tp2_runner.py": "7765735476e7",
+  "tp2_sota_figs.py": "4ba8388989c4",
+  "tp2_split_v3.py": "d9a4181a2a60",
+  "tp2_stats.py": "0a90cfa961ba",
+  "tp2_vec.py": "6d09bf373fd2",
+  "tp2_versions.py": "b7dd47bdb2f6"
+ },
+ "date": "2026-11-07 23:57:44"
+}

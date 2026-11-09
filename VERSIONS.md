@@ -131,7 +131,8 @@ Généré à partir de `artifacts/results/v3/versions.jsonl` (append-only, ne pa
 |---|---|---|---|---|---|
 | **E1** | 2026-11-07 22:30 | Huit explications en mots simples : origine des 440 gabarits, F1 et macro-F1, explications orales des diapositives, bloc A, Wilcoxon, Friedman et Holm, pourquoi HA1 a été rejouée, méthodes du bloc B (dont le clustering), résultats du bloc B. | première version | Nouvelle explication à noter après le bloc C (règle : toute explication est notée) ; l'index est complété, rien n'est retiré. (par E2) | `versions/EXPLICATIONS_V3__E1.md` |
 |  |  | *Note : Document qui s'allonge : toute nouvelle explication demandée y est ajoutée dans une nouvelle version, sans rien retirer.* |  |  |  |
-| **E2** | 2026-11-07 23:12 | E1 plus E9 : les scores d'inconnu du bloc C, leur principe et leurs résultats en mots simples. | Nouvelle explication à noter après le bloc C (règle : toute explication est notée) ; l'index est complété, rien n'est retiré. | **version courante** | `versions/EXPLICATIONS_V3__E2.md` |
+| **E2** | 2026-11-07 23:12 | E1 plus E9 : les scores d'inconnu du bloc C, leur principe et leurs résultats en mots simples. | Nouvelle explication à noter après le bloc C (règle : toute explication est notée) ; l'index est complété, rien n'est retiré. | Explications demandées par l'étudiant (Weibull et LOF) et correction d'une explication fausse de E9 ; le texte erroné de E9 est conservé dans la version E2 et signalé par un renvoi, pas supprimé. (par E3) | `versions/EXPLICATIONS_V3__E2.md` |
+| **E3** | 2026-11-09 12:38 | E2 plus E9b (correction de E9), E10 (loi de Weibull et OpenMax), E11 (LOF) et E12 (vectorisation × bruit). | Explications demandées par l'étudiant (Weibull et LOF) et correction d'une explication fausse de E9 ; le texte erroné de E9 est conservé dans la version E2 et signalé par un renvoi, pas supprimé. | **version courante** | `versions/EXPLICATIONS_V3__E3.md` |
 
 ## scripts/v3_blockC.py (bloc C : détection d'inconnus)
 
@@ -177,3 +178,15 @@ Généré à partir de `artifacts/results/v3/versions.jsonl` (append-only, ne pa
 | Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
 |---|---|---|---|---|---|
 | **P2** | 2026-11-07 23:39 | Décision D13 et hypothèses HV1 à HV5, HT1 à HT4 inscrites avant tout calcul ; correction du texte de C2. | première version | **version courante** | `versions/scripts/v3_register_VT__P2.py` |
+
+## scripts/v3_analyze_V.py (analyse du bloc V)
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **AV1** | 2026-11-09 12:38 | Tableaux et tests de HV1 à HV5 (Wilcoxon apparié, Spearman par bloc, Friedman, Holm). | première version | **version courante** | `versions/scripts/v3_analyze_V__AV1.py` |
+
+## scripts/v3_verdicts_V.py (verdicts V et corrections C)
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **VV1** | 2026-11-09 12:38 | Verdicts HV1 à HV5, résultat RV1, corrections RC1 version 2, RC3 (OpenMax) et RC4 (LOF). | première version | **version courante** | `versions/scripts/v3_verdicts_V__VV1.py` |

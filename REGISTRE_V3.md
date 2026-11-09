@@ -493,45 +493,70 @@ Le FPR@95 moyen (inconnus acceptés quand on garde 95 % des connus) est d'au moi
 *Historique des versions précédentes (conservées) :*
 - v1 (2026-11-07 22:55:54) : statut préinscrite ; Le FPR@95 moyen (inconnus acceptés quand on garde 95 % des connus) est d'au moins 0,70 pour chacun des 28 scores.
 
-### HV1 : Les caractères résistent mieux au bruit que les mots  (version 1, 2026-11-07 23:25:34 ; **statut : préinscrite**)
+### HV1 : Les caractères résistent mieux au bruit que les mots  (version 2, 2026-11-09 12:37:31 ; **statut : confirmée**)
 
 La perte de macro-F1 des classes connues entre p = 0 et p = 0,5 est plus petite pour TF-IDF caractères que pour TF-IDF mots (Wilcoxon apparié sur les unités rotation × répétition × pli, Holm p < 0,05).
 
-*Justification.* Une lettre abîmée ne détruit qu'une partie des n-grammes d'un mot ; un mot déplacé ou collé disparaît entièrement du sac de mots.
+*Justification.* Verdict établi avec la règle de décision préinscrite (voir la version précédente).
 
-*Note.* Écrit le 2026-11-07 avant tout calcul des blocs V et T.
+*Preuve.* Perte de macro-F1 des classes connues de p = 0 à p = 0,5 : mots 0,027 ; caractères 0,003 ; Skip-gram −0,031 (il gagne). Caractères moins mots = −0,024 ; Wilcoxon apparié sur 50 blocs, p = 1,3e-4.  Fichiers : artifacts/results/v3/V_all_units.csv ; V_resume.csv ; V_HV2.csv ; V_HV3.csv
 
-### HV2 : Le bruit dégrade chaque vectorisation  (version 1, 2026-11-07 23:25:34 ; **statut : préinscrite**)
+*Note.* Les caractères sont presque insensibles au bruit : une lettre abîmée ne détruit qu'une partie des n-grammes d'un mot. Une unité (p = 0, rotation 1, répétition 0, pli 0) avait été vue au test de fumée avant le calcul complet ; le verdict repose sur les 300 unités (50 blocs rotation × répétition × pli par fichier).
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-07 23:25:34) : statut préinscrite ; La perte de macro-F1 des classes connues entre p = 0 et p = 0,5 est plus petite pour TF-IDF caractères que pour TF-IDF mots (Wilcoxon apparié sur les unités rotation × répétition × pli, Holm p < 0,05)…
+
+### HV2 : Le bruit dégrade chaque vectorisation  (version 2, 2026-11-09 12:37:31 ; **statut : réfutée**)
 
 Pour chacune des trois vectorisations, le macro-F1 des classes connues décroît avec p (tendance de Spearman négative, p Holm < 0,05, sur les moyennes par unité).
 
-*Justification.* Notebook v1 (8.3) : TF-IDF mots 0,49 à p = 0 contre 0,47 à p = 0,5 sur la validation croisée ; la baisse est faible mais attendue.
+*Justification.* Verdict établi avec la règle de décision préinscrite (voir la version précédente).
 
-*Note.* Écrit le 2026-11-07 avant tout calcul des blocs V et T.
+*Preuve.* Tendance du macro-F1 avec p (Spearman par bloc, puis Wilcoxon unilatéral, Holm sur 3) : mots rho médian −0,71, p Holm < 1e-5 (décroît) ; caractères −0,09, p Holm 0,17 (pas de tendance significative) ; Skip-gram +0,26, p Holm 0,99 (il MONTE avec le bruit : 0,437 à p = 0 ; 0,468 à p = 0,5).  Fichiers : artifacts/results/v3/V_all_units.csv ; V_resume.csv ; V_HV2.csv ; V_HV3.csv
 
-### HV3 : Skip-gram est moins bon que TF-IDF mots à tous les niveaux de bruit  (version 1, 2026-11-07 23:25:34 ; **statut : préinscrite**)
+*Note.* Seuls les mots baissent. Skip-gram progresse avec le bruit ; explication possible, NON testée : les fichiers bruités fournissent des contextes plus variés (mots déplacés, remplacés) à l'apprentissage des vecteurs. À tester (augmentation par bruit, phase 2). Une unité (p = 0, rotation 1, répétition 0, pli 0) avait été vue au test de fumée avant le calcul complet ; le verdict repose sur les 300 unités (50 blocs rotation × répétition × pli par fichier).
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-07 23:25:34) : statut préinscrite ; Pour chacune des trois vectorisations, le macro-F1 des classes connues décroît avec p (tendance de Spearman négative, p Holm < 0,05, sur les moyennes par unité).
+
+### HV3 : Skip-gram est moins bon que TF-IDF mots à tous les niveaux de bruit  (version 2, 2026-11-09 12:37:31 ; **statut : confirmée**)
 
 À chacun des six niveaux de p, le macro-F1 de Skip-gram pondéré IDF est inférieur à celui de TF-IDF mots (Wilcoxon, Holm p < 0,05 sur les six).
 
-*Justification.* Notebook v1 : 0,376 contre 0,459 (30 classes, test) ; des vecteurs appris sur peu de contextes distincts.
+*Justification.* Verdict établi avec la règle de décision préinscrite (voir la version précédente).
 
-*Note.* Écrit le 2026-11-07 avant tout calcul des blocs V et T.
+*Preuve.* Skip-gram moins TF-IDF mots à chaque p : −0,086 ; −0,065 ; −0,050 ; −0,042 ; −0,041 ; −0,027 (p de 0 à 0,5). Wilcoxon sur 50 blocs, p Holm < 1e-4 pour les six.  Fichiers : artifacts/results/v3/V_all_units.csv ; V_resume.csv ; V_HV2.csv ; V_HV3.csv
 
-### HV4 : Le meilleur au propre reste le meilleur au bruit maximal  (version 1, 2026-11-07 23:25:34 ; **statut : préinscrite**)
+*Note.* L'écart se réduit avec le bruit (de −0,086 à −0,027) parce que les mots baissent et que Skip-gram monte. Une unité (p = 0, rotation 1, répétition 0, pli 0) avait été vue au test de fumée avant le calcul complet ; le verdict repose sur les 300 unités (50 blocs rotation × répétition × pli par fichier).
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-07 23:25:34) : statut préinscrite ; À chacun des six niveaux de p, le macro-F1 de Skip-gram pondéré IDF est inférieur à celui de TF-IDF mots (Wilcoxon, Holm p < 0,05 sur les six).
+
+### HV4 : Le meilleur au propre reste le meilleur au bruit maximal  (version 2, 2026-11-09 12:37:31 ; **statut : non tranchée**)
 
 La vectorisation au macro-F1 le plus élevé à p = 0 est aussi la meilleure à p = 0,5 (rangs moyens de Friedman).
 
-*Justification.* Pas de renversement de classement avec le bruit.
+*Justification.* Verdict établi avec la règle de décision préinscrite (voir la version précédente).
 
-*Note.* Écrit le 2026-11-07 avant tout calcul des blocs V et T.
+*Preuve.* Rangs moyens de Friedman : à p = 0, mots 1,42, caractères 1,76, Skip-gram 2,82 ; à p = 0,5, caractères 1,62, mots 1,76, Skip-gram 2,62 (différence critique 0,47 dans les deux cas). Le meilleur change au niveau des estimations (mots puis caractères), mais mots et caractères sont dans la différence critique aux deux niveaux : ni le renversement ni la stabilité ne sont établis. Seul Skip-gram est nettement dernier.  Fichiers : artifacts/results/v3/V_all_units.csv ; V_resume.csv ; V_HV2.csv ; V_HV3.csv
 
-### HV5 : Le bruit abaisse la détection d'inconnus  (version 1, 2026-11-07 23:25:34 ; **statut : préinscrite**)
+*Note.* À préciser avec plus d'unités ; en pratique mots et caractères sont équivalents sur le macro-F1 des classes connues. Une unité (p = 0, rotation 1, répétition 0, pli 0) avait été vue au test de fumée avant le calcul complet ; le verdict repose sur les 300 unités (50 blocs rotation × répétition × pli par fichier).
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-07 23:25:34) : statut préinscrite ; La vectorisation au macro-F1 le plus élevé à p = 0 est aussi la meilleure à p = 0,5 (rangs moyens de Friedman).
+
+### HV5 : Le bruit abaisse la détection d'inconnus  (version 2, 2026-11-09 12:37:31 ; **statut : confirmée**)
 
 L'AUROC du MSP décroît avec p pour TF-IDF mots (Spearman négatif, p < 0,05 sur les moyennes par unité).
 
-*Justification.* Hypothèse exploratoire : un texte plus abîmé rend tous les logs moins typiques de leur classe.
+*Justification.* Verdict établi avec la règle de décision préinscrite (voir la version précédente).
 
-*Note.* Écrit le 2026-11-07 avant tout calcul des blocs V et T.
+*Preuve.* AUROC du MSP (TF-IDF mots) selon p : rho médian −0,31 sur 50 blocs, 30 blocs sur 50 négatifs, Wilcoxon unilatéral p = 0,038. Valeur moyenne de 0,622 à p = 0 à 0,615 à p = 0,5.  Fichiers : artifacts/results/v3/V_all_units.csv ; V_resume.csv ; V_HV2.csv ; V_HV3.csv
+
+*Note.* Effet faible, à la limite du seuil ; le résultat est exploratoire dans son esprit (hypothèse déclarée exploratoire). Une unité (p = 0, rotation 1, répétition 0, pli 0) avait été vue au test de fumée avant le calcul complet ; le verdict repose sur les 300 unités (50 blocs rotation × répétition × pli par fichier).
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-07 23:25:34) : statut préinscrite ; L'AUROC du MSP décroît avec p pour TF-IDF mots (Spearman négatif, p < 0,05 sur les moyennes par unité).
 
 ### HT1 : Le Transformer n'améliore pas la classification des classes connues  (version 1, 2026-11-07 23:25:34 ; **statut : préinscrite**)
 
@@ -587,15 +612,18 @@ La perte de macro-F1 des classes connues entre p = 0 et p = 0,5 est plus petite 
 
 *Note.* Cas particulier : les sorties avec rejet de DBSCAN et HDBSCAN comptent un rejet comme une erreur ; elles mesurent surtout que les logs de nouveaux gabarits sont loin de tous les points d'entraînement (utile au bloc C).
 
-### RC1 : Bloc C : AUROC de détection d'inconnus (précédent v1 et actuel v3)  (version 1, 2026-11-07 23:12:01)
+### RC1 : Bloc C : AUROC de détection d'inconnus (précédent v1 et actuel v3)  (version 2, 2026-11-09 12:37:31)
 
-**Actuel (v3, développement, P2, 5 rotations × 25 plis = 125 unités, AUROC moyen) :** probabilité maximale de la famille 0,666 ; énergie 0,639 ; logit maximal 0,636 ; MSP hiérarchique 0,633 ; entropie négative 0,632 ; NNGuide 0,625 ; ensemble 0,624 ; MSP (baseline) 0,623 ; fusion de rangs 0,618 ; ViM 0,618 ; énergie de la tête SVD 0,614 ; ASH 0,608 ; SCALE 0,606 ; distance au gabarit 0,598 ; Mahalanobis commune 0,597 ; kNN 1 0,597 ; centroïde 0,594 ; kNN 10 0,591 ; SHE 0,590 ; Mahalanobis relative 0,580 ; F3 avec rayon 0,580 ; mélange gaussien 0,579 ; résidu de PCA 0,579 ; DICE 0,567 ; forêt d'isolation 0,550 ; Mahalanobis par classe 0,541 ; LOF 0,469 ; OpenMax 0,465. Écart-types entre unités de 0,11 à 0,14.  **Précédent (notebook v1, étape 7.5, test v1 consommé, TF-IDF mots, 5 rotations) :** MSP 0,599 ; énergie 0,598 ; prototype 0,625 ; ensemble 0,601 ; MSP hiérarchique 0,609 ; MSP famille 0,623 ; (validation : MSP 0,728). Skip-gram : MSP 0,594.  Les deux séries sont conservées.
+**Actuel (v3, développement, P2, 5 rotations × 25 plis = 125 unités, AUROC moyen) :** probabilité maximale de la famille 0,666 ; énergie 0,639 ; logit maximal 0,636 ; MSP hiérarchique 0,633 ; entropie négative 0,632 ; NNGuide 0,625 ; ensemble 0,624 ; MSP (baseline) 0,623 ; fusion de rangs 0,618 ; ViM 0,618 ; énergie de la tête SVD 0,614 ; ASH 0,608 ; SCALE 0,606 ; distance au gabarit 0,598 ; Mahalanobis commune 0,597 ; kNN 1 0,597 ; centroïde 0,594 ; kNN 10 0,591 ; SHE 0,590 ; Mahalanobis relative 0,580 ; F3 avec rayon 0,580 ; mélange gaussien 0,579 ; résidu de PCA 0,579 ; DICE 0,567 ; forêt d'isolation 0,550 ; Mahalanobis par classe 0,541 ; LOF 0,469 ; OpenMax 0,465. Écart-types entre unités de 0,11 à 0,14.  **Précédent (notebook v1, étape 7.5, test v1 consommé, TF-IDF mots, 5 rotations) :** MSP 0,599 ; énergie 0,598 ; prototype 0,625 ; ensemble 0,601 ; MSP hiérarchique 0,609 ; MSP famille 0,623 ; (validation : MSP 0,728). Skip-gram : MSP 0,594.  Les deux séries sont conservées.  **Correction (calcul C2, 2026-11-07) :** OpenMax corrigé = 0,514 (la valeur 0,465 de la version C1 venait d'une formule lue à l'envers ; voir RC3). Les 27 autres scores sont inchangés. Valeur de LOF : 0,469, inchangée, mais son explication était fausse (voir RC4).
 
 *Justification.* Les valeurs v1 au test (0,59 à 0,63) sont dans la fourchette des valeurs v3 ; la valeur de validation v1 (0,73) était optimiste (36 gabarits de validation), comme le notebook l'avait déjà analysé. Le plafond d'environ 0,65 se retrouve avec un protocole indépendant et 28 scores.
 
 *Preuve.* artifacts/results/v3/C_resume.csv ; C_tests_pairs.csv ; C_nemenyi.csv ; C_msp_par_rotation.csv ; C_msp_par_classe.csv ; C_all_units.csv
 
-*Note.* Cas des scores sous 0,5 : OpenMax (0,465, version simplifiée de notre cru, à ne pas interpréter) et LOF (0,469) sont pires que le hasard, c'est-à-dire qu'ils jugent les logs inconnus plus « normaux » que les connus. Explication possible, non testée : les logs d'un même nouveau gabarit forment des grappes très denses, que la densité locale prend pour du normal.
+*Note.* Version 2. La note de la version 1 (« OpenMax simplifié ; LOF : grappes denses, explication non testée ») est remplacée : l'explication des grappes denses est réfutée par construction et par diagnostic (RC4) ; OpenMax avait un défaut d'implémentation corrigé (RC3). La version 1 reste dans l'historique.
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-07 23:12:01) : statut None ; **Actuel (v3, développement, P2, 5 rotations × 25 plis = 125 unités, AUROC moyen) :** probabilité maximale de la famille 0,666 ; énergie 0,639 ; logit maximal 0,636 ; MSP hiérarchique 0,633 ; entropie…
 
 ### RC2 : Bloc C, comparaisons exploratoires (NON préinscrites, décidées après lecture des résultats)  (version 1, 2026-11-07 23:12:01)
 
@@ -606,3 +634,27 @@ Contre le MSP, sur 125 unités, Holm sur 3 comparaisons : probabilité maximale 
 *Preuve.* artifacts/results/v3/C_exploratoire_vs_msp.csv
 
 *Note.* Lecture en mots simples : si le modèle ne sait pas dans QUELLE FAMILLE ranger un log, c'est probablement un inconnu. La hiérarchie n'aide pas à classer (HB1) mais aide à rejeter, ce qui rejoint l'idée de repli sur la famille de Linderman et al. (S34 des sources). Dans la rotation 5, où le MSP est au hasard (0,506), la famille garde 0,613.
+
+### RV1 : Bloc V : macro-F1 des classes connues (palier A) selon le bruit (précédent v1 et actuel v3)  (version 1, 2026-11-09 12:37:31)
+
+**Actuel (v3, développement, 50 blocs par fichier, moyenne) :** TF-IDF mots 0,523 ; 0,510 ; 0,510 ; 0,499 ; 0,496 ; 0,496 (p = 0 à 0,5). TF-IDF caractères 0,513 ; 0,520 ; 0,517 ; 0,509 ; 0,508 ; 0,510. Skip-gram IDF 0,437 ; 0,445 ; 0,460 ; 0,458 ; 0,454 ; 0,468.  AUROC du MSP : mots 0,622 à 0,615 ; caractères 0,611 à 0,618 ; Skip-gram 0,564 à 0,563. AUROC de la confiance sur la famille : mots 0,660 à 0,643 ; caractères 0,664 à 0,656 ; Skip-gram 0,599 à 0,590.  **Précédent (notebook v1, étape 8.3, E4a, validation, plat) :** TF-IDF mots 0,493 ; 0,490 ; 0,492 ; 0,481 ; 0,469 ; 0,474 ; Skip-gram IDF 0,405 ; 0,404 ; 0,414 ; 0,399 ; 0,391 ; 0,401.  Les deux séries sont conservées.
+
+*Justification.* Dans les deux séries, TF-IDF mots baisse avec le bruit (de 0,02 à 0,03) et Skip-gram reste derrière (de 0,09 à 0,03). Le gain de Skip-gram avec le bruit, absent de la série v1 (plate), est nouveau et n'est pas expliqué. La confiance sur la FAMILLE bat le MSP pour les trois vectorisations et à tous les niveaux de bruit (écart de 0,02 à 0,05) : réplication, sur d'autres fichiers et d'autres vectorisations, de la comparaison exploratoire RC2 (D12), toujours non préinscrite.
+
+*Preuve.* artifacts/results/v3/V_all_units.csv ; V_resume.csv ; V_HV2.csv ; V_HV3.csv
+
+### RC3 : OpenMax : défaut d'implémentation corrigé (C1 contre C2)  (version 1, 2026-11-09 12:37:31)
+
+OpenMax de la version C1 appliquait la formule de l'article à l'envers : la probabilité de Weibull (qui mesure « loin du signe moyen de la classe ») était utilisée comme son contraire, si bien que plus un log s'éloignait, moins on lui retirait de score. Preuve : sur 15 unités, la version C1 et la version du code de référence de Bendale et Boult sont presque des images miroirs unité par unité (0,29 contre 0,65 ; 0,26 contre 0,70 ; 0,71 contre 0,27). Résultat sur 125 unités : **C1 : AUROC 0,465 ; C2 (corrigé) : 0,514** (écart-type 0,114 ; FPR@95 0,964). OpenMax corrigé est donc proche du hasard.
+
+*Justification.* Vérification demandée par l'étudiant (« il faut en être sûr »). Les verdicts HC1 (maximum 0,666) et HC9 (FPR@95 minimum 0,827) ne changent pas : OpenMax n'est ni le meilleur ni le moins mauvais en FPR@95.
+
+*Preuve.* scripts/v3_diag_C.py ; artifacts/results/v3/C_diagnostic_openmax_lof.csv ; C_resume_C2.csv ; v3_blockC.py (versions C1 et C2)
+
+### RC4 : LOF : explication « grappes denses » réfutée, cause réelle identifiée  (version 1, 2026-11-09 12:37:31)
+
+Diagnostic sur 15 unités (3 par rotation). (1) Le code est correct : la formule du LOF recalculée à la main égale celle de scikit-learn dans 15 unités sur 15. (2) L'explication donnée en RC1 version 1 (les logs d'un même nouveau gabarit forment des grappes denses) est fausse par construction : en mode « nouveauté », chaque log de test est jugé seul contre le jeu d'entraînement, la densité des autres logs de test ne joue aucun rôle. (3) Cause réelle : le LOF est le produit de la densité du voisinage dans le jeu d'entraînement par la sparsité propre du log ; la sparsité propre indique l'inconnu (AUROC 0,607, bon sens) mais la densité du voisinage indique le CONNU (0,590 : les logs connus ont des voisinages plus denses) ; le produit tire dans deux sens opposés : AUROC moyen 0,454. (4) Le signe dépend des classes cachées : AUROC moyen par rotation 0,34 ; 0,68 ; 0,44 ; 0,48 ; 0,34 ; sensibilité faible à k (k = 5 : 0,475 ; k = 20 : 0,454 ; k = 50 : 0,448) et à la banque (complète : 0,483).
+
+*Justification.* Vérification demandée par l'étudiant. Limite : le diagnostic porte sur 15 unités, non 125.
+
+*Preuve.* scripts/v3_diag_C.py ; artifacts/results/v3/C_diagnostic_openmax_lof.csv
