@@ -1,0 +1,18 @@
+"""Verdicts HT1 à HT4 (règles préinscrites) et résultat RT1 (grille Transformer, 90 modèles). Idempotent."""
+import sys, pathlib
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1] / "src"))
+import tp2_journal as J
+def last(i): return [e for e in J.entries() if e["id"] == i][-1]
+F = "artifacts/results/v3/T_all_units.csv ; T_tests.csv"
+NOTE = " Plan : DistilBERT sans casse, 256 jetons, 2 époques, 3e-5 ; 6 niveaux de bruit × 5 rotations × 3 graines = 90 modèles ; une seule découpe du développement (répétition 0, pli 0) ; 140 logs d'entraînement par classe (donc F1 plus bas qu'avec les données complètes : baseline TF-IDF 0,37 ici contre 0,50 ailleurs)."
+def verdict(i, statut, preuve, note=""):
+    if last(i)["statut"] == "préinscrite": J.add(i, "hypothese", last(i)["titre"], last(i)["texte"], justification="Verdict établi avec la règle de décision préinscrite (voir la version précédente).", statut=statut, preuve=preuve + "  Fichiers : " + F, note=note + NOTE)
+verdict("HT1", "non tranchée", "30 couples (fichier × rotation, moyenne de 3 graines) : macro-F1 des classes, Transformer moins TF-IDF = +0,0204, IC95 [0,002 ; 0,038], p unilatéral (écart < 0,02) 0,51, p Holm 0,87 ; Transformer meilleur dans 19 couples sur 30. Moyennes : Transformer 0,395 ; TF-IDF 0,374.", "L'écart moyen se situe pile sur le seuil de 0,02 : on ne peut ni dire qu'il le dépasse ni qu'il ne le dépasse pas. À retenir : le Transformer gagne environ 0,02 sur 140 logs par classe, et reste très loin de 0,55.")
+verdict("HT2", "non tranchée", "AUROC d'inconnu de Mahalanobis moins MSP (même Transformer) : +0,0325, IC95 [0,0195 ; 0,0463], p unilatéral (écart > 0,03) 0,44 ; 21 couples sur 30 en faveur. Moyennes : Mahalanobis 0,593 ; MSP 0,560.", "Gain moyen égal au seuil de 0,03, intervalle qui le contient. Les deux restent faibles (< 0,60).")
+verdict("HT3", "confirmée", "AUROC famille moins MSP du Transformer : +0,0699, IC95 [0,048 ; 0,091], p Holm 0,0004 ; 26 couples sur 30 en faveur. Moyennes : famille 0,630 ; MSP 0,560.", "Troisième série de données (après le bloc C et I4) où la confiance de famille est le meilleur détecteur ; ici le gain (+0,07) est le plus grand.")
+verdict("HT4", "réfutée", "Perte de macro-F1 entre p = 0 et p = 0,5 : Transformer 0,0565 contre TF-IDF 0,0311 ; différence (TF-IDF − Transformer) −0,0254, IC95 [−0,045 ; −0,006], p unilatéral 0,99 ; le Transformer perd moins dans 4 couples sur 15 seulement.", "Le signe est l'inverse de l'hypothèse : le Transformer perd PLUS que TF-IDF quand on ajoute du bruit (l'avance de 0,03 à p = 0 devient 0,005 à p = 0,5). Avec 2 époques sur 140 logs par classe, son avantage ne résiste pas au bruit.")
+if not J.exists("RT1"):
+    J.add("RT1", "resultat", "Bloc T : grille complète du Transformer, 90 modèles (précédent v1 conservé)",
+          "Macro-F1 des classes connues (même logs, 140 par classe) : Transformer 0,424 à 0,368 selon le bruit (p = 0 à 0,5), TF-IDF 0,393 à 0,362. Détection d'inconnus du Transformer (AUROC moyen sur 90) : MSP 0,560 ; énergie 0,572 ; Mahalanobis 0,593 ; kNN 0,596 ; confiance de famille 0,630 ; FPR@95 de 0,91 à 0,93 pour tous. TF-IDF sur les mêmes logs : MSP 0,602 ; énergie 0,623 ; famille 0,643, FPR@95 0,81 à 0,86.",
+          justification="Constat clé : à petit volume d'entraînement, le Transformer apporte environ +0,02 de macro-F1 mais détecte MOINS bien les inconnus que TF-IDF (AUROC 0,56 contre 0,60 pour le MSP, FPR@95 0,92 contre 0,82) ; la confiance de famille est le meilleur score pour les deux. Pas de gain décisif à attendre d'une fusion avec le Transformer : I3 est donc de faible priorité. (Comparaison Transformer/TF-IDF d'AUROC non préinscrite : exploratoire.)", preuve=F)
+print("ok")

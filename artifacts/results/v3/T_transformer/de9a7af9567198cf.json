@@ -1,0 +1,122 @@
+{
+ "hash": "de9a7af9567198cf",
+ "block": "T_transformer",
+ "name": "T p2 rot5 seed44",
+ "cfg": {
+  "block": "T",
+  "file": 2,
+  "rotation": 4,
+  "seed": 44,
+  "model": "distilbert-base-uncased",
+  "max_len": 256,
+  "epochs": 2,
+  "lr": 3e-05,
+  "batch": 32,
+  "n_train_per_class": 140,
+  "n_test_per_class": 133,
+  "split": "r0_pli0",
+  "splits": "groups_v3"
+ },
+ "code_version": "T1",
+ "result": {
+  "transformer": {
+   "closed": {
+    "f1A": 0.4639172948891498,
+    "f1_30": 0.4093387896080733,
+    "acc": 0.4608580274214949
+   },
+   "open": {
+    "msp": {
+     "auroc": 0.45306599093931205,
+     "fpr95": 0.9636591478696742
+    },
+    "maxlogit": {
+     "auroc": 0.4682327224518616,
+     "fpr95": 0.9724310776942355
+    },
+    "energy": {
+     "auroc": 0.47968217758017334,
+     "fpr95": 0.9912280701754386
+    },
+    "fam_msp": {
+     "auroc": 0.5956717867202282,
+     "fpr95": 0.9523809523809523
+    },
+    "mc_msp": {
+     "auroc": 0.45924574816076014,
+     "fpr95": 0.9661654135338346
+    },
+    "maha_shared": {
+     "auroc": 0.45648564134795194,
+     "fpr95": 0.9949874686716792
+    },
+    "knn10": {
+     "auroc": 0.5262071587637824,
+     "fpr95": 0.924812030075188
+    }
+   }
+  },
+  "tfidf_memes_logs": {
+   "closed": {
+    "f1A": 0.41042669934854364,
+    "f1_30": 0.36727523959758296,
+    "acc": 0.4157452454666077
+   },
+   "open": {
+    "msp": {
+     "auroc": 0.4839780787661325,
+     "fpr95": 0.9874686716791979
+    },
+    "energy": {
+     "auroc": 0.5010369798889085,
+     "fpr95": 0.9912280701754386
+    },
+    "fam_msp": {
+     "auroc": 0.6256048125621441,
+     "fpr95": 0.9774436090225563
+    }
+   }
+  },
+  "info": {
+   "n_train": 3360,
+   "n_test": 3059,
+   "n_known_test": 2261,
+   "n_unknown_test": 798,
+   "train_minutes": 3.19,
+   "device": "mps",
+   "unit_seconds": 322.5,
+   "masked": [
+    "authentication-success",
+    "connection-closed",
+    "connection-opened",
+    "directory-deleted",
+    "file-write",
+    "user-deletion"
+   ]
+  }
+ },
+ "seconds": 323.67,
+ "machine": {
+  "host": "MacBook-Pro-de-Madeniyou.local",
+  "platform": "macOS-27.0.1-arm64-arm-64bit",
+  "python": "3.12.16"
+ },
+ "commit": "ff3a863",
+ "code": {
+  "v3_transformer_grid.py": "a72d13e20cb2",
+  "tp2_attacks.py": "37a5b3530f02",
+  "tp2_data.py": "7f392cbaae6e",
+  "tp2_encoder.py": "faec7df763bf",
+  "tp2_journal.py": "d98d2c73b0a1",
+  "tp2_logtext.py": "2b5360ac2128",
+  "tp2_new_figs.py": "e48636202d7c",
+  "tp2_openset.py": "05d7b8a91592",
+  "tp2_runner.py": "7765735476e7",
+  "tp2_sota_figs.py": "4ba8388989c4",
+  "tp2_split_v3.py": "d9a4181a2a60",
+  "tp2_stats.py": "0a90cfa961ba",
+  "tp2_vec.py": "6d09bf373fd2",
+  "tp2_versions.py": "b7dd47bdb2f6"
+ },
+ "date": "2026-11-09 20:57:32"
+}

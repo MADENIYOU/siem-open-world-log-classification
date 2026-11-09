@@ -1,0 +1,5 @@
+hyp,énoncé,écart moyen,IC95,"p (unilatéral, H1 : écart < 0,02)",couples T>B,n,p Holm (HT1-HT3),"p (unilatéral, H1 : écart > 0,03)","p (unilatéral, H1 : écart > 0,02)","p (unilatéral, H1 : écart > 0)",perte T,perte B
+HT1,"F1A Transformer - TF-IDF <= 0,02",0.0204,[0.0021 ; 0.0380],0.5080832093954086,19,30,0.871207794174552,,,,,
+HT2,"AUROC Mahalanobis - MSP >= 0,03",0.0325,[0.0195 ; 0.0463],,21,30,0.871207794174552,0.435603897087276,,,,
+HT3,"AUROC famille - MSP >= 0,02",0.0699,[0.0481 ; 0.0913],,26,30,0.00038443319499492645,,0.00012814439833164215,,,
+HT4,"perte F1A p0->p0,5 : TF-IDF - Transformer > 0",-0.0254,[-0.0445 ; -0.0063],,4,15,,,,0.989227294921875,0.0565,0.0311
