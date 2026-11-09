@@ -226,3 +226,259 @@ Généré à partir de `artifacts/results/v3/versions.jsonl` (append-only, ne pa
 | Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
 |---|---|---|---|---|---|
 | **VE1** | 2026-11-09 12:49 | Verdicts HE1 à HE6 et résultat RE1 (v1 et v3 conservés). | première version | **version courante** | `versions/scripts/v3_verdicts_E__VE1.py` |
+
+## I1
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **1** | 2026-11-09 13:05 | Itération I1 de la phase 2 : 10 variantes de représentation (vocabulaire restreint aux mots présents dans au moins 2/3/5 gabarits, marqueur de valeur, ensemble mots+lettres, pondération par gabarit) sous P2 25 plis, 30 classes | Première version : exécute les HF1 à HF6 préinscrites (D16) ; ne remplace rien | **version courante** | `versions/scripts/v3_phase2_I1__1.py` |
+
+## AD1
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **1** | 2026-11-09 13:07 | Analyse du bloc D (attaques) : tests appariés, Friedman/Nemenyi, Spearman, normalisation | Première version | **version courante** | `versions/scripts/v3_analyze_D__1.py` |
+
+## VD1
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **1** | 2026-11-09 13:07 | Verdicts HD1 à HD7 et résultat RD1 | Première version | **version courante** | `versions/scripts/v3_verdicts_D__1.py` |
+
+## AI1
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **1** | 2026-11-09 13:14 | Analyse de l'itération I1 (tests HF1-HF6) | Première version | **version courante** | `versions/scripts/v3_analyze_I1__1.py` |
+
+## VI1
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **1** | 2026-11-09 13:14 | Verdicts HF1 à HF6 et résultat RI1 | Première version | **version courante** | `versions/scripts/v3_verdicts_I1__1.py` |
+
+## RI1reg
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **1** | 2026-11-09 13:14 | Préinscription de l'itération I1 (D16, HF1 à HF6) | Première version | **version courante** | `versions/scripts/v3_register_I1__1.py` |
+
+## RI1b
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **1** | 2026-11-09 13:17 | Préinscription D17, HF7 à HF9 (confirmation du constat exploratoire d'I1) | Première version | **version courante** | `versions/scripts/v3_register_I1b__1.py` |
+
+## I1b
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **1** | 2026-11-09 13:17 | Confirmation sur 25 nouveaux plis (répétitions 5 à 9) : V0 contre ENS | Première version ; I1 n'est pas remplacée | **version courante** | `versions/scripts/v3_phase2_I1b__1.py` |
+
+## RI2
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **1** | 2026-11-09 13:18 | Préinscription D18, HF10 à HF12 (champs typés) | Première version | **version courante** | `versions/scripts/v3_register_I2__1.py` |
+
+## FLD1
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **1** | 2026-11-09 13:18 | Extracteur de jetons typés (programme, champs clé=valeur, types de valeurs, forme) | Première version | **version courante** | `versions/src/tp2_fields__1.py` |
+
+## I2
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **1** | 2026-11-09 13:18 | Itération I2 : V0, FT, FTo, FTE sur P2 25 plis | Première version ; ne remplace ni I1 ni I1b | **version courante** | `versions/scripts/v3_phase2_I2__1.py` |
+
+## AI1b
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **1** | 2026-11-09 13:22 | Analyse de la confirmation I1b | Première version | **version courante** | `versions/scripts/v3_analyze_I1b__1.py` |
+
+## VI1b
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **1** | 2026-11-09 13:22 | Verdicts HF7 à HF9 et résultat RI1b | Première version | **version courante** | `versions/scripts/v3_verdicts_I1b__1.py` |
+
+## AI2
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **1** | 2026-11-09 13:22 | Analyse de l'itération I2 (HF10 à HF12) | Première version | **version courante** | `versions/scripts/v3_analyze_I2__1.py` |
+
+## VI2
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **1** | 2026-11-09 13:25 | Verdicts HF10 à HF12 et résultat RI2 | Première version | **version courante** | `versions/scripts/v3_verdicts_I2__1.py` |
+
+## RI4
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **1** | 2026-11-09 14:00 | Préinscription D19, HI1 à HI4 (rejet de famille) | Première version | **version courante** | `versions/scripts/v3_register_I4__1.py` |
+
+## I4
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **1** | 2026-11-09 14:00 | Itération I4 : rejet par la confiance de famille sur 5 nouvelles rotations x 25 nouveaux plis | Première version | **version courante** | `versions/scripts/v3_phase2_I4__1.py` |
+
+## AI4
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **1** | 2026-11-09 14:02 | Analyse de l'itération I4 (HI1 à HI4) | Première version | **version courante** | `versions/scripts/v3_analyze_I4__1.py` |
+
+## VI4
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **1** | 2026-11-09 14:02 | Verdicts HI1 à HI4 et résultat RI4 | Première version | **version courante** | `versions/scripts/v3_verdicts_I4__1.py` |
+
+## RD20
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **1** | 2026-11-09 17:55 | Décision D20 : règle d'arrêt de la phase 2 | Première version | **version courante** | `versions/scripts/v3_register_D20__1.py` |
+
+## RI5
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **1** | 2026-11-09 17:55 | Préinscription D21, HF13 et HF14 (réglage mots + lettres) | Première version | **version courante** | `versions/scripts/v3_register_I5__1.py` |
+
+## I5a
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **1** | 2026-11-09 17:55 | Itération I5a : sélection mots + lettres sur répétitions 0 à 4 | Première version | **version courante** | `versions/scripts/v3_phase2_I5a__1.py` |
+
+## AI5a
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **1** | 2026-11-09 19:14 | Analyse d'I5a : sélection et porte HF14 | Première version | **version courante** | `versions/scripts/v3_analyze_I5a__1.py` |
+
+## VI5
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **1** | 2026-11-09 19:14 | Verdicts HF13, HF14 et résultat RI5 | Première version | **version courante** | `versions/scripts/v3_verdicts_I5__1.py` |
+
+## AT1
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **1** | 2026-11-09 21:14 | Analyse du bloc T (grille Transformer) : HT1 à HT4 | Première version | **version courante** | `versions/scripts/v3_analyze_T__1.py` |
+
+## VT1
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **1** | 2026-11-09 21:14 | Verdicts HT1 à HT4 et résultat RT1 | Première version | **version courante** | `versions/scripts/v3_verdicts_T__1.py` |
+
+## RT2
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **1** | 2026-11-09 21:31 | Préinscription D22, HT1b, HT2b, HF15, HF16 | Première version | **version courante** | `versions/scripts/v3_register_T2__1.py` |
+
+## T2
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **1** | 2026-11-09 21:31 | Réplication Transformer (4 nouvelles découpes x 5 rotations) + fusion avec TF-IDF | Première version ; T1 (grille) non remplacée | **version courante** | `versions/scripts/v3_transformer_T2__1.py` |
+
+## RI6
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **1** | 2026-11-09 21:32 | Préinscription D23, HF17 à HF19 (I6) | Première version | **version courante** | `versions/scripts/v3_register_I6__1.py` |
+
+## I6
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **1** | 2026-11-09 21:33 | Itération I6 : 32 configurations (représentation, structure, modèle), sélection puis confirmation | Première version ; I1, I2, I5 non remplacées | **version courante** | `versions/scripts/v3_phase2_I6__1.py` |
+
+## STAT2
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **1** | 2026-11-09 21:35 | Ajout à tp2_stats : test des signes, permutation apparié, multi_paired (IC95 + Wilcoxon + signes + permutation) | Ajout seulement ; les fonctions existantes ne changent pas | **version courante** | `versions/src/tp2_stats__1.py` |
+
+## AI6
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **1** | 2026-11-09 21:35 | Analyse I6 (sélection a, confirmation b) avec plusieurs tests | Première version | La version 1 classait le rang 24 comme meilleur : le nombre de configurations indiscernables du meilleur (20) et le nom du meilleur au rang étaient faux ; la sélection par moyenne de F1 n'était pas touchée (par 2) | `versions/scripts/v3_analyze_I6__1.py` |
+| **2** | 2026-11-09 22:00 | Corrige l'ordre des rangs de Friedman (rang 1 = meilleur) : le meilleur au rang était pris à l'envers | La version 1 classait le rang 24 comme meilleur : le nombre de configurations indiscernables du meilleur (20) et le nom du meilleur au rang étaient faux ; la sélection par moyenne de F1 n'était pas touchée | **version courante** | `versions/scripts/v3_analyze_I6__2.py` |
+
+## RI7
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **1** | 2026-11-09 21:35 | Préinscription D24, HI5 à HI7 (I7) | Première version | **version courante** | `versions/scripts/v3_register_I7__1.py` |
+
+## I7
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **1** | 2026-11-09 21:35 | Itération I7 : 24 combinaisons de rejet d'inconnus (C x score), sélection puis confirmation sur rotations différentes | Première version ; I4 non remplacée | La version 1 ne calculait pas le msp (C = 4) exigé par la préinscription D24 comme référence ; l'ancien bloc P2_I7a_rejet (une douzaine d'unités) est conservé, non utilisé (par 2) | `versions/scripts/v3_phase2_I7__1.py` |
+| **2** | 2026-11-09 21:37 | Ajoute C = 4 comme RÉFÉRENCE (msp de D24) calculée sur les mêmes unités ; bloc de résultats P2_I7a_rejet_v2 | La version 1 ne calculait pas le msp (C = 4) exigé par la préinscription D24 comme référence ; l'ancien bloc P2_I7a_rejet (une douzaine d'unités) est conservé, non utilisé | **version courante** | `versions/scripts/v3_phase2_I7__2.py` |
+
+## AT2
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **1** | 2026-11-09 21:37 | Analyse de la réplication T2 (HT1b, HT2b, HF15, HF16) | Première version | **version courante** | `versions/scripts/v3_analyze_T2__1.py` |
+
+## AI7
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **1** | 2026-11-09 21:37 | Analyse I7 (sélection a, confirmation b) | Première version | Suit I7 version 2 (par 2) | `versions/scripts/v3_analyze_I7__1.py` |
+| **2** | 2026-11-09 21:37 | Analyse I7 : référence msp C = 4, candidates sans C = 4, bloc v2 | Suit I7 version 2 | Même défaut que AI6 version 1, corrigé avant tout usage (par 3) | `versions/scripts/v3_analyze_I7__2.py` |
+| **3** | 2026-11-09 22:00 | Corrige l'ordre des rangs de Friedman (rang 1 = meilleur) | Même défaut que AI6 version 1, corrigé avant tout usage | **version courante** | `versions/scripts/v3_analyze_I7__3.py` |
+
+## VI67
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **1** | 2026-11-09 22:07 | Verdicts HF17-HF19, HI5-HI7 et résultats RI6, RI7 | Première version | **version courante** | `versions/scripts/v3_verdicts_I6_I7__1.py` |
+
+## RD25
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **1** | 2026-11-09 22:09 | Préinscription D25, HI6b, HI7b | Première version | **version courante** | `versions/scripts/v3_register_D25__1.py` |
+
+## I7c
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **1** | 2026-11-09 22:09 | Réplication I7c : 3 nouveaux jeux de rotations x répétitions 10 à 14 | Première version ; I7a et I7b non remplacées | **version courante** | `versions/scripts/v3_phase2_I7c__1.py` |
+
+## VI6b
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **1** | 2026-11-09 22:11 | Verdict HF18 après lancement d'I6b | Première version | **version courante** | `versions/scripts/v3_verdicts_I6b__1.py` |
+
+## AI7c
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **1** | 2026-11-09 22:11 | Analyse de la réplication I7c (HI6b, HI7b) | Première version | **version courante** | `versions/scripts/v3_analyze_I7c__1.py` |
+
+## VI7c
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **1** | 2026-11-09 22:25 | Verdicts HI6b, HI7b, tranche HI6 et HI7, résultat RI7c | Première version | **version courante** | `versions/scripts/v3_verdicts_I7c__1.py` |

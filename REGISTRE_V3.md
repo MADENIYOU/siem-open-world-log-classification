@@ -186,6 +186,14 @@ Protocole : 5 rotations × répétition 0 × 5 plis de groupes = 25 unités, SIE
 
 *Preuve.* scripts/v3_blockE.py
 
+### D16 : Phase 2, itération I1 : corriger la représentation pour généraliser à de nouveaux gabarits  (version 1, 2026-11-09 13:02:03)
+
+Constat des blocs A à V : environ 0,50 de macro-F1 des classes connues pour toutes les méthodes (19 classifieurs, 3 vectorisations) : le goulot est la représentation face à des gabarits nouveaux. Hypothèse de travail : un mot qui n'apparaît que dans UN gabarit d'entraînement est une valeur (nom d'utilisateur, fichier, chemin) ou un mot propre au gabarit ; il aide à reconnaître ce gabarit mais ne peut pas se généraliser à un nouveau. Le TF-IDF actuel garde les mots présents dans au moins 2 LOGS (min_df = 2), ce qui retient les valeurs d'un gabarit de milliers de logs. Variantes comparées au SVM sur mots (baseline), classification à 30 classes, protocole P2 (25 plis), SIEVE_00, développement seul : (T2, T3, T5) vocabulaire restreint aux mots présents dans au moins 2, 3 ou 5 GABARITS d'entraînement ; (T3M) idem avec m = 3 mais les mots écartés sont remplacés par un marqueur « valeur » unique (étiquetage des champs variables détectés par les gabarits) ; (ENS) moyenne des marges du SVM mots et du SVM caractères ; (WGT) apprentissage où chaque gabarit pèse autant (poids 1 / nombre de logs du gabarit) ; (COMB) combinaison des variantes retenues. Le test v2 n'est JAMAIS lu.
+
+*Justification.* Demande de l'étudiant (2026-11-07) : proposer une solution maison (remplacer les valeurs variables par des marqueurs, étiqueter les champs pertinents, combiner mots et lettres, formules maison) et itérer pour atteindre le score maximal. La règle de support par gabarit est notre formule F4 : elle remplace une statistique sur les logs par une statistique sur les gabarits, l'unité de généralisation. Elle découle de HB5 et du bloc A (les gabarits sont l'unité). Le masquage numérique par type est déjà testé au notebook v1 (V1 : écart −0,002, indistinguable).
+
+*Preuve.* scripts/v3_phase2_I1.py
+
 ## Hypothèses (préinscrites, puis confirmées ou réfutées)
 
 ### HA1 : Le découpage au hasard gonfle le score  (version 4, 2026-11-07 22:29:59 ; **statut : confirmée**)
@@ -606,61 +614,86 @@ La perte de macro-F1 des classes connues entre p = 0 et p = 0,5 est plus petite 
 
 *Note.* Écrit le 2026-11-07 avant tout calcul des blocs V et T.
 
-### HD1 : Chaque attaque dégrade le monde connu  (version 1, 2026-11-09 12:40:19 ; **statut : préinscrite**)
+### HD1 : Chaque attaque dégrade le monde connu  (version 2, 2026-11-09 13:07:19 ; **statut : confirmée**)
 
 Pour le modèle TF-IDF mots, au degré maximal, chacune des trois attaques fait baisser le macro-F1 des classes connues par rapport à « sans attaque » (Wilcoxon apparié sur 25 unités, Holm sur 3, p < 0,05).
 
-*Justification.* Notebook v1 (8.6) : pertes de 7,8 %, 21,5 % et 12,5 % à l'intensité forte.
+*Justification.* Verdict établi avec la règle de décision préinscrite (voir la version précédente).
 
-*Note.* Écrit le 2026-11-09 avant tout calcul des blocs D et E.
+*Preuve.* Perte de macro-F1 (mots, degré 5, 25 unités) : fautes −0,088 (−16,7 %), homoglyphes −0,254 (−48,2 %), remplissage −0,128 (−24,4 %) ; p Holm < 1e-4 pour les trois.  Fichiers : artifacts/results/v3/D_all_units.csv ; D_resume.csv ; D_HD1.csv ; D_HD2.csv ; D_HD4.csv ; D_HD7.csv
 
-### HD2 : La perte croît avec le degré  (version 1, 2026-11-09 12:40:19 ; **statut : préinscrite**)
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-09 12:40:19) : statut préinscrite ; Pour le modèle TF-IDF mots, au degré maximal, chacune des trois attaques fait baisser le macro-F1 des classes connues par rapport à « sans attaque » (Wilcoxon apparié sur 25 unités, Holm sur 3, p < 0,…
+
+### HD2 : La perte croît avec le degré  (version 2, 2026-11-09 13:07:19 ; **statut : confirmée**)
 
 Pour chaque attaque (modèle mots), la perte de macro-F1 augmente avec le degré (Spearman par unité sur les cinq degrés, puis Wilcoxon unilatéral sur les 25 unités, Holm sur 3).
 
-*Justification.* Une attaque plus forte modifie plus de logs ou plus de mots.
+*Justification.* Verdict établi avec la règle de décision préinscrite (voir la version précédente).
 
-*Note.* Écrit le 2026-11-09 avant tout calcul des blocs D et E.
+*Preuve.* Spearman médian 1,0 pour chaque attaque (25/25, 25/25, 24/25 unités avec rho > 0) ; p Holm < 1e-4. Pertes moyennes par degré : fautes 0,010 → 0,088 ; homoglyphes 0,024 → 0,254 ; remplissage 0,007 → 0,128.  Fichiers : artifacts/results/v3/D_all_units.csv ; D_resume.csv ; D_HD1.csv ; D_HD2.csv ; D_HD4.csv ; D_HD7.csv
 
-### HD3 : Les lettres trompeuses sont la pire attaque  (version 1, 2026-11-09 12:40:19 ; **statut : préinscrite**)
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-09 12:40:19) : statut préinscrite ; Pour chaque attaque (modèle mots), la perte de macro-F1 augmente avec le degré (Spearman par unité sur les cinq degrés, puis Wilcoxon unilatéral sur les 25 unités, Holm sur 3).
+
+### HD3 : Les lettres trompeuses sont la pire attaque  (version 2, 2026-11-09 13:07:19 ; **statut : confirmée**)
 
 La perte moyenne de macro-F1 sur les cinq degrés (modèle mots) est la plus grande pour les homoglyphes ; Friedman puis Nemenyi : les homoglyphes sont au-delà de la différence critique des deux autres attaques.
 
-*Justification.* Notebook v1 : 21,5 % contre 7,8 % et 12,5 %.
+*Justification.* Verdict établi avec la règle de décision préinscrite (voir la version précédente).
 
-*Note.* Écrit le 2026-11-09 avant tout calcul des blocs D et E.
+*Preuve.* Perte moyenne sur 5 degrés : homoglyphes 0,111 ; remplissage 0,046 ; fautes 0,040. Friedman p = 6,6e-9 ; rangs moyens 3,0 contre 1,56 et 1,44, écarts supérieurs à la différence critique (0,66) ; Nemenyi p < 1e-4 dans les deux comparaisons.  Fichiers : artifacts/results/v3/D_all_units.csv ; D_resume.csv ; D_HD1.csv ; D_HD2.csv ; D_HD4.csv ; D_HD7.csv
 
-### HD4 : Les caractères résistent mieux aux fautes et aux homoglyphes, pas au remplissage  (version 1, 2026-11-09 12:40:19 ; **statut : préinscrite**)
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-09 12:40:19) : statut préinscrite ; La perte moyenne de macro-F1 sur les cinq degrés (modèle mots) est la plus grande pour les homoglyphes ; Friedman puis Nemenyi : les homoglyphes sont au-delà de la différence critique des deux autres …
+
+### HD4 : Les caractères résistent mieux aux fautes et aux homoglyphes, pas au remplissage  (version 2, 2026-11-09 13:07:19 ; **statut : confirmée**)
 
 La perte moyenne de macro-F1 du modèle caractères est plus petite que celle du modèle mots pour les fautes et pour les homoglyphes (Wilcoxon apparié, Holm sur 3), mais pas pour les mots ajoutés.
 
-*Justification.* Notebook v1 : 10,6 % contre 21,5 % (homoglyphes), 14,4 % contre 12,5 % (remplissage).
+*Justification.* Verdict établi avec la règle de décision préinscrite (voir la version précédente).
 
-*Note.* Écrit le 2026-11-09 avant tout calcul des blocs D et E.
+*Preuve.* Perte caractères moins mots : fautes −0,034 (p Holm < 1e-4), homoglyphes −0,087 (p Holm < 1e-4), remplissage +0,005 (p Holm 0,58, pas d'avantage). Les caractères résistent aux déformations de lettres, pas à l'ajout de mots.  Fichiers : artifacts/results/v3/D_all_units.csv ; D_resume.csv ; D_HD1.csv ; D_HD2.csv ; D_HD4.csv ; D_HD7.csv
 
-### HD5 : La normalisation UTS #39 annule les homoglyphes  (version 1, 2026-11-09 12:40:19 ; **statut : préinscrite**)
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-09 12:40:19) : statut préinscrite ; La perte moyenne de macro-F1 du modèle caractères est plus petite que celle du modèle mots pour les fautes et pour les homoglyphes (Wilcoxon apparié, Holm sur 3), mais pas pour les mots ajoutés.
+
+### HD5 : La normalisation UTS #39 annule les homoglyphes  (version 2, 2026-11-09 13:07:19 ; **statut : confirmée**)
 
 Avec la normalisation, la perte résiduelle de macro-F1 des homoglyphes (modèle mots) est inférieure à 0,01 à chacun des cinq degrés.
 
-*Justification.* Notebook v1 (9.12) : 0,2 % de perte avec la table officielle complète.
+*Justification.* Verdict établi avec la règle de décision préinscrite (voir la version précédente).
 
-*Note.* Écrit le 2026-11-09 avant tout calcul des blocs D et E.
+*Preuve.* Avec la normalisation UTS #39 officielle, perte résiduelle des homoglyphes 0,000 aux cinq degrés (sans normalisation : 0,024 / 0,044 / 0,089 / 0,142 / 0,254).  Fichiers : artifacts/results/v3/D_all_units.csv ; D_resume.csv ; D_HD1.csv ; D_HD2.csv ; D_HD4.csv ; D_HD7.csv
 
-### HD6 : Les attaques font rejeter à tort des logs connus  (version 1, 2026-11-09 12:40:19 ; **statut : préinscrite**)
+*Note.* La table officielle ramène exactement le texte attaqué au texte d'origine pour les caractères que l'attaque utilise ; la limite est que l'attaquant pourrait employer des caractères absents de la table.
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-09 12:40:19) : statut préinscrite ; Avec la normalisation, la perte résiduelle de macro-F1 des homoglyphes (modèle mots) est inférieure à 0,01 à chacun des cinq degrés.
+
+### HD6 : Les attaques font rejeter à tort des logs connus  (version 2, 2026-11-09 13:07:19 ; **statut : confirmée**)
 
 Le taux de logs connus rejetés à tort (seuil réglé sur le test propre) augmente avec le degré des homoglyphes (Spearman par unité puis Wilcoxon unilatéral, p < 0,05) pour le MSP du modèle mots.
 
-*Justification.* Notebook v1 : 13 % à 22,5 % de connus rejetés à tort aux homoglyphes forts.
+*Justification.* Verdict établi avec la règle de décision préinscrite (voir la version précédente).
 
-*Note.* Écrit le 2026-11-09 avant tout calcul des blocs D et E.
+*Preuve.* Connus rejetés à tort (MSP, mots) par degré d'homoglyphes : 0,061 / 0,075 / 0,115 / 0,164 / 0,268 ; rho médian 1,0, 24/25 unités avec rho > 0, p = 3,1e-6.  Fichiers : artifacts/results/v3/D_all_units.csv ; D_resume.csv ; D_HD1.csv ; D_HD2.csv ; D_HD4.csv ; D_HD7.csv
 
-### HD7 : La confiance sur la famille résiste mieux que le MSP  (version 1, 2026-11-09 12:40:19 ; **statut : préinscrite**)
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-09 12:40:19) : statut préinscrite ; Le taux de logs connus rejetés à tort (seuil réglé sur le test propre) augmente avec le degré des homoglyphes (Spearman par unité puis Wilcoxon unilatéral, p < 0,05) pour le MSP du modèle mots.
+
+### HD7 : La confiance sur la famille résiste mieux que le MSP  (version 2, 2026-11-09 13:07:19 ; **statut : réfutée**)
 
 Au degré maximal de chaque attaque, la perte d'AUROC d'inconnu de la confiance sur la famille est plus petite que celle du MSP (Wilcoxon apparié, Holm sur 3).
 
-*Justification.* Extension de D12 : le niveau de la famille est plus grossier, donc moins sensible aux petites altérations.
+*Justification.* Verdict établi avec la règle de décision préinscrite (voir la version précédente).
 
-*Note.* Écrit le 2026-11-09 avant tout calcul des blocs D et E.
+*Preuve.* Perte d'AUROC d'inconnu au degré maximal : famille moins MSP = +0,012 (fautes, p Holm 0,13), +0,035 (homoglyphes, p Holm 0,077), +0,047 (remplissage, p Holm 0,077). Le signe est l'inverse de celui prédit : la confiance sur la famille perd PLUS que le MSP.  Fichiers : artifacts/results/v3/D_all_units.csv ; D_resume.csv ; D_HD1.csv ; D_HD2.csv ; D_HD4.csv ; D_HD7.csv
+
+*Note.* Le meilleur détecteur d'inconnus propre (famille) est aussi plus fragile aux attaques ; l'avantage de D12 est donc à confirmer sous attaque, pas à supposer.
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-09 12:40:19) : statut préinscrite ; Au degré maximal de chaque attaque, la perte d'AUROC d'inconnu de la confiance sur la famille est plus petite que celle du MSP (Wilcoxon apparié, Holm sur 3).
 
 ### HE1 : Toute calibration réduit l'ECE  (version 2, 2026-11-09 12:49:37 ; **statut : réfutée**)
 
@@ -740,6 +773,54 @@ Calibrée sur des gabarits distincts, la prédiction conforme à 90 % couvre au 
 *Historique des versions précédentes (conservées) :*
 - v1 (2026-11-09 12:40:19) : statut préinscrite ; Calibrée sur des gabarits distincts, la prédiction conforme à 90 % couvre au moins 87 % des logs connus du test ; calibrée sur les mêmes gabarits que l'entraînement, elle couvre moins de 87 % (moyenne…
 
+### HF1 : Le support par gabarit améliore le macro-F1  (version 1, 2026-11-09 13:02:03 ; **statut : préinscrite**)
+
+Pour au moins un des trois seuils m = 2, 3, 5 gabarits, le macro-F1 des classes (palier A) dépasse celui du SVM mots d'au moins 0,02 (Wilcoxon apparié sur 25 plis, Holm sur 3, p < 0,05).
+
+*Justification.* Les mots d'un seul gabarit sont des valeurs ou des mots propres au gabarit, qui encombrent le vocabulaire sans se généraliser.
+
+*Note.* Écrit le 2026-11-09 avant tout calcul de l'itération I1.
+
+### HF2 : Le marqueur « valeur » apporte quelque chose de plus que la suppression  (version 1, 2026-11-09 13:02:03 ; **statut : préinscrite**)
+
+T3M (mots écartés remplacés par un marqueur) dépasse T3 (mots écartés supprimés) d'au moins 0,01 (Wilcoxon apparié, p < 0,05).
+
+*Justification.* Le nombre de champs variables d'un log est une information de structure qui disparaît si on supprime les mots.
+
+*Note.* Écrit le 2026-11-09 avant tout calcul de l'itération I1.
+
+### HF3 : Mots et caractères se complètent  (version 1, 2026-11-09 13:02:03 ; **statut : préinscrite**)
+
+ENS dépasse le SVM mots d'au moins 0,02 (Wilcoxon apparié, Holm).
+
+*Justification.* Deux représentations qui se trompent différemment ; mais au bloc V, mots et caractères étaient équivalents seuls.
+
+*Note.* Écrit le 2026-11-09 avant tout calcul de l'itération I1.
+
+### HF4 : Pondérer les gabarits à égalité aide  (version 1, 2026-11-09 13:02:03 ; **statut : préinscrite**)
+
+WGT dépasse le SVM mots d'au moins 0,02 (Wilcoxon apparié, Holm).
+
+*Justification.* Les gros gabarits dominent l'apprentissage même avec le plafond de 400 logs.
+
+*Note.* Écrit le 2026-11-09 avant tout calcul de l'itération I1.
+
+### HF5 : La combinaison dépasse chacun de ses composants  (version 1, 2026-11-09 13:02:03 ; **statut : préinscrite**)
+
+COMB dépasse chacune des variantes qu'elle combine (Wilcoxon apparié, Holm).
+
+*Justification.* Les gains portent sur des mécanismes différents.
+
+*Note.* Écrit le 2026-11-09 avant tout calcul de l'itération I1.
+
+### HF6 : Objectif de score  (version 1, 2026-11-09 13:02:03 ; **statut : préinscrite**)
+
+Le macro-F1 des classes (palier A) de la meilleure variante atteint au moins 0,55 en moyenne sur les 25 plis (baseline 0,503).
+
+*Justification.* Objectif de l'étudiant : viser le maximum ; 0,55 est un seuil fixé d'avance pour dire si l'itération a franchi une marche notable.
+
+*Note.* Écrit le 2026-11-09 avant tout calcul de l'itération I1.
+
 ## Résultats
 
 ### RA1 : Bloc A : macro-F1 du palier A par protocole (précédent v1 et actuel v3)  (version 1, 2026-11-07 21:58:55)
@@ -816,3 +897,11 @@ Diagnostic sur 15 unités (3 par rotation). (1) Le code est correct : la formule
 *Justification.* Les deux séries s'accordent sur l'essentiel (la calibration par température ne change pas l'AUROC ; la confiance est trop élevée sous décalage de gabarits : ECE 0,18 ici sans calibration contre 0,15 en v1) mais pas sur le gain de la température (0,150 → 0,095 en v1 ; 0,179 → 0,169 non significatif ici). Le protocole v3, avec calibration sur gabarits distincts, mesure ce que v1 ne mesurait pas : l'instabilité de la température estimée sur peu de gabarits.
 
 *Preuve.* artifacts/results/v3/E_all_units.csv ; E_resume.csv ; E_HE1.csv ; E_HE2.csv ; E_HE3.csv ; E_HE4.csv ; E_HE5.csv ; E_conforme_units.csv
+
+### RD1 : Bloc D : attaques (précédent v1 et actuel v3)  (version 1, 2026-11-09 13:07:19)
+
+**Actuel (v3, 25 unités, modèle mots, degré 5 de 5) :** perte de macro-F1 fautes −0,088, homoglyphes −0,254, remplissage −0,128 ; la perte croît avec le degré dans les trois cas ; le modèle caractères perd 0,006 / 0,024 / 0,051 en moyenne sur les degrés ; la normalisation officielle annule les homoglyphes ; les connus rejetés à tort montent de 0,061 à 0,268. **Précédent :** tableau des attaques du notebook v1 (8.6 et 9.12), conservé tel quel.
+
+*Justification.* La série v3 reprend les trois attaques sur cinq degrés avec tests appariés ; elle précise et n'infirme pas la série v1 (mêmes sens de variation). Elle ajoute la table officielle et le rejet à tort.
+
+*Preuve.* artifacts/results/v3/D_all_units.csv ; D_resume.csv ; D_HD1.csv ; D_HD2.csv ; D_HD4.csv ; D_HD7.csv
