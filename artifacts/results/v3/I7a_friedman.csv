@@ -1,0 +1,25 @@
+,rang moyen,indiscernable du meilleur
+C64_fam_negent,5.8,True
+C16_fam_negent,6.48,True
+C16_fam_msp,6.92,True
+C64_fam_msp,7.04,True
+C64_fam_margin,7.72,True
+C1_fam_msp,7.96,True
+C64_rank_fam_energy,8.2,True
+C16_fam_margin,8.88,True
+C1_fam_negent,9.08,True
+C16_rank_fam_energy,9.12,True
+C1_fam_margin,9.36,True
+C1_rank_fam_energy,10.44,True
+C64_fam_x_msp,12.52,True
+C1_fam_x_msp,13.76,False
+C16_fam_x_msp,14.44,False
+C16_energy,15.12,False
+C64_energy,15.32,False
+C1_energy,16.48,False
+C64_msp,18.0,False
+C1_hier_msp,18.8,False
+C64_hier_msp,19.0,False
+C16_hier_msp,19.68,False
+C1_msp,19.88,False
+C16_msp,20.0,False

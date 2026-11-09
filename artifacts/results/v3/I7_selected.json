@@ -1,0 +1,7 @@
+{
+ "score": "C64_fam_negent",
+ "auroc_B": 0.6498,
+ "gain_vs_msp_C4": 0.04139889273096997,
+ "porte_HI5": true,
+ "friedman_p": 1.6084277202783158e-46
+}

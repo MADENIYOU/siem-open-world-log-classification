@@ -1,0 +1,14 @@
+"""Journal : décision D25 (lancer I6b malgré la porte fermée ; trancher HI6 et HI7 par réplication I7c) et hypothèses HI6b, HI7b, préinscrites avant tout calcul. Idempotent."""
+import sys, pathlib
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1] / "src"))
+import tp2_journal as J
+N = "Écrit le 2026-11-09 avant tout calcul d'I6b et d'I7c."
+if not J.exists("D25"):
+    J.add("D25", "decision", "Lancer la confirmation I6b malgré la porte fermée ; trancher HI6 et HI7 par la réplication I7c",
+          "(1) I6b : l'étudiant demande de lancer la confirmation que la règle D23 ne prévoyait pas (porte HF17 fermée : gain en développement +0,0085 < 0,02). La décision HF17 reste « réfutée » (elle porte sur la porte) ; HF18 est évaluée avec sa règle écrite sur les 25 plis des répétitions 5 à 9 de la configuration retenue W1_lr30 (V0 = I1b, mêmes plis) : un résultat nul sera une information, un résultat positif devrait être traité avec prudence (porte fermée en sélection). (2) I7c : HI6 et HI7 sont non tranchées parce que l'intervalle est large (25 unités). Réplication : TROIS nouveaux jeux de 5 rotations (ensembles D, E, F : graines 20261112, 20261113, 20261114, refusées si identiques à une rotation déjà utilisée : v1, I4, I7a, I7b ou un ensemble précédent) × 5 nouvelles répétitions de plis (répétitions 10 à 14, StratifiedGroupKFold par gabarit graines 10 à 14) = 75 unités (rotation, répétition) ; uniquement la combinaison retenue en sélection (C64_fam_negent) et la référence msp (C = 4), les 24 combinaisons étant calculées comme d'habitude mais NON utilisées pour décider. Plusieurs tests : IC95 bootstrap, Wilcoxon, signes, permutation.",
+          justification="Demande de l'étudiant (2026-11-09) : lancer I6b et trancher HI6 et HI7. Pour trancher il faut resserrer l'intervalle : 75 unités au lieu de 25, sur des rotations jamais vues, avec une règle écrite avant le calcul (R2).", note=N)
+H = [("HI6b", "La combinaison retenue (C64_fam_negent) dépasse le MSP de référence d'au moins 0,03 d'AUROC (réplication)", "Sur les 75 unités (rotation, répétition) des ensembles D, E, F : confirmée si la borne basse de l'IC95 bootstrap de l'écart (C64_fam_negent − msp C = 4) est ≥ 0,03 et si Wilcoxon, signes et permutation (unilatéraux, écart > 0,03) donnent p < 0,05 ; réfutée si la borne haute de l'IC95 est < 0,03 ; sinon non tranchée (et on arrête : pas de réplication supplémentaire).", "Reprend HI6 avec trois fois plus d'unités."),
+     ("HI7b", "La combinaison retenue réduit le FPR@95 d'au moins 0,05 (réplication)", "Mêmes 75 unités : baisse du FPR@95 (msp C = 4 moins C64_fam_negent) ; mêmes critères que HI6b avec le seuil 0,05.", "Reprend HI7.")]
+for i, t, tx, j in H:
+    if not J.exists(i): J.add(i, "hypothese", t, tx, justification=j, statut="préinscrite", note=N)
+print("ok")

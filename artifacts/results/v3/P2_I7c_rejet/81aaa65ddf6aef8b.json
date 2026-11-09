@@ -1,0 +1,232 @@
+{
+ "hash": "81aaa65ddf6aef8b",
+ "block": "P2_I7c_rejet",
+ "name": "I7c F rot5 r12 pli3",
+ "cfg": {
+  "phase": 2,
+  "iteration": "I7c",
+  "rotation_set": "F",
+  "rotation": 4,
+  "masked": [
+   "connection-closed",
+   "connection-opened",
+   "directory-changed",
+   "file-action-failure",
+   "file-read",
+   "user-creation"
+  ],
+  "repeat": 12,
+  "fold": 3,
+  "cap": 400,
+  "rot_seed": 20261114,
+  "C_head": [
+   4,
+   1,
+   16,
+   64
+  ],
+  "file": "SIEVE_00"
+ },
+ "code_version": "I7c.1",
+ "result": {
+  "scores": {
+   "C4_msp": {
+    "auroc": 0.5615206235007248,
+    "fpr95": 0.9992069785884219,
+    "aupr_in": 0.9259650793925511
+   },
+   "C4_energy": {
+    "auroc": 0.632678494089914,
+    "fpr95": 1.0,
+    "aupr_in": 0.9403885380057566
+   },
+   "C4_hier_msp": {
+    "auroc": 0.6708955604644218,
+    "fpr95": 0.9944488501189532,
+    "aupr_in": 0.9488796766130798
+   },
+   "C4_fam_msp": {
+    "auroc": 0.7766411884642082,
+    "fpr95": 0.9960348929421095,
+    "aupr_in": 0.969628087877749
+   },
+   "C4_fam_margin": {
+    "auroc": 0.7892675923197556,
+    "fpr95": 0.8889770023790642,
+    "aupr_in": 0.9712719826539085
+   },
+   "C4_fam_negent": {
+    "auroc": 0.766054174634785,
+    "fpr95": 0.9357652656621729,
+    "aupr_in": 0.9679365593640635
+   },
+   "C4_fam_x_msp": {
+    "auroc": 0.667316561886323,
+    "fpr95": 0.9968279143536876,
+    "aupr_in": 0.947617210647223
+   },
+   "C4_rank_fam_energy": {
+    "auroc": 0.7225996863511325,
+    "fpr95": 0.9952418715305313,
+    "aupr_in": 0.9607178355828501
+   },
+   "C1_msp": {
+    "auroc": 0.5644801556774202,
+    "fpr95": 1.0,
+    "aupr_in": 0.9263361530732541
+   },
+   "C1_energy": {
+    "auroc": 0.6402678474313819,
+    "fpr95": 1.0,
+    "aupr_in": 0.9418617559595728
+   },
+   "C1_hier_msp": {
+    "auroc": 0.6594422745673485,
+    "fpr95": 0.9984139571768438,
+    "aupr_in": 0.9459575720162475
+   },
+   "C1_fam_msp": {
+    "auroc": 0.7639889174763329,
+    "fpr95": 0.9254559873116575,
+    "aupr_in": 0.9672713295359097
+   },
+   "C1_fam_margin": {
+    "auroc": 0.7761241622351733,
+    "fpr95": 0.8977002379064235,
+    "aupr_in": 0.9691386523867882
+   },
+   "C1_fam_negent": {
+    "auroc": 0.7517294788405671,
+    "fpr95": 0.8556701030927835,
+    "aupr_in": 0.9650615558077891
+   },
+   "C1_fam_x_msp": {
+    "auroc": 0.6586200636394739,
+    "fpr95": 0.9936558287073751,
+    "aupr_in": 0.9455497248689849
+   },
+   "C1_rank_fam_energy": {
+    "auroc": 0.7197013809647175,
+    "fpr95": 0.943695479777954,
+    "aupr_in": 0.9596430911248449
+   },
+   "C16_msp": {
+    "auroc": 0.5378000676342451,
+    "fpr95": 1.0,
+    "aupr_in": 0.9215235362769425
+   },
+   "C16_energy": {
+    "auroc": 0.6182405208232393,
+    "fpr95": 1.0,
+    "aupr_in": 0.9391594635638945
+   },
+   "C16_hier_msp": {
+    "auroc": 0.6481092273281902,
+    "fpr95": 0.9968279143536876,
+    "aupr_in": 0.9433725548355032
+   },
+   "C16_fam_msp": {
+    "auroc": 0.7552550819620261,
+    "fpr95": 0.8540840602696272,
+    "aupr_in": 0.9654471563764532
+   },
+   "C16_fam_margin": {
+    "auroc": 0.7724193876925449,
+    "fpr95": 0.7137192704203014,
+    "aupr_in": 0.9679386474826415
+   },
+   "C16_fam_negent": {
+    "auroc": 0.7387187068015924,
+    "fpr95": 0.9873116574147502,
+    "aupr_in": 0.9632678221004071
+   },
+   "C16_fam_x_msp": {
+    "auroc": 0.6402517892421997,
+    "fpr95": 0.9968279143536876,
+    "aupr_in": 0.9413319306865795
+   },
+   "C16_rank_fam_energy": {
+    "auroc": 0.7040655300685636,
+    "fpr95": 0.9738302934179223,
+    "aupr_in": 0.9574636694379357
+   },
+   "C64_msp": {
+    "auroc": 0.4838451057131161,
+    "fpr95": 0.9968279143536876,
+    "aupr_in": 0.9012741631264175
+   },
+   "C64_energy": {
+    "auroc": 0.5221851793988462,
+    "fpr95": 1.0,
+    "aupr_in": 0.9126012219470605
+   },
+   "C64_hier_msp": {
+    "auroc": 0.5588268820415259,
+    "fpr95": 0.9992069785884219,
+    "aupr_in": 0.9237787495680589
+   },
+   "C64_fam_msp": {
+    "auroc": 0.6868344602411498,
+    "fpr95": 0.9960348929421095,
+    "aupr_in": 0.9548196970863279
+   },
+   "C64_fam_margin": {
+    "auroc": 0.6947636459999882,
+    "fpr95": 0.972244250594766,
+    "aupr_in": 0.9555541729411723
+   },
+   "C64_fam_negent": {
+    "auroc": 0.6781601112207585,
+    "fpr95": 1.0,
+    "aupr_in": 0.9538038088213691
+   },
+   "C64_fam_x_msp": {
+    "auroc": 0.5535594004679024,
+    "fpr95": 0.9992069785884219,
+    "aupr_in": 0.9201919272241625
+   },
+   "C64_rank_fam_energy": {
+    "auroc": 0.612235825978274,
+    "fpr95": 0.9992069785884219,
+    "aupr_in": 0.9377043776304925
+   }
+  },
+  "info": {
+   "n_known_test": 10025,
+   "n_unknown_test": 1261,
+   "masked": [
+    "connection-closed",
+    "connection-opened",
+    "directory-changed",
+    "file-action-failure",
+    "file-read",
+    "user-creation"
+   ]
+  }
+ },
+ "seconds": 4.57,
+ "machine": {
+  "host": "MacBook-Pro-de-Madeniyou.local",
+  "platform": "macOS-27.0.1-arm64-arm-64bit",
+  "python": "3.12.16"
+ },
+ "commit": "ff3a863",
+ "code": {
+  "v3_phase2_I7c.py": "e5d0a29b43b6",
+  "tp2_attacks.py": "37a5b3530f02",
+  "tp2_data.py": "7f392cbaae6e",
+  "tp2_encoder.py": "faec7df763bf",
+  "tp2_fields.py": "70b8fa07b590",
+  "tp2_journal.py": "d98d2c73b0a1",
+  "tp2_logtext.py": "2b5360ac2128",
+  "tp2_new_figs.py": "e48636202d7c",
+  "tp2_openset.py": "05d7b8a91592",
+  "tp2_runner.py": "7765735476e7",
+  "tp2_sota_figs.py": "4ba8388989c4",
+  "tp2_split_v3.py": "d9a4181a2a60",
+  "tp2_stats.py": "1bf4f78f39c3",
+  "tp2_vec.py": "6d09bf373fd2",
+  "tp2_versions.py": "b7dd47bdb2f6"
+ },
+ "date": "2026-11-09 22:24:11"
+}

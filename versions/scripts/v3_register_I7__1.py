@@ -1,0 +1,15 @@
+"""Journal : décision D24 (itération I7 : rejet d'inconnus, nouveaux hyperparamètres, nouvelles rotations, plusieurs tests) et hypothèses HI5 à HI7, préinscrites avant tout calcul. Idempotent."""
+import sys, pathlib
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1] / "src"))
+import tp2_journal as J
+N = "Écrit le 2026-11-09 avant tout calcul de l'itération I7."
+if not J.exists("D24"):
+    J.add("D24", "decision", "Itération I7 : retenter le rejet d'inconnus (I4) avec de nouveaux hyperparamètres et de nouvelles rotations",
+          "Demande de l'étudiant (2026-11-09). I7 : SÉLECTION sur un second jeu de 5 rotations (ensemble B : partitions des 30 classes tirées avec la graine 20261110, refusées si identiques à une rotation de v1 ou de l'ensemble de I4) × répétitions 0 à 4 (25 plis, 125 unités) ; CONFIRMATION sur un troisième jeu de 5 rotations (ensemble C : graine 20261111, mêmes refus) × répétitions 5 à 9 (25 nouveaux plis, 125 unités). Hyperparamètres : C de la tête ∈ {1 ; 16 ; 64} (I4 : 4) ; scores : msp, energy, hier_msp, fam_msp (I4), fam_margin (écart entre les deux plus grandes probabilités de famille), fam_negent (opposé de l'entropie des probabilités de famille), fam_x_msp (produit des confiances famille et classe), rank_fam_energy (moyenne des rangs de fam_msp et energy), soit 3 × 8 = 24 combinaisons. Unité de statistique = (rotation, répétition), AUROC moyenné sur les 5 plis. Sélection : meilleur AUROC moyen sur l'ensemble B ; référence : msp avec C = 4 (I4). Plusieurs tests statistiques : IC95 bootstrap, Wilcoxon, test des signes, permutation, Friedman + Nemenyi sur les 24 combinaisons à l'étape de sélection. Le test v2 reste scellé (D20).",
+          justification="L'étudiant demande de retenter avec de nouveaux hyperparamètres, plusieurs rotations et plusieurs tests ; la séparation sélection (rotations B) / confirmation (rotations C, nouveaux plis) évite de présenter un maximum de grille comme un résultat.", note=N)
+H = [("HI5", "Une combinaison dépasse nettement le MSP de référence en développement", "Sur l'ensemble B, la meilleure des 24 combinaisons dépasse le msp (C = 4) d'au moins 0,03 d'AUROC d'inconnu (porte : sinon pas de confirmation).", "Seuil plus exigeant que 0,02 car le maximum d'une grille de 24 est biaisé."),
+     ("HI6", "La combinaison retenue dépasse le MSP de référence sur de nouvelles rotations", "Sur l'ensemble C (125 unités, 25 unités (rotation, répétition)), la combinaison retenue dépasse le msp (C = 4) d'au moins 0,03 : confirmée si la borne basse de l'IC95 bootstrap est ≥ 0,03 et si Wilcoxon, signes et permutation (unilatéraux, écart > 0,03) donnent p < 0,05 ; réfutée si la borne haute est < 0,03 ; sinon non tranchée.", "Décision par l'IC95, les trois tests sont des garde-fous."),
+     ("HI7", "La combinaison retenue réduit le FPR@95", "Sur l'ensemble C, le FPR@95 de la combinaison retenue est inférieur d'au moins 0,05 à celui du msp (C = 4) (mêmes critères que HI6).", "Mesure d'usage ; HI3 (I4) avait été réfutée.")]
+for i, t, tx, j in H:
+    if not J.exists(i): J.add(i, "hypothese", t, tx, justification=j, statut="préinscrite", note=N)
+print("ok")
