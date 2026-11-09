@@ -1,0 +1,7 @@
+a,b,mesure,écart a-b,p,p Holm
+temperature,aucune,ece,-0.00971,0.42614,1.0
+vector_scaling,aucune,ece,0.04644,0.00019,0.00094
+isotonique,aucune,ece,0.0067,0.73099,1.0
+binning,aucune,ece,0.01142,0.27518,1.0
+platt,aucune,ece,-0.00633,0.33879,1.0
+temperature_classes_cachees,aucune,ece,0.14426,0.0,1e-05

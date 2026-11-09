@@ -1,0 +1,4 @@
+a,b,mesure,écart a-b,p
+temperature,aucune,auroc_msp,0.00317,0.14848
+platt,aucune,auroc_msp,0.0,1.0
+vector_scaling,aucune,auroc_msp,-0.0437,0.14848

@@ -662,53 +662,83 @@ Au degré maximal de chaque attaque, la perte d'AUROC d'inconnu de la confiance 
 
 *Note.* Écrit le 2026-11-09 avant tout calcul des blocs D et E.
 
-### HE1 : Toute calibration réduit l'ECE  (version 1, 2026-11-09 12:40:19 ; **statut : préinscrite**)
+### HE1 : Toute calibration réduit l'ECE  (version 2, 2026-11-09 12:49:37 ; **statut : réfutée**)
 
 Chacune des méthodes de calibration (température, vector scaling, isotonique, binning, Platt, température sur classes cachées) a un ECE plus petit que « aucune » sur les classes connues du test (Wilcoxon apparié sur 25 unités, Holm sur 6).
 
-*Justification.* Notebook v1 : température 0,150 → 0,095 pour TF-IDF.
+*Justification.* Verdict établi avec la règle de décision préinscrite (voir la version précédente).
 
-*Note.* Écrit le 2026-11-09 avant tout calcul des blocs D et E.
+*Preuve.* ECE moyen (25 unités) : aucune 0,179 ; température 0,169 (écart −0,010, p Holm 1,0) ; Platt 0,173 (−0,006, p Holm 1,0) ; isotonique 0,186 (+0,007) ; binning 0,190 (+0,011) ; vector scaling 0,226 (+0,046, p Holm 0,0009, PIRE) ; température sur classes cachées 0,323 (+0,144, p Holm 1e-5, PIRE). Aucune méthode ne réduit l'ECE de façon significative ; deux l'aggravent nettement.  Fichiers : artifacts/results/v3/E_all_units.csv ; E_resume.csv ; E_HE1.csv ; E_HE2.csv ; E_HE3.csv ; E_HE4.csv ; E_HE5.csv ; E_conforme_units.csv
 
-### HE2 : Température et vector scaling sont équivalentes  (version 1, 2026-11-09 12:40:19 ; **statut : préinscrite**)
+*Note.* Constat à retenir : sous décalage de gabarits, calibrer sur environ 40 gabarits distincts n'améliore pas la calibration de façon fiable (la température ne gagne que 0,010, non significatif). Notebook v1 : ECE de 0,150 à 0,095 avec la température ; cet effet ne se retrouve pas avec ce protocole, qui est plus strict (jeu de calibration à gabarits distincts de l'entraînement comme du test). Variante « classes cachées » : T tombe au bord de la grille (T = 4), car maximiser l'AUROC de la confiance par un seul réglage de température n'a pas de maximum intérieur ; le modèle devient sous-confiant (ECE et NLL très mauvais) sans gain d'AUROC. Une unité (rotation 1, pli 0) avait été vue au test de fumée avant le calcul complet ; le verdict repose sur les 25 unités. Un premier calcul (E1) s'était arrêté sur une erreur d'indice : classes connues sans gabarit dans l'ensemble d'ajustement, voir la version E2 de scripts/v3_blockE.py.
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-09 12:40:19) : statut préinscrite ; Chacune des méthodes de calibration (température, vector scaling, isotonique, binning, Platt, température sur classes cachées) a un ECE plus petit que « aucune » sur les classes connues du test (Wilco…
+
+### HE2 : Température et vector scaling sont équivalentes  (version 2, 2026-11-09 12:49:37 ; **statut : réfutée**)
 
 L'ECE du vector scaling diffère de celui de la température de moins de 0,01 en moyenne et la différence n'est pas significative (Wilcoxon, p >= 0,05).
 
-*Justification.* Un seul paramètre contre un par classe : sous décalage, plus de paramètres ne protègent pas mieux (Ovadia et al.).
+*Justification.* Verdict établi avec la règle de décision préinscrite (voir la version précédente).
 
-*Note.* Écrit le 2026-11-09 avant tout calcul des blocs D et E.
+*Preuve.* Vector scaling moins température : ECE +0,056 (0,226 contre 0,169), p = 1,4e-4 : écart supérieur à 0,01 et significatif.  Fichiers : artifacts/results/v3/E_all_units.csv ; E_resume.csv ; E_HE1.csv ; E_HE2.csv ; E_HE3.csv ; E_HE4.csv ; E_HE5.csv ; E_conforme_units.csv
 
-### HE3 : Isotonique et binning ne battent pas la température  (version 1, 2026-11-09 12:40:19 ; **statut : préinscrite**)
+*Note.* Un paramètre par classe, estimé sur une quarantaine de gabarits, surajuste les gabarits de calibration : cohérent avec Ovadia et al. (la calibration a posteriori se dégrade sous décalage). Une unité (rotation 1, pli 0) avait été vue au test de fumée avant le calcul complet ; le verdict repose sur les 25 unités. Un premier calcul (E1) s'était arrêté sur une erreur d'indice : classes connues sans gabarit dans l'ensemble d'ajustement, voir la version E2 de scripts/v3_blockE.py.
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-09 12:40:19) : statut préinscrite ; L'ECE du vector scaling diffère de celui de la température de moins de 0,01 en moyenne et la différence n'est pas significative (Wilcoxon, p >= 0,05).
+
+### HE3 : Isotonique et binning ne battent pas la température  (version 2, 2026-11-09 12:49:37 ; **statut : confirmée**)
 
 Sous décalage de gabarits, l'ECE de l'isotonique et du binning n'est pas inférieur à celui de la température (Wilcoxon, p >= 0,05 ou ECE supérieur).
 
-*Justification.* Les méthodes non paramétriques surajustent un jeu de calibration de taille limitée.
+*Justification.* Verdict établi avec la règle de décision préinscrite (voir la version précédente).
 
-*Note.* Écrit le 2026-11-09 avant tout calcul des blocs D et E.
+*Preuve.* Isotonique moins température : +0,016, p Holm 0,090 ; binning moins température : +0,021, p Holm 0,044 (binning significativement PIRE). Aucune des deux n'est inférieure à la température.  Fichiers : artifacts/results/v3/E_all_units.csv ; E_resume.csv ; E_HE1.csv ; E_HE2.csv ; E_HE3.csv ; E_HE4.csv ; E_HE5.csv ; E_conforme_units.csv
 
-### HE4 : La calibration ne change pas la détection d'inconnus  (version 1, 2026-11-09 12:40:19 ; **statut : préinscrite**)
+*Note.* Les méthodes non paramétriques surajustent le jeu de calibration. Une unité (rotation 1, pli 0) avait été vue au test de fumée avant le calcul complet ; le verdict repose sur les 25 unités. Un premier calcul (E1) s'était arrêté sur une erreur d'indice : classes connues sans gabarit dans l'ensemble d'ajustement, voir la version E2 de scripts/v3_blockE.py.
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-09 12:40:19) : statut préinscrite ; Sous décalage de gabarits, l'ECE de l'isotonique et du binning n'est pas inférieur à celui de la température (Wilcoxon, p >= 0,05 ou ECE supérieur).
+
+### HE4 : La calibration ne change pas la détection d'inconnus  (version 2, 2026-11-09 12:49:37 ; **statut : réfutée**)
 
 Aucune méthode de calibration monotone (température, Platt, vector scaling) ne modifie l'AUROC d'inconnu du MSP de plus de 0,01.
 
-*Justification.* Notebook v1 : l'AUROC reste à 0,603 après température.
+*Justification.* Verdict établi avec la règle de décision préinscrite (voir la version précédente).
 
-*Note.* Écrit le 2026-11-09 avant tout calcul des blocs D et E.
+*Preuve.* Variation de l'AUROC d'inconnu du MSP contre « aucune » : température +0,003 (p = 0,15) ; Platt 0,000 ; vector scaling −0,044 (p = 0,15). La règle (« aucune méthode ne modifie l'AUROC de plus de 0,01 ») est violée par le vector scaling.  Fichiers : artifacts/results/v3/E_all_units.csv ; E_resume.csv ; E_HE1.csv ; E_HE2.csv ; E_HE3.csv ; E_HE4.csv ; E_HE5.csv ; E_conforme_units.csv
 
-### HE5 : Calibrer sur les mêmes gabarits trompe  (version 1, 2026-11-09 12:40:19 ; **statut : préinscrite**)
+*Note.* Erreur dans la formulation de l'hypothèse : le vector scaling (une échelle et un biais PAR classe) ne préserve pas l'ordre des scores, contrairement à la température et à Platt, qui conservent l'ordre ; je l'avais rangé à tort parmi les méthodes monotones. Température et Platt respectent bien la règle (écart <= 0,003). Verdict « réfutée » au sens de la règle écrite ; à reformuler. Une unité (rotation 1, pli 0) avait été vue au test de fumée avant le calcul complet ; le verdict repose sur les 25 unités. Un premier calcul (E1) s'était arrêté sur une erreur d'indice : classes connues sans gabarit dans l'ensemble d'ajustement, voir la version E2 de scripts/v3_blockE.py.
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-09 12:40:19) : statut préinscrite ; Aucune méthode de calibration monotone (température, Platt, vector scaling) ne modifie l'AUROC d'inconnu du MSP de plus de 0,01.
+
+### HE5 : Calibrer sur les mêmes gabarits trompe  (version 2, 2026-11-09 12:49:37 ; **statut : confirmée**)
 
 La température ajustée sur des logs des mêmes gabarits que l'entraînement donne un ECE plus grand, sur le test de nouveaux gabarits, que la température ajustée sur des gabarits distincts (Wilcoxon apparié, p < 0,05).
 
-*Justification.* Un jeu de calibration qui ressemble à l'entraînement mesure une confiance trop optimiste, la même fuite qu'au bloc A.
+*Justification.* Verdict établi avec la règle de décision préinscrite (voir la version précédente).
 
-*Note.* Écrit le 2026-11-09 avant tout calcul des blocs D et E.
+*Preuve.* Température ajustée sur des logs des MÊMES gabarits que l'entraînement : ECE 0,296 contre 0,169 pour la température sur gabarits distincts (écart +0,127, p < 1e-6). Valeurs de T : inférieures à 1 (le modèle est rendu encore plus sûr de lui).  Fichiers : artifacts/results/v3/E_all_units.csv ; E_resume.csv ; E_HE1.csv ; E_HE2.csv ; E_HE3.csv ; E_HE4.csv ; E_HE5.csv ; E_conforme_units.csv
 
-### HE6 : La prédiction conforme tient sa couverture seulement avec des gabarits distincts  (version 1, 2026-11-09 12:40:19 ; **statut : préinscrite**)
+*Note.* Même fuite qu'au bloc A : un jeu de calibration qui ressemble à l'entraînement apprend une confiance trop optimiste. Une unité (rotation 1, pli 0) avait été vue au test de fumée avant le calcul complet ; le verdict repose sur les 25 unités. Un premier calcul (E1) s'était arrêté sur une erreur d'indice : classes connues sans gabarit dans l'ensemble d'ajustement, voir la version E2 de scripts/v3_blockE.py.
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-09 12:40:19) : statut préinscrite ; La température ajustée sur des logs des mêmes gabarits que l'entraînement donne un ECE plus grand, sur le test de nouveaux gabarits, que la température ajustée sur des gabarits distincts (Wilcoxon app…
+
+### HE6 : La prédiction conforme tient sa couverture seulement avec des gabarits distincts  (version 2, 2026-11-09 12:49:37 ; **statut : confirmée**)
 
 Calibrée sur des gabarits distincts, la prédiction conforme à 90 % couvre au moins 87 % des logs connus du test ; calibrée sur les mêmes gabarits que l'entraînement, elle couvre moins de 87 % (moyenne sur 25 unités).
 
-*Justification.* La garantie suppose l'échangeabilité entre calibration et test, brisée par la fuite de gabarits.
+*Justification.* Verdict établi avec la règle de décision préinscrite (voir la version précédente).
 
-*Note.* Écrit le 2026-11-09 avant tout calcul des blocs D et E.
+*Preuve.* Prédiction conforme visant 90 % : calibrée sur des gabarits distincts, couverture moyenne 0,899, au moins 0,87 dans 18 unités sur 25 ; calibrée sur les mêmes gabarits que l'entraînement, couverture moyenne 0,136, au moins 0,87 dans 0 unité. Les deux conditions de la règle sont satisfaites.  Fichiers : artifacts/results/v3/E_all_units.csv ; E_resume.csv ; E_HE1.csv ; E_HE2.csv ; E_HE3.csv ; E_HE4.csv ; E_HE5.csv ; E_conforme_units.csv
+
+*Note.* Limite pratique : avec des gabarits distincts, les ensembles de prédiction sont énormes (11,9 classes en moyenne sur environ 24) : la garantie de couverture est tenue au prix d'une information très faible. Une unité (rotation 1, pli 0) avait été vue au test de fumée avant le calcul complet ; le verdict repose sur les 25 unités. Un premier calcul (E1) s'était arrêté sur une erreur d'indice : classes connues sans gabarit dans l'ensemble d'ajustement, voir la version E2 de scripts/v3_blockE.py.
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-09 12:40:19) : statut préinscrite ; Calibrée sur des gabarits distincts, la prédiction conforme à 90 % couvre au moins 87 % des logs connus du test ; calibrée sur les mêmes gabarits que l'entraînement, elle couvre moins de 87 % (moyenne…
 
 ## Résultats
 
@@ -778,3 +808,11 @@ Diagnostic sur 15 unités (3 par rotation). (1) Le code est correct : la formule
 *Justification.* Vérification demandée par l'étudiant. Limite : le diagnostic porte sur 15 unités, non 125.
 
 *Preuve.* scripts/v3_diag_C.py ; artifacts/results/v3/C_diagnostic_openmax_lof.csv
+
+### RE1 : Bloc E : calibration (précédent v1 et actuel v3)  (version 1, 2026-11-09 12:49:37)
+
+**Actuel (v3, 25 unités, ECE des classes connues du test, 15 bacs de même effectif) :** température 0,169 ; Platt 0,173 ; aucune 0,179 ; isotonique 0,186 ; binning 0,190 ; vector scaling 0,226 ; température sur mêmes gabarits 0,296 ; température sur classes cachées 0,323. Score de Brier : 0,201 (température) à 0,316. AUROC d'inconnu du MSP : 0,62 pour aucune, température et Platt. Conforme : couverture 0,899 (gabarits distincts) contre 0,136 (mêmes gabarits).  **Précédent (notebook v1, étape 9.6) :** TF-IDF, T = 1,62, ECE de 0,150 à 0,095 en validation, AUROC inchangé 0,603 ; encodeur : ECE 0,18 (validation) puis 0,35 (test) ; confiance annoncée 85 % pour 50 % de bonnes réponses.  Les deux séries sont conservées.
+
+*Justification.* Les deux séries s'accordent sur l'essentiel (la calibration par température ne change pas l'AUROC ; la confiance est trop élevée sous décalage de gabarits : ECE 0,18 ici sans calibration contre 0,15 en v1) mais pas sur le gain de la température (0,150 → 0,095 en v1 ; 0,179 → 0,169 non significatif ici). Le protocole v3, avec calibration sur gabarits distincts, mesure ce que v1 ne mesurait pas : l'instabilité de la température estimée sur peu de gabarits.
+
+*Preuve.* artifacts/results/v3/E_all_units.csv ; E_resume.csv ; E_HE1.csv ; E_HE2.csv ; E_HE3.csv ; E_HE4.csv ; E_HE5.csv ; E_conforme_units.csv

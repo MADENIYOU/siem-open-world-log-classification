@@ -220,3 +220,9 @@ Généré à partir de `artifacts/results/v3/versions.jsonl` (append-only, ne pa
 | Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
 |---|---|---|---|---|---|
 | **P3** | 2026-11-09 12:48 | Décisions D14 et D15 et hypothèses HD1 à HD7 et HE1 à HE6 inscrites avant tout calcul. | première version | **version courante** | `versions/scripts/v3_register_DE__P3.py` |
+
+## scripts/v3_verdicts_E.py (verdicts du bloc E)
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **VE1** | 2026-11-09 12:49 | Verdicts HE1 à HE6 et résultat RE1 (v1 et v3 conservés). | première version | **version courante** | `versions/scripts/v3_verdicts_E__VE1.py` |
