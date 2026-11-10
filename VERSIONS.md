@@ -819,3 +819,27 @@ Généré à partir de `artifacts/results/v3/versions.jsonl` (append-only, ne pa
 | Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
 |---|---|---|---|---|---|
 | **1** | 2026-11-10 22:03 | Verdicts HK1 à HK6 et résultat RW9 | Première version | **version courante** | `versions/scripts/v3_verdicts_W9__1.py` |
+
+## RW10
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **1** | 2026-11-10 22:03 | Préinscription D41, HK7 à HK10 (vague 10) | Première version | **version courante** | `versions/scripts/v3_register_W10__1.py` |
+
+## W10
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **1** | 2026-11-10 22:04 | Vague 10 : degrés étendus, variantes de STK, réplication finale (100 plis, trois conditions) | Première version | **version courante** | `versions/scripts/v3_phase2_W10__1.py` |
+
+## AW10
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **1** | 2026-11-10 22:08 | Analyse de la vague 10 (HK7 à HK10) | Première version | **version courante** | `versions/scripts/v3_analyze_W10__1.py` |
+
+## VW10
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **1** | 2026-11-10 22:25 | Verdicts HK7 à HK10, décision D42 (pipeline gelé provisoire), résultat RW10 | Première version | **version courante** | `versions/scripts/v3_verdicts_W10__1.py` |

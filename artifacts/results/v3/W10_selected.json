@@ -1,0 +1,14 @@
+{
+ "candidates": [
+  "AXE05_B1_T2_a0.25",
+  "STK_T1_a0.5",
+  "AXE025_B1_T2_a0.25",
+  "STK_T1_a0.1"
+ ],
+ "best_axe": "AXE025_B1_T2_a0.25",
+ "best_stk": "STK_T1_a0.1",
+ "hk7": {
+  "axe_interieur": true,
+  "stk_interieur": false
+ }
+}

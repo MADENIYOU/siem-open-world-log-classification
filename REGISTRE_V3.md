@@ -386,6 +386,22 @@ Demande de l'étudiant (2026-11-10, mardi) : au lieu d'un levier à la fois, com
 
 *Note.* Écrit le 2026-11-10 avant tout calcul de la vague 9.
 
+### D41 : Vague 10 : étendre les degrés, variantes de STK, réplication finale sur 100 plis et règle de choix du pipeline gelé  (version 1, 2026-11-10 22:03:49)
+
+Suite de la vague 9 (RW9) : le meilleur de 108 configurations (AXE05, lettres 1, température 2, prior 0,25) est à la FRONTIÈRE de la grille (T maximal, α minimal) et STK a été évaluée à (T = 1, α = 0,5) seulement ; l'étudiant demande de faire varier les degrés. SÉLECTION (répétitions 0-4, 25 plis, nouveau bloc) : (E1) famille AXE : base AXE05 avec lettres 1, T ∈ {2 ; 3 ; 4} × α ∈ {0,1 ; 0,25 ; 0,4} (9 configurations) ; bases AXE025 (wc = 0,25, wo = wa = 1) et AXE075 (wc = 0,75, wo = wa = 1) avec lettres 1, T = 2, α = 0,25 (2 configurations) ; (E2) famille STK : poids appris comme en D40, décodés avec T ∈ {1 ; 2 ; 3} × α ∈ {0,1 ; 0,25 ; 0,5} (9 configurations) ; références rejouées : PIPE, AXE05_B1_T2_a0.25 (retenue en D40), STK (T = 1, α = 0,5). On retient la meilleure configuration de chaque famille (E1, E2) selon la moyenne de macro-F1 en sélection. RÉPLICATION FINALE (répétitions 20 à 39, 100 plis jamais utilisés pour ces configurations ; conditions toutes, abs8 (graine 1000·r + k), abs14 (graine 2000·r + k)) : candidats = {AXE05_B1_T2_a0.25, STK (T = 1, α = 0,5), meilleure de E1, meilleure de E2} contre PIPE. RÈGLE DE CHOIX (écrite avant le calcul) : un candidat est ÉLIGIBLE si, en condition « toutes », le gain contre PIPE a une borne basse d'IC95 bootstrap ≥ 0,02 ET Wilcoxon, signes et permutation (unilatéraux contre 0,02) donnent p < 0,0125 (Bonferroni, 4 candidats) ; parmi les éligibles, on retient celui dont le MINIMUM des gains moyens sur les trois conditions (toutes, abs8, abs14) est le plus grand ; si l'écart entre les deux meilleurs minima est < 0,005, on retient le plus simple (STK à T = 1, α = 0,5, sans réglage) ; si aucun candidat n'est éligible, le pipeline gelé reste AXE05_B1_T2_a0.25 (confirmé en D40, HK4). Le test v2 reste scellé (D27).
+
+*Justification.* Faire varier les degrés d'un levier jusqu'à l'optimum intérieur (sinon on ne sait pas si l'on est au bout) ; tester la robustesse à l'absence de classes (14 absentes) qui est la condition la plus dure ; choisir sur des plis neufs avec une règle écrite d'avance, pas sur la sélection.
+
+*Note.* Écrit le 2026-11-10 avant tout calcul de la vague 10.
+
+### D42 : Pipeline gelé provisoire (avant l'ouverture du test v2)  (version 1, 2026-11-10 22:25:22)
+
+PIPELINE : (1) TF-IDF mots (lettres ≥ 2, min_df = 2, sublinéaire) et TF-IDF caractères 3-5 (char_wb, min_df = 3, 100 000 attributs) calculés sur l'apprentissage ; (2) quatre têtes : régression logistique C = 10 sur les mots pour la classe, pour l'objet (12 valeurs) et pour l'action (15 valeurs) ; régression logistique C = 10 sur les caractères pour la famille ; (3) score de classe s = wc·log p_classe + wo·log p_objet + wa·log p_action + wf·log p_famille avec poids ≥ 0 appris par minimisation de l'entropie croisée hors-gabarit (validation croisée interne en 3 plis de gabarits, composantes réentraînées à chaque pli) ; (4) softmax puis décodage à masses équilibrées M50 sur le lot de test (cible 0,5 uniforme + 0,5 prior observé, Sinkhorn amorti 0,5, 10 itérations, température 1) ; (5) REJET DES INCONNUS par la confiance de famille brute (sans décodage, vague 5). Code : scripts/v3_phase2_W10.py (config « STK_T1_a0.5 »). Choisi par la règle D41 sur 100 plis neufs. Le test v2 reste scellé ; il sera ouvert UNE fois sur ce pipeline, après relecture de l'étudiant.
+
+*Justification.* Règle de choix écrite avant le calcul (D41) ; pipeline le plus simple et le plus robuste ; gel provisoire car l'ouverture du test v2 attend la validation de l'étudiant (au plus tard vendredi 2026-11-13).
+
+*Note.* Écrit le 2026-11-10.
+
 ## Hypothèses (préinscrites, puis confirmées ou réfutées)
 
 ### HA1 : Le découpage au hasard gonfle le score  (version 4, 2026-11-07 22:29:59 ; **statut : confirmée**)
@@ -2144,6 +2160,58 @@ Pour chaque candidat, le gain de confirmation (50 plis) est ≥ 75 % du gain de 
 *Historique des versions précédentes (conservées) :*
 - v1 (2026-11-10 21:48:47) : statut préinscrite ; Pour chaque candidat, le gain de confirmation (50 plis) est ≥ 75 % du gain de sélection (25 plis) : rapporté par candidat (mesure du biais de sélection du maximum d'un plan de 108 configurations).
 
+### HK7 : L'optimum de chaque famille est intérieur à la grille étendue  (version 2, 2026-11-10 22:25:22 ; **statut : non tranchée**)
+
+En sélection, la meilleure configuration de la famille AXE a T < 4 et α > 0,1, et celle de la famille STK a T < 3 et α > 0,1 (descriptif : si l'optimum reste sur le bord de la nouvelle grille, le bord est signalé comme limite du réglage).
+
+*Justification.* Verdict établi avec la règle de décision préinscrite (D41).
+
+*Preuve.* Sélection (25 plis, 20 configurations étendues) : famille AXE : meilleure AXE025_B1_T2_a0.25 (T = 2 < 4 et α = 0,25 > 0,1 : optimum intérieur, mais plateau : 13 configurations entre +0,041 et +0,054) ; famille STK : meilleure STK_T1_a0.1 (α = 0,1 : sur le BORD de la grille, critère non rempli).  Fichiers : artifacts/results/v3/W10a_all_units.csv ; W10a_grille.csv ; W10c_all_units.csv ; W10c_tests.csv ; W10_selected.json ; W10_choice.json
+
+*Note.* Plateau pour AXE (les différences de réglage sont de l'ordre de 0,003, sous le bruit) ; pour STK, un prior plus faible gagne en classes toutes présentes mais perd quand des classes sont absentes (STK_T1_a0.1 : −0,022 en abs14 en réplication) : le bord n'est pas un optimum sûr.
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-10 22:03:49) : statut préinscrite ; En sélection, la meilleure configuration de la famille AXE a T < 4 et α > 0,1, et celle de la famille STK a T < 3 et α > 0,1 (descriptif : si l'optimum reste sur le bord de la nouvelle grille, le bord…
+
+### HK8 : Un candidat est éligible sur 100 plis neufs  (version 2, 2026-11-10 22:25:22 ; **statut : confirmée**)
+
+Règle d'éligibilité de D41 : borne basse de l'IC95 du gain contre PIPE ≥ 0,02 ET Wilcoxon, signes, permutation (unilatéraux contre 0,02) p < 0,0125, condition « toutes », répétitions 20-39 ; rapportée par candidat ; réfutée pour un candidat si la borne haute < 0,02.
+
+*Justification.* Verdict établi avec la règle de décision préinscrite (D41).
+
+*Preuve.* Réplication finale (100 plis, répétitions 20-39), condition « toutes », PIPE 0,5534, seuil 0,02, p < 0,0125 : STK_T1_a0.5 0,5922 : +0,0388 (IC95 [0,032 ; 0,046], signes 71/100, p < 1e-4) : ÉLIGIBLE ; AXE025_B1_T2_a0.25 0,5948 : +0,0414 ([0,034 ; 0,050], signes 63/100, p = 0,0060) : ÉLIGIBLE ; AXE05_B1_T2_a0.25 0,5928 : +0,0394 ([0,032 ; 0,048], signes 61/100, p = 0,0176) : non éligible (test des signes) ; STK_T1_a0.1 0,5898 : +0,0364 ([0,028 ; 0,045], signes 58/100, p = 0,067) : non éligible (signes).  Fichiers : artifacts/results/v3/W10a_all_units.csv ; W10a_grille.csv ; W10c_all_units.csv ; W10c_tests.csv ; W10_selected.json ; W10_choice.json
+
+*Note.* Deux candidats sont éligibles ; les quatre gagnent entre +0,036 et +0,041 avec une borne basse ≥ 0,028 : l'effet est établi pour tous au sens de l'intervalle, le test des signes est le critère qui trie.
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-10 22:03:49) : statut préinscrite ; Règle d'éligibilité de D41 : borne basse de l'IC95 du gain contre PIPE ≥ 0,02 ET Wilcoxon, signes, permutation (unilatéraux contre 0,02) p < 0,0125, condition « toutes », répétitions 20-39 ; rapportée…
+
+### HK9 : Pipeline gelé choisi par la règle écrite  (version 2, 2026-11-10 22:25:22 ; **statut : confirmée**)
+
+Application de la règle de choix de D41 : le pipeline gelé est le candidat éligible au plus grand minimum de gains sur (toutes, abs8, abs14), avec départage au plus simple si écart < 0,005 ; AXE05_B1_T2_a0.25 si aucun éligible.
+
+*Justification.* Verdict établi avec la règle de décision préinscrite (D41).
+
+*Preuve.* Règle appliquée : parmi les éligibles, minimum des gains sur (toutes, abs8, abs14) : STK_T1_a0.5 +0,0356 ; AXE025_B1_T2_a0.25 −0,0006 ; l'écart (0,036) dépasse 0,005 : le pipeline gelé est STK_T1_a0.5 (composition apprise des quatre têtes, décodage M50 α = 0,5, T = 1).  Fichiers : artifacts/results/v3/W10a_all_units.csv ; W10a_grille.csv ; W10c_all_units.csv ; W10c_tests.csv ; W10_selected.json ; W10_choice.json
+
+*Note.* STK n'a aucun réglage à la main (température 1, prior 0,5 : valeurs du pipeline de la vague 3) ; ses quatre poids sont appris hors-gabarit. Elle est aussi la plus simple des candidats.
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-10 22:03:49) : statut préinscrite ; Application de la règle de choix de D41 : le pipeline gelé est le candidat éligible au plus grand minimum de gains sur (toutes, abs8, abs14), avec départage au plus simple si écart < 0,005 ; AXE05_B1_…
+
+### HK10 : Le pipeline gelé résiste à 8 et 14 classes absentes  (version 2, 2026-11-10 22:25:22 ; **statut : confirmée**)
+
+Pour le pipeline retenu par HK9, gain contre PIPE > 0 avec borne basse d'IC95 > 0 dans les conditions abs8 et abs14 (répétitions 20-39) ; rapportée par condition.
+
+*Justification.* Verdict établi avec la règle de décision préinscrite (D41).
+
+*Preuve.* Pipeline retenu STK_T1_a0.5, répétitions 20-39 : abs8 (8 classes absentes) : +0,0425, IC95 [0,031 ; 0,054] ; abs14 (14 classes absentes) : +0,0356, IC95 [0,024 ; 0,047] : bornes basses > 0 dans les deux conditions.  Fichiers : artifacts/results/v3/W10a_all_units.csv ; W10a_grille.csv ; W10c_all_units.csv ; W10c_tests.csv ; W10_selected.json ; W10_choice.json
+
+*Note.* Contraste fort : AXE05_B1_T2_a0.25 donne −0,0010 en abs14 (IC95 [−0,014 ; 0,013]) et AXE025 −0,0006 ; seule la composition apprise reste positive quand la moitié des classes est absente.
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-10 22:03:49) : statut préinscrite ; Pour le pipeline retenu par HK9, gain contre PIPE > 0 avec borne basse d'IC95 > 0 dans les conditions abs8 et abs14 (répétitions 20-39) ; rapportée par condition.
+
 ## Résultats
 
 ### RA1 : Bloc A : macro-F1 du palier A par protocole (précédent v1 et actuel v3)  (version 1, 2026-11-07 21:58:55)
@@ -2404,3 +2472,11 @@ Sélection (25 plis, « toutes »), macro-F1 du palier A : PIPE 0,5544 ; meilleu
 *Justification.* Première amélioration obtenue en COMPOSANT des leviers : aucun levier seul ne dépassait +0,02 de façon établie, leur combinaison réglée (axes objet × action + température 2 + prior 0,25) donne +0,035 sur plis neufs ; la composition apprise STK, sans réglage, donne +0,029 et résiste mieux à l'absence de classes.
 
 *Preuve.* artifacts/results/v3/W9a_all_units.csv ; W9a_grille.csv ; W9a_HK1.csv ; W9a_HK2.csv ; W9a_HK3.csv ; W9b_all_units.csv ; W9b_tests.csv ; W9_selected.json
+
+### RW10 : Vague 10 : degrés étendus et réplication finale sur 100 plis (répétitions 20-39)  (version 1, 2026-11-10 22:25:22)
+
+Macro-F1 du palier A, PIPE (décodage M50 seul) : 0,5534 (toutes) ; 0,5645 (8 absentes) ; 0,5897 (14 absentes). STK_T1_a0.5 : 0,5922 ; 0,6070 ; 0,6252 (gains +0,039 ; +0,043 ; +0,036). AXE05_B1_T2_a0.25 : 0,5928 ; 0,5949 ; 0,5886 (+0,039 ; +0,030 ; −0,001). AXE025_B1_T2_a0.25 : 0,5948 ; 0,5952 ; 0,5891. STK_T1_a0.1 : 0,5898 ; 0,5874 ; 0,5680. Pour mémoire, la régression logistique brute sur les mêmes plis (W3d) : 0,5046.
+
+*Justification.* Le pipeline final gagne environ +0,088 sur la régression logistique brute (0,5046 → 0,5922, classes toutes présentes), dont +0,049 apportés par le décodage et +0,039 par la composition apprise ; il garde son avantage quand 8 ou 14 classes sur 30 sont absentes du lot. Les réglages fins (température, prior) ne trouvent pas de mieux robuste : la composition apprise sans réglage suffit.
+
+*Preuve.* artifacts/results/v3/W10a_all_units.csv ; W10a_grille.csv ; W10c_all_units.csv ; W10c_tests.csv ; W10_selected.json ; W10_choice.json
