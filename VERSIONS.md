@@ -19,8 +19,9 @@ Généré à partir de `artifacts/results/v3/versions.jsonl` (append-only, ne pa
 
 | Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
 |---|---|---|---|---|---|
-| **N1** | 2026-11-06 09:30 | Notebook du protocole v1 : étapes 0 à 10, 312 cellules, 0 erreur, registre V1 à V99, journal du test v1 (ouvert le 2026-11-05). | première version | **version courante** | non conservée (voir note) |
+| **N1** | 2026-11-06 09:30 | Notebook du protocole v1 : étapes 0 à 10, 312 cellules, 0 erreur, registre V1 à V99, journal du test v1 (ouvert le 2026-11-05). | première version | N1 n'avait pas de partie 2 : l'étude statistique v3, les résultats négatifs, le décodage M50 et le registre complet des hypothèses n'y figuraient pas ; N1 est conservé (archive/2026-11-07_avant_v3 et archive/2026-11-10_1644_avant_partie2_notebook) (par N2) | non conservée (voir note) |
 |  |  | *Note : Archivé dans `archive/2026-11-07_avant_v3/` et étiquette git `etat-2026-11-07-avant-v3`. La version suivante (partie 2, protocole v3) n'existe pas encore : elle ajoutera des sections sans retirer N1.* |  |  |  |
+| **N2** | 2026-11-10 16:45 | Notebook avec la PARTIE 2 (protocole v3) : 13 cellules ajoutées à la fin (P2.0 à P2.11) générées par scripts/build_notebook_part2.py ; les 312 cellules de la v1 sont identiques à N1 (vérifié contre le commit précédent) ; tableaux et figures issus du journal et de artifacts/results/v3 | N1 n'avait pas de partie 2 : l'étude statistique v3, les résultats négatifs, le décodage M50 et le registre complet des hypothèses n'y figuraient pas ; N1 est conservé (archive/2026-11-07_avant_v3 et archive/2026-11-10_1644_avant_partie2_notebook) | **version courante** | `versions/TP2_logs_hierarchique_monde_ouvert__N2.ipynb` |
 
 ## src/tp2_runner.py (exécuteur reprenable)
 
@@ -733,10 +734,24 @@ Généré à partir de `artifacts/results/v3/versions.jsonl` (append-only, ne pa
 
 | Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
 |---|---|---|---|---|---|
-| **1** | 2026-11-10 14:44 | Vague 7 : LP-FT et LP-FT depuis un DistilBERT adapté (MLM), protocole de T2 | Première version | **version courante** | `versions/scripts/v3_transformer_W7__1.py` |
+| **1** | 2026-11-10 14:44 | Vague 7 : LP-FT et LP-FT depuis un DistilBERT adapté (MLM), protocole de T2 | Première version | La version 1 s'est bloquée (0 % de processeur, 21 Go occupés, état « stuck ») au début de la deuxième unité : la mémoire de l'accélérateur n'était pas libérée entre phases ; calculs et résultats inchangés (par 2) | `versions/scripts/v3_transformer_W7__1.py` |
+| **2** | 2026-11-10 16:02 | Libère la mémoire (gc + torch.mps.empty_cache) entre les trois phases de chaque unité | La version 1 s'est bloquée (0 % de processeur, 21 Go occupés, état « stuck ») au début de la deuxième unité : la mémoire de l'accélérateur n'était pas libérée entre phases ; calculs et résultats inchangés | **version courante** | `versions/scripts/v3_transformer_W7__2.py` |
 
 ## VW56
 
 | Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
 |---|---|---|---|---|---|
 | **1** | 2026-11-10 14:47 | Verdicts HO1-HO3, HR1-HR4 et résultats RW5, RW6 | Première version | **version courante** | `versions/scripts/v3_verdicts_W56__1.py` |
+
+## AW7
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **1** | 2026-11-10 14:47 | Analyse de la vague 7 (HL1, HM1) | Première version | **version courante** | `versions/scripts/v3_analyze_W7__1.py` |
+
+## NB2
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **1** | 2026-11-10 16:44 | Générateur de la partie 2 du notebook (sections ajoutées à la fin, tableaux et figures depuis le journal et les résultats) | Première version ; la partie 1 (v1) n'est jamais touchée | La première version rognait la barre la plus haute et archivait un exemplaire de 4,6 Mo à chaque relance (par 2) | `versions/scripts/build_notebook_part2__1.py` |
+| **2** | 2026-11-10 16:45 | Axe des hauteurs de la figure des verdicts agrandi ; archive du notebook seulement à la première construction | La première version rognait la barre la plus haute et archivait un exemplaire de 4,6 Mo à chaque relance | **version courante** | `versions/scripts/build_notebook_part2__2.py` |

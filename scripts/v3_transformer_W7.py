@@ -2,6 +2,7 @@
 import sys, os, time, pathlib, warnings
 ROOT = pathlib.Path(__file__).resolve().parents[1]; sys.path.insert(0, str(ROOT / "src")); sys.path.insert(0, str(ROOT / "scripts")); sys.path.insert(0, str(ROOT / "colab" / "local"))
 os.environ.setdefault("HF_HUB_OFFLINE", "1"); os.environ.setdefault("TOKENIZERS_PARALLELISM", "false")
+import gc
 import numpy as np
 from scipy.special import softmax
 import tp2_encoder as E, tp2_encoder_lpft as L
@@ -10,15 +11,20 @@ warnings.filterwarnings("ignore")
 NTR, NTE, SEED, MLM_CAP = G.NTR, G.NTE, 42, 20000; (R.RES / "W7_lpft").mkdir(parents=True, exist_ok=True); ADAPT = ROOT / "artifacts" / "models" / "encoder_v3" / "adapt_w7"; ADAPT.mkdir(parents=True, exist_ok=True)
 
 
+def free():
+    import torch; gc.collect()
+    if torch.backends.mps.is_available(): torch.mps.empty_cache()
+
+
 def task(sp, rot, devs, tierA):
     r, k = sp; dev = devs[0]; ya = dev.category.astype("category"); classes = list(ya.cat.categories); y = ya.cat.codes.values; masked = set(C.ROT[rot]); mid = np.array([classes.index(c) for c in masked]); tierA_ids = [classes.index(c) for c in tierA]
     fam_of = np.array([B.FAMS.index([f for f in B.FAMS if c in B.TAX[f]][0]) for c in classes]); fold = dev[f"fold_r{r}"].values; te_pool = np.where(fold == k)[0]; tr_pool = np.where((fold != k) & ~np.isin(y, mid))[0]
     tr_i = G.sample(tr_pool, y, NTR, 0); te_i = G.sample(te_pool, y, NTE, 1); ytr, yte = y[tr_i], y[te_i]; known = ~np.isin(yte, mid); kcls = np.unique(ytr); K = len(kcls); yi = np.searchsorted(kcls, ytr); txt_tr, txt_te = dev.log.values[tr_i], dev.log.values[te_i]; res = {}
     model, tok, info = L.train_lpft("distilbert-base-uncased", txt_tr, yi, fam_of[ytr], K, len(B.FAMS), max_len=256, seed=SEED); pr = E.predict(model, tok, txt_te, max_len=256, mc=0); Lf = pr["logits_fine"]
-    res["lpft"] = {**G.metrics({"msp": softmax(Lf, 1).max(1)}, known, kcls[Lf.argmax(1)], yte, tierA_ids, set(kcls))["closed"], "train_minutes": info["train_minutes"]}; del model
+    res["lpft"] = {**G.metrics({"msp": softmax(Lf, 1).max(1)}, known, kcls[Lf.argmax(1)], yte, tierA_ids, set(kcls))["closed"], "train_minutes": info["train_minutes"]}; del model, pr, Lf; free()
     pool = np.where((fold != k) & ~np.isin(y, mid))[0]; rng = np.random.default_rng(100 * r + 10 * k + rot); sel = rng.permutation(pool)[:MLM_CAP]; ad = ADAPT / f"r{r}k{k}rot{rot + 1}"
-    mi = L.adapt_mlm(dev.log.values[sel], str(ad), seed=SEED); model, tok, info = L.train_lpft(str(ad), txt_tr, yi, fam_of[ytr], K, len(B.FAMS), max_len=256, seed=SEED); pr = E.predict(model, tok, txt_te, max_len=256, mc=0); Lf = pr["logits_fine"]
-    res["lpft_adapt"] = {**G.metrics({"msp": softmax(Lf, 1).max(1)}, known, kcls[Lf.argmax(1)], yte, tierA_ids, set(kcls))["closed"], "train_minutes": info["train_minutes"], **mi}
+    mi = L.adapt_mlm(dev.log.values[sel], str(ad), seed=SEED); free(); model, tok, info = L.train_lpft(str(ad), txt_tr, yi, fam_of[ytr], K, len(B.FAMS), max_len=256, seed=SEED); pr = E.predict(model, tok, txt_te, max_len=256, mc=0); Lf = pr["logits_fine"]
+    res["lpft_adapt"] = {**G.metrics({"msp": softmax(Lf, 1).max(1)}, known, kcls[Lf.argmax(1)], yte, tierA_ids, set(kcls))["closed"], "train_minutes": info["train_minutes"], **mi}; del model, pr, Lf; free()
     return res
 
 
