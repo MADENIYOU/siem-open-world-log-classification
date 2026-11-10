@@ -362,6 +362,22 @@ Demande de l'étudiant (2026-11-10, « va pour les 3 »). Pipeline gelé proviso
 
 *Note.* Écrit le 2026-11-10 avant tout calcul des vagues 5 à 7.
 
+### D38 : Vague 8 : réglage conscient du décodage, mots + lettres avant décodage, auto-apprentissage sur le lot décodé  (version 1, 2026-11-10 21:35:24)
+
+Clôture de la vague 7 (RW7) puis demande de l'étudiant (2026-11-10) : essayer d'autres leviers. RÉFÉRENCE PIPE = pipeline gelé provisoire : TF-IDF mots → régression logistique C = 10 → décodage M50 (cible 0,5 uniforme + 0,5 prior observé, exposant 0,5, 10 itérations). Procédure D20 : sélection répétitions 0-4 (25 plis), confirmation répétitions 10-19 (50 plis, mêmes plis que W3c) ; condition « toutes » pour la décision, « abs8 » (8 classes retirées du lot, mêmes tirages que W3) rapportée ; mesure : macro-F1 du palier A. LEVIERS : (G) RÉGLAGE : grille de 36 configurations C ∈ {3, 10, 30, 100} × température T ∈ {0,5 ; 1 ; 2} (probabilités P^(1/T) renormalisées avant décodage) × poids α du prior observé dans la cible ∈ {0,25 ; 0,5 ; 0,75} ; la configuration (10, 1, 0,5) est PIPE ; on retient la meilleure des 35 autres selon la moyenne de la macro-F1 en sélection. (E) MOTS + LETTRES : ENSP30, ENSP50 = moyenne géométrique pondérée des probabilités de la régression logistique mots (poids 0,7 ou 0,5) et d'une régression logistique C = 10 sur TF-IDF caractères 3-5 (poids 0,3 ou 0,5), puis décodage M50. (S) AUTO-APPRENTISSAGE : ST1 = après le décodage M50 du lot de test sans étiquette, on ajoute à l'apprentissage, avec le poids 0,5, les logs du lot dont la confiance après décodage est dans le tiers supérieur de leur classe prédite, avec leur classe prédite, on réentraîne la régression logistique (C = 10) et l'on redécode ; ST2 = deux tours. Précaution : le lot est celui du pli de développement ; le texte du test v2 n'est jamais lu avant son ouverture unique. Plusieurs tests : IC95 bootstrap, Wilcoxon, signes, permutation. Le test v2 reste scellé (D27).
+
+*Justification.* Le décodage a changé l'information utile des probabilités (calibration, netteté) : le réglage des probabilités peut compter désormais ; les lettres donnaient un gain de famille (HF7) ; l'auto-apprentissage adapte le modèle au vocabulaire des gabarits nouveaux du lot.
+
+*Note.* Écrit le 2026-11-10 avant tout calcul de la vague 8.
+
+### D39 : Confirmer trois candidats de la vague 8 sur 50 plis neufs (seuil pratique 0,01)  (version 1, 2026-11-10 21:43:22)
+
+Candidats : G_C30_T1_a0.25 (meilleure configuration de la grille en sélection : +0,0152, IC95 [0,005 ; 0,026], poids 0,25 du prior observé dans la cible), ST1 (+0,0249) et ST2 (+0,0220). Confirmation : répétitions 10-19 (50 plis), conditions toutes et abs8, référence PIPE recalculée sur les mêmes plis. SEUIL : 0,01 (seuil pratique pour un ajout au pipeline décodé, comme HZ8) ; correction pour trois candidats : p < 0,05 / 3 = 0,0167. Précédents : D25, D31, D36. Le test v2 reste scellé.
+
+*Justification.* Les gains de sélection sont de l'ordre de +0,015 à +0,025 avec des bornes basses entre 0,005 et 0,015 : trop incertains pour trancher ; 50 plis neufs resserrent l'intervalle.
+
+*Note.* Écrit le 2026-11-10 avant toute confirmation de la vague 8 (aucune donnée des répétitions 10 à 19 n'a été lue pour ces variantes).
+
 ## Hypothèses (préinscrites, puis confirmées ou réfutées)
 
 ### HA1 : Le découpage au hasard gonfle le score  (version 4, 2026-11-07 22:29:59 ; **statut : confirmée**)
@@ -1957,6 +1973,91 @@ Sur les mêmes 20 couples, LP-FT à partir de l'encodeur adapté (MLM sur les lo
 *Historique des versions précédentes (conservées) :*
 - v1 (2026-11-10 14:33:07) : statut préinscrite ; Sur les mêmes 20 couples, LP-FT à partir de l'encodeur adapté (MLM sur les logs d'entraînement de la découpe) dépasse LP-FT standard d'au moins 0,02 (mêmes critères).
 
+### HQ1 : Un réglage C, température, prior améliore le pipeline décodé  (version 2, 2026-11-10 21:45:51 ; **statut : non tranchée**)
+
+La meilleure des 35 configurations alternatives de la grille (G), retenue en sélection, dépasse PIPE d'au moins 0,01 sur les 50 plis des répétitions 10-19, condition « toutes » : borne basse d'IC95 bootstrap ≥ 0,01 ET Wilcoxon, signes, permutation (unilatéraux contre le seuil 0,01) p < 0,05 ; réfutée si la borne haute < 0,01 ; sinon non tranchée.
+
+*Justification.* Verdict établi avec la règle de décision préinscrite (D38, D39).
+
+*Preuve.* Candidat unique de réglage (G_C30_T1_a0.25, poids 0,25 du prior observé) : sélection +0,0152 (25 plis, IC95 [0,005 ; 0,026]). Confirmation (répétitions 10-19, 50 plis), condition « toutes », PIPE 0,5583 : G_C30_T1_a0.25 0,5620 (+0,0037, IC95 [−0,003 . Seuil 0,01 : borne basse < 0,01 (non confirmée) et borne haute 0,0109 ≥ 0,01 (non réfutée).  Fichiers : artifacts/results/v3/W8a_all_units.csv ; W8a_tests.csv ; W8a_grille.csv ; W8b_all_units.csv ; W8b_tests.csv ; W8_selected.json
+
+*Note.* Gain de confirmation de +0,004 : pratiquement nul. Le gain de sélection (+0,015) s'est réduit des trois quarts sur plis neufs (retour vers la moyenne du maximum d'une grille de 36). Réglage par défaut conservé.
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-10 21:35:24) : statut préinscrite ; La meilleure des 35 configurations alternatives de la grille (G), retenue en sélection, dépasse PIPE d'au moins 0,01 sur les 50 plis des répétitions 10-19, condition « toutes » : borne basse d'IC95 bo…
+
+### HQ2 : Les lettres avant le décodage améliorent le pipeline  (version 2, 2026-11-10 21:43:22 ; **statut : réfutée**)
+
+En sélection (25 plis, condition « toutes »), au moins une des variantes ENSP30, ENSP50 dépasse PIPE d'au moins 0,02 (Wilcoxon unilatéral contre le seuil, Holm sur les 4 variantes ENSP30, ENSP50, ST1, ST2, p < 0,05).
+
+*Justification.* Verdict établi avec la règle de décision préinscrite (D38).
+
+*Preuve.* Sélection (25 plis) : PIPE 0,5544 ; ENSP30 0,5569 (+0,0025, IC95 [−0,002 ; 0,007]) ; ENSP50 0,5561 (+0,0017, IC95 [−0,007 ; 0,010]) ; bornes hautes < 0,02 ; Holm 1,0.  Fichiers : artifacts/results/v3/W8a_all_units.csv ; W8a_tests.csv ; W8a_grille.csv ; W8_selected.json
+
+*Note.* Ajouter les lettres avant le décodage n'apporte rien : le gain de famille de HF7 ne se traduit pas en gain de classe après décodage.
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-10 21:35:24) : statut préinscrite ; En sélection (25 plis, condition « toutes »), au moins une des variantes ENSP30, ENSP50 dépasse PIPE d'au moins 0,02 (Wilcoxon unilatéral contre le seuil, Holm sur les 4 variantes ENSP30, ENSP50, ST1,…
+
+### HQ3 : L'auto-apprentissage améliore le pipeline  (version 2, 2026-11-10 21:43:22 ; **statut : non tranchée**)
+
+En sélection, au moins une des variantes ST1, ST2 dépasse PIPE d'au moins 0,02 (mêmes critères que HQ2).
+
+*Justification.* Verdict établi avec la règle de décision préinscrite (D38).
+
+*Preuve.* Sélection (25 plis) : ST1 0,5793 contre PIPE 0,5544 : +0,0249, IC95 [0,015 ; 0,036], Wilcoxon unilatéral (contre 0,02) p = 0,30, signes 13/12, permutation p = 0,20 ; ST2 +0,0220, IC95 [0,011 ; 0,034], p = 0,44 : les moyennes dépassent 0,02 mais la porte (Holm p < 0,05) n'est pas franchie et les bornes basses sont sous 0,02.  Fichiers : artifacts/results/v3/W8a_all_units.csv ; W8a_tests.csv ; W8a_grille.csv ; W8_selected.json
+
+*Note.* Même schéma que HY1 et HZ1 : un effet apparent de +0,02 à +0,03 dont la significativité contre le seuil n'est pas établie. Confirmation lancée par D39.
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-10 21:35:24) : statut préinscrite ; En sélection, au moins une des variantes ST1, ST2 dépasse PIPE d'au moins 0,02 (mêmes critères que HQ2).
+
+### HQ4 : Une variante passe la porte et se confirme  (version 2, 2026-11-10 21:43:22 ; **statut : non tranchée**)
+
+Si HQ2 ou HQ3 est vérifiée en sélection : la variante retenue dépasse PIPE d'au moins 0,02 sur les répétitions 10-19 (borne basse d'IC95 ≥ 0,02 ET trois tests p < 0,05 contre le seuil 0,02) ; réfutée si la borne haute < 0,02. Si ni HQ2 ni HQ3 n'est vérifiée : HQ4 non testée.
+
+*Justification.* Clôture : la porte HQ2/HQ3 n'est pas franchie ; la confirmation est menée par D39 (HQ6, HQ7).
+
+*Preuve.* Non testée au sens de la règle (porte fermée). Remplacée par HQ6 et HQ7 (D39).  Fichiers : artifacts/results/v3/W8a_all_units.csv ; W8a_tests.csv ; W8a_grille.csv ; W8_selected.json
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-10 21:35:24) : statut préinscrite ; Si HQ2 ou HQ3 est vérifiée en sélection : la variante retenue dépasse PIPE d'au moins 0,02 sur les répétitions 10-19 (borne basse d'IC95 ≥ 0,02 ET trois tests p < 0,05 contre le seuil 0,02) ; réfutée …
+
+### HQ5 : Le gain tient avec 8 classes absentes  (version 2, 2026-11-10 21:45:51 ; **statut : non tranchée**)
+
+Pour toute variante confirmée (HQ1 ou HQ4), le gain contre PIPE dans la condition « abs8 » des répétitions 10-19 est > 0 avec borne basse d'IC95 > 0 (contrôle, sans seuil de gain).
+
+*Justification.* Verdict établi avec la règle de décision préinscrite (D38, D39).
+
+*Preuve.* Non évaluable : aucun candidat n'a été confirmé (HQ1 et HQ6 non tranchées).  Fichiers : artifacts/results/v3/W8a_all_units.csv ; W8a_tests.csv ; W8a_grille.csv ; W8b_all_units.csv ; W8b_tests.csv ; W8_selected.json
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-10 21:35:24) : statut préinscrite ; Pour toute variante confirmée (HQ1 ou HQ4), le gain contre PIPE dans la condition « abs8 » des répétitions 10-19 est > 0 avec borne basse d'IC95 > 0 (contrôle, sans seuil de gain).
+
+### HQ6 : Au moins un candidat améliore PIPE d'au moins 0,01 sur plis neufs  (version 2, 2026-11-10 21:45:51 ; **statut : non tranchée**)
+
+Sur les 50 plis des répétitions 10-19, condition « toutes » : pour au moins un des trois candidats (G_C30_T1_a0.25, ST1, ST2), le gain de macro-F1 du palier A contre PIPE a une borne basse d'IC95 bootstrap ≥ 0,01 ET Wilcoxon, signes et permutation (unilatéraux contre le seuil 0,01) donnent p < 0,0167 ; réfutée si, pour les trois, la borne haute est < 0,01 ; sinon non tranchée. Si plusieurs candidats remplissent la règle, on retient celui dont le gain moyen est le plus grand ; si aucun, PIPE reste le décodage du pipeline gelé.
+
+*Justification.* Verdict établi avec la règle de décision préinscrite (D38, D39).
+
+*Preuve.* Confirmation (répétitions 10-19, 50 plis), condition « toutes », PIPE 0,5583 : G_C30_T1_a0.25 0,5620 (+0,0037, IC95 [−0,003 ; 0,011], Wilcoxon p = 0,97, signes 19/31 contre 0,01) ; ST1 0,5646 (+0,0063, IC95 [−0,001 ; 0,014], p = 0,82, signes 23/27) ; ST2 0,5612 (+0,0029, IC95 [−0,005 ; 0,011], p = 0,96, signes 19/31). Aucun des trois candidats n'a une borne basse ≥ 0,01 ; aucun n'a une borne haute < 0,01 (0,011 ; 0,014 ; 0,011).  Fichiers : artifacts/results/v3/W8a_all_units.csv ; W8a_tests.csv ; W8a_grille.csv ; W8b_all_units.csv ; W8b_tests.csv ; W8_selected.json
+
+*Note.* Règle D39 : si aucun candidat n'est retenu, PIPE reste le décodage du pipeline gelé. Les gains de confirmation (+0,003 à +0,006) sont 3 à 4 fois plus petits que ceux de sélection (+0,015 à +0,025) : retour vers la moyenne.
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-10 21:43:22) : statut préinscrite ; Sur les 50 plis des répétitions 10-19, condition « toutes » : pour au moins un des trois candidats (G_C30_T1_a0.25, ST1, ST2), le gain de macro-F1 du palier A contre PIPE a une borne basse d'IC95 boot…
+
+### HQ7 : Le candidat retenu tient avec 8 classes absentes  (version 2, 2026-11-10 21:45:51 ; **statut : non tranchée**)
+
+Pour le candidat retenu par HQ6, le gain contre PIPE dans la condition « abs8 » des répétitions 10-19 est > 0 avec borne basse d'IC95 > 0 (contrôle ; sans seuil de gain). Non évaluée si aucun candidat n'est retenu.
+
+*Justification.* Verdict établi avec la règle de décision préinscrite (D38, D39).
+
+*Preuve.* Contrôle abs8 rapporté à titre indicatif : G_C30_T1_a0.25 −0,0093 (IC95 [−0,021 ; 0,003]) ; ST1 −0,0072 ([−0,017 ; 0,002]) ; ST2 −0,0191 ([−0,031 ; −0,008]) contre PIPE 0,5808 : aucun candidat ne tient avec 8 classes absentes ; non évaluable au sens de la règle (aucun candidat retenu).  Fichiers : artifacts/results/v3/W8a_all_units.csv ; W8a_tests.csv ; W8a_grille.csv ; W8b_all_units.csv ; W8b_tests.csv ; W8_selected.json
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-10 21:43:22) : statut préinscrite ; Pour le candidat retenu par HQ6, le gain contre PIPE dans la condition « abs8 » des répétitions 10-19 est > 0 avec borne basse d'IC95 > 0 (contrôle ; sans seuil de gain). Non évaluée si aucun candidat…
+
 ## Résultats
 
 ### RA1 : Bloc A : macro-F1 du palier A par protocole (précédent v1 et actuel v3)  (version 1, 2026-11-07 21:58:55)
@@ -2201,3 +2302,11 @@ Protocole de T2 (140 logs par classe, découpes (1,1), (2,2) et début de (3,3))
 *Justification.* Aucun encodeur ne dépasse TF-IDF sur ces logs, même adapté : le pipeline reste TF-IDF + régression logistique + décodage M50. Résultat partiel, non concluant au sens des règles (couples manquants) mais cohérent avec RT2.
 
 *Preuve.* artifacts/results/v3/W7_all_units.csv ; W7_tests.csv ; W7_lpft/ (11 unités)
+
+### RW8 : Vague 8 : réglage conscient du décodage, mots + lettres avant décodage, auto-apprentissage sur le lot décodé  (version 1, 2026-11-10 21:45:51)
+
+Sélection (25 plis, « toutes »), macro-F1 du palier A : PIPE 0,5544 ; ST1 0,5793 ; ST2 0,5764 ; meilleure configuration de grille (C = 30, T = 1, poids 0,25) 0,5695 ; ENSP30 0,5569 ; ENSP50 0,5561. Les cinq meilleures configurations de la grille ont toutes un poids 0,25 du prior observé. Confirmation (50 plis neufs) : PIPE 0,5583 ; grille +0,0037 ; ST1 +0,0063 ; ST2 +0,0029 ; avec 8 classes absentes : −0,007 à −0,019.
+
+*Justification.* Aucun levier de la vague 8 ne s'établit : les gains de sélection (+0,015 à +0,025) se réduisent à +0,003 à +0,006 sur plis neufs. Le pipeline gelé reste TF-IDF mots → régression logistique C = 10 → décodage M50 (poids 0,5, température 1). Illustre le biais du maximum d'une grille et de la sélection sur 25 plis.
+
+*Preuve.* artifacts/results/v3/W8a_all_units.csv ; W8a_tests.csv ; W8a_grille.csv ; W8b_all_units.csv ; W8b_tests.csv ; W8_selected.json

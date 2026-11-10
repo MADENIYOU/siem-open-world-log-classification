@@ -763,3 +763,35 @@ Généré à partir de `artifacts/results/v3/versions.jsonl` (append-only, ne pa
 | Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
 |---|---|---|---|---|---|
 | **1** | 2026-11-10 21:35 | Clôture de la vague 7 : HL1, HM1 non tranchées (non terminées), résultat RW7 | Première version | **version courante** | `versions/scripts/v3_verdicts_W7__1.py` |
+
+## RW8
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **1** | 2026-11-10 21:35 | Préinscription D38, HQ1 à HQ5 (vague 8) | Première version | **version courante** | `versions/scripts/v3_register_W8__1.py` |
+
+## W8
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **1** | 2026-11-10 21:35 | Vague 8 : réglage conscient du décodage (36 configurations), mots + lettres avant décodage, auto-apprentissage | Première version | **version courante** | `versions/scripts/v3_phase2_W8__1.py` |
+
+## AW8
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **1** | 2026-11-10 21:42 | Analyse de la vague 8 (HQ1 à HQ5) | Première version | La version 1 appliquait 0,01 au seul candidat de réglage et 0,02 aux autres ; D39 préinscrit 0,01 pour les trois (par 2) | `versions/scripts/v3_analyze_W8__1.py` |
+| **2** | 2026-11-10 21:43 | Étape b : seuil 0,01 pour les trois candidats de la confirmation (D39) | La version 1 appliquait 0,01 au seul candidat de réglage et 0,02 aux autres ; D39 préinscrit 0,01 pour les trois | La version 2 produisait un tableau vide (KeyError) à cause d'un commentaire inséré au milieu d'une ligne à instructions multiples ; le seuil 0,01 pour les trois candidats (D39) est maintenant réellement appliqué (par 3) | `versions/scripts/v3_analyze_W8__2.py` |
+| **3** | 2026-11-10 21:45 | Corrige la version 2 : le commentaire ajouté avait neutralisé la fin de la ligne (aucun test n'était calculé à l'étape b) | La version 2 produisait un tableau vide (KeyError) à cause d'un commentaire inséré au milieu d'une ligne à instructions multiples ; le seuil 0,01 pour les trois candidats (D39) est maintenant réellement appliqué | **version courante** | `versions/scripts/v3_analyze_W8__3.py` |
+
+## RW8b
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **1** | 2026-11-10 21:43 | Verdicts HQ2-HQ4 de sélection ; préinscription D39, HQ6, HQ7 | Première version | **version courante** | `versions/scripts/v3_register_W8b__1.py` |
+
+## VW8
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **1** | 2026-11-10 21:45 | Verdicts HQ1, HQ5-HQ7 et résultat RW8 | Première version | **version courante** | `versions/scripts/v3_verdicts_W8__1.py` |

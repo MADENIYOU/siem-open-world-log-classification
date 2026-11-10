@@ -1,0 +1,79 @@
+{
+ "hash": "c2bdc6930bb4fa97",
+ "block": "P2_W8b_confirmation",
+ "name": "W8b r15 pli3",
+ "cfg": {
+  "phase": 2,
+  "iteration": "W8b",
+  "repeat": 15,
+  "fold": 3,
+  "cap": 400,
+  "variants": [
+   "G_C30_T1_a0.25",
+   "ST1",
+   "ST2"
+  ],
+  "file": "SIEVE_00"
+ },
+ "code_version": "W8b.1",
+ "result": {
+  "G_C30_T1_a0.25|toutes": {
+   "f1A": 0.6060861261123973,
+   "f1_30": 0.5949366128575463
+  },
+  "G_C10_T1_a0.5|toutes": {
+   "f1A": 0.5832586490223293,
+   "f1_30": 0.5804953027683091
+  },
+  "ST1|toutes": {
+   "f1A": 0.6446265550307241,
+   "f1_30": 0.6225194746927987
+  },
+  "ST2|toutes": {
+   "f1A": 0.5761350091496896,
+   "f1_30": 0.569403276241936
+  },
+  "G_C30_T1_a0.25|abs8": {
+   "f1A": 0.6311980378128348,
+   "f1_30": 0.5799030210694254
+  },
+  "G_C10_T1_a0.5|abs8": {
+   "f1A": 0.5027947674961128,
+   "f1_30": 0.5021086638393853
+  },
+  "ST1|abs8": {
+   "f1A": 0.48217276294991035,
+   "f1_30": 0.4855946697753953
+  },
+  "ST2|abs8": {
+   "f1A": 0.4733809241760062,
+   "f1_30": 0.4744067049810355
+  }
+ },
+ "seconds": 11.05,
+ "machine": {
+  "host": "MacBook-Pro-de-Madeniyou.local",
+  "platform": "macOS-27.0.1-arm64-arm-64bit",
+  "python": "3.12.16"
+ },
+ "commit": "15e61f4",
+ "code": {
+  "v3_phase2_W8.py": "7657edaa9692",
+  "tp2_attacks.py": "37a5b3530f02",
+  "tp2_data.py": "7f392cbaae6e",
+  "tp2_encoder.py": "faec7df763bf",
+  "tp2_encoder_lpft.py": "edfd147c10d7",
+  "tp2_fields.py": "70b8fa07b590",
+  "tp2_journal.py": "d98d2c73b0a1",
+  "tp2_logtext.py": "2b5360ac2128",
+  "tp2_new_figs.py": "e48636202d7c",
+  "tp2_openset.py": "05d7b8a91592",
+  "tp2_runner.py": "7765735476e7",
+  "tp2_sota_figs.py": "4ba8388989c4",
+  "tp2_split_v3.py": "d9a4181a2a60",
+  "tp2_stats.py": "1bf4f78f39c3",
+  "tp2_vec.py": "6d09bf373fd2",
+  "tp2_versions.py": "b7dd47bdb2f6"
+ },
+ "date": "2026-11-10 21:44:27"
+}
