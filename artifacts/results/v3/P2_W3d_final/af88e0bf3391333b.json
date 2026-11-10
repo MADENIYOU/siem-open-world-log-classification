@@ -1,0 +1,95 @@
+{
+ "hash": "af88e0bf3391333b",
+ "block": "P2_W3d_final",
+ "name": "W3d r20 pli4",
+ "cfg": {
+  "phase": 2,
+  "iteration": "W3d",
+  "repeat": 20,
+  "fold": 4,
+  "cap": 400,
+  "variants": [
+   "M50",
+   "A1"
+  ],
+  "conditions": {
+   "toutes": 0,
+   "abs8": 8,
+   "abs14": 14
+  },
+  "file": "SIEVE_00"
+ },
+ "code_version": "W3d.1",
+ "result": {
+  "LR|toutes": {
+   "f1A": 0.5503941859636433,
+   "f1_30": 0.5636348279194997,
+   "n_classes_lot": 20
+  },
+  "M50|toutes": {
+   "f1A": 0.6774075590503843,
+   "f1_30": 0.671209269229524,
+   "n_classes_lot": 20
+  },
+  "A1|toutes": {
+   "f1A": 0.6662664016770021,
+   "f1_30": 0.6582913203837872,
+   "n_classes_lot": 20
+  },
+  "LR|abs8": {
+   "f1A": 0.44418940078044333,
+   "f1_30": 0.4477406799876014,
+   "n_classes_lot": 12
+  },
+  "M50|abs8": {
+   "f1A": 0.4634383390579083,
+   "f1_30": 0.4668896727921594,
+   "n_classes_lot": 12
+  },
+  "A1|abs8": {
+   "f1A": 0.49475063362905514,
+   "f1_30": 0.4903899259299718,
+   "n_classes_lot": 12
+  },
+  "LR|abs14": {
+   "f1A": 0.8115940870959311,
+   "f1_30": 0.8425773616359158,
+   "n_classes_lot": 6
+  },
+  "M50|abs14": {
+   "f1A": 0.7674459763958444,
+   "f1_30": 0.8006063584521788,
+   "n_classes_lot": 6
+  },
+  "A1|abs14": {
+   "f1A": 0.6393061161673976,
+   "f1_30": 0.6646785610559129,
+   "n_classes_lot": 6
+  }
+ },
+ "seconds": 2.76,
+ "machine": {
+  "host": "MacBook-Pro-de-Madeniyou.local",
+  "platform": "macOS-27.0.1-arm64-arm-64bit",
+  "python": "3.12.16"
+ },
+ "commit": "1c7f62f",
+ "code": {
+  "v3_phase2_W3d.py": "be19400a253a",
+  "tp2_attacks.py": "37a5b3530f02",
+  "tp2_data.py": "7f392cbaae6e",
+  "tp2_encoder.py": "faec7df763bf",
+  "tp2_fields.py": "70b8fa07b590",
+  "tp2_journal.py": "d98d2c73b0a1",
+  "tp2_logtext.py": "2b5360ac2128",
+  "tp2_new_figs.py": "e48636202d7c",
+  "tp2_openset.py": "05d7b8a91592",
+  "tp2_runner.py": "7765735476e7",
+  "tp2_sota_figs.py": "4ba8388989c4",
+  "tp2_split_v3.py": "d9a4181a2a60",
+  "tp2_stats.py": "1bf4f78f39c3",
+  "tp2_vec.py": "6d09bf373fd2",
+  "tp2_versions.py": "b7dd47bdb2f6"
+ },
+ "date": "2026-11-10 14:11:00"
+}

@@ -1,0 +1,24 @@
+"""Journal : verdicts de sélection HZ1 à HZ6 (+HZ3b) (D34, D35) ; décision D36 (confirmer AXE05 sur 50 nouveaux plis malgré la porte HZ5 fermée) et hypothèses HZ7, HZ8, préinscrites avant la confirmation. Idempotent."""
+import sys, pathlib
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1] / "src"))
+import tp2_journal as J
+def last(i): return [e for e in J.entries() if e["id"] == i][-1]
+F = "artifacts/results/v3/W4a_all_units.csv ; W4a_tests.csv ; W4_selected.json"
+def verdict(i, statut, preuve, note=""):
+    if last(i)["statut"] == "préinscrite": J.add(i, "hypothese", last(i)["titre"], last(i)["texte"], justification="Verdict établi avec la règle de décision préinscrite (D34, D35).", statut=statut, preuve=preuve + "  Fichiers : " + F, note=note)
+verdict("HZ1", "non tranchée", "Sélection (25 plis, répétitions 0-4), mode brut, condition « toutes », contre LR (0,4947) : AXE0 +0,0220 (IC95 [0,005 ; 0,040], Holm 1,0) ; AXE05 +0,0383 (IC95 [0,025 ; 0,052], Wilcoxon p = 0,013, permutation p = 0,008, Holm sur 6 = 0,0765) ; AXE1 +0,0286 (IC95 [0,017 ; 0,040], Holm 0,39). La moyenne dépasse 0,02 pour les trois, mais aucune ne passe Holm : la porte est fermée par la correction pour comparaisons multiples.", "AXE05 (γ = 0,5) est la meilleure ; son IC95 est entièrement au-dessus de 0,02 : candidat à une confirmation (D36).")
+verdict("HZ2", "réfutée", "BAG10 brut : −0,0187, IC95 [−0,027 ; −0,009] (pire que LR) ; en mode M50 −0,0138.", "Entraîner chaque modèle sur 70 % des gabarits lui fait perdre plus que la moyenne ne rattrape : les gabarits sont trop rares pour être retirés.")
+verdict("HZ3", "réfutée", "DRO1 (formule préinscrite) : macro-F1 0,005 (dégénéré : 5 gabarits effectifs sur 203, perte non bornée) ; −0,49 contre LR.", "Résultat sur la formule : une pondération exponentielle de la perte non bornée est inutilisable ; voir D35 et HZ3b.")
+verdict("HZ3b", "réfutée", "DRO2 (poids ∝ exp(0,5 · min(perte, 4))) : +0,0010, IC95 [−0,012 ; 0,013] contre LR ; mode M50 +0,0056.", "La pondération des gabarits difficiles, même bornée, ne change rien.")
+verdict("HZ4", "réfutée", "Mode M50 contre LR + M50 (0,5544), condition « toutes » : AXE05 +0,0206 (IC95 [0,009 ; 0,032] ; Wilcoxon p = 0,49), AXE1 +0,0147, AXE0 −0,0024, DRO2 +0,0056, BAG10 −0,0138 : aucune ne dépasse 0,02 avec Holm p < 0,05.", "L'avantage du produit d'experts en brut (+0,038) est réduit de moitié par le décodage M50 (+0,021) : les deux corrigent en partie les mêmes erreurs.")
+verdict("HZ5", "réfutée", "Aucune variante ne passe la porte (gain ≥ 0,02 avec Holm p < 0,05, condition « toutes », brut ou M50) en sélection.", "Même schéma que HY1 : porte fermée par Holm, effet apparent pour AXE05 ; confirmation lancée par D36.")
+verdict("HZ6", "réfutée", "AXE05 : gain sur les classes à ≤ 3 gabarits de développement +0,0008 contre +0,0383 sur le palier A ; AXE0 +0,0162 contre +0,0220.", "Le gain du produit d'experts ne vient PAS des classes rares : le mécanisme annoncé par F7 (partage d'information d'axe pour les classes à peu de gabarits) n'est pas observé ; le gain porte sur les classes du palier A.")
+N = "Écrit le 2026-11-10 avant toute confirmation de la vague 4 (aucune donnée des répétitions 10 à 19 n'a été lue pour AXE05)."
+if not J.exists("D36"):
+    J.add("D36", "decision", "Confirmer AXE05 sur 50 nouveaux plis (répétitions 10 à 19) malgré la porte HZ5 fermée",
+          "AXE05 est choisie parce que son IC95 de sélection est entièrement au-dessus de 0,02 (brut, toutes) ; précédents : D25, D31. Confirmation : répétitions 10 à 19 (50 plis, StratifiedGroupKFold par gabarit, graines 10 à 19), conditions toutes et abs8, modes brut et M50, référence LR (brut) et LR + M50 (M50). Règles HZ7 et HZ8 ci-dessous, écrites avant le calcul. Le test v2 reste scellé.",
+          justification="La porte échoue par manque de puissance ; 50 plis donnent un intervalle plus étroit.", note=N)
+for i, t, tx, j in (("HZ7", "AXE05 améliore la classification brute (confirmation)", "Sur les 50 plis des répétitions 10 à 19, condition « toutes », mode brut : gain de macro-F1 du palier A d'AXE05 contre LR avec borne basse d'IC95 bootstrap ≥ 0,02 ET Wilcoxon, signes et permutation (unilatéraux contre le seuil 0,02) p < 0,05 ; réfutée si la borne haute est < 0,02 ; sinon non tranchée.", "Même règle que HF18, HY8."),
+                    ("HZ8", "AXE05 améliore le pipeline gelé (LR + décodage M50)", "Sur les mêmes 50 plis, condition « toutes », mode M50 : gain d'AXE05 + M50 contre LR + M50 avec borne basse d'IC95 ≥ 0,01 ET Wilcoxon, signes et permutation (unilatéraux contre le seuil 0,01) p < 0,05 : confirmée ; réfutée si la borne haute est < 0,01 ; sinon non tranchée. Si HZ8 est confirmée, AXE05 entre dans le pipeline gelé ; sinon, le pipeline reste LR + M50.", "Seuil pratique 0,01 pour un ajout au pipeline déjà décodé.")):
+    if not J.exists(i): J.add(i, "hypothese", t, tx, justification=j, statut="préinscrite", note=N)
+print("ok")

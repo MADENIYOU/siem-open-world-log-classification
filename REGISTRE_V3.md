@@ -322,6 +322,38 @@ M50 (cible = 0,5 · uniforme + 0,5 · prior moyen des probabilités, exposant 0,
 
 *Note.* Écrit le 2026-11-10 avant tout calcul de la réplication W3c (répétitions 10 à 19 : aucun résultat de ces plis n'a été lu).
 
+### D33 : Réplication finale de M50 sur 100 nouveaux plis (répétitions 20 à 39) : décision définitive  (version 1, 2026-11-10 14:10:53)
+
+HY8 est restée non tranchée (test des signes 31/50, p unilatéral 0,0595, contre 0,05) ; l'étudiant a choisi (2026-11-10) une dernière réplication préinscrite. 100 plis (répétitions 20 à 39, StratifiedGroupKFold par gabarit, graines 20 à 39), conditions toutes, abs8 (graine 1000·r + k), abs14 (2000·r + k), variantes M50, A1 (rapportée), LR (référence). Règle HY9 identique à HY8, avec n = 100. DÉCISION DÉFINITIVE : si HY9 est confirmée, M50 entre dans le pipeline gelé ; sinon (réfutée ou non tranchée) le décodage équilibré est abandonné du pipeline gelé, QUEL QUE SOIT le résultat des autres comparaisons ; aucune nouvelle réplication ne sera faite pour M50 (évite l'arrêt optionnel). Le test v2 reste scellé.
+
+*Justification.* Résoudre un non-tranché sans retoucher la règle, avec le double de plis ; une seule réplication supplémentaire annoncée d'avance, donc pas de répétition jusqu'à un résultat favorable.
+
+*Note.* Écrit le 2026-11-10 avant tout calcul de la réplication W3d (répétitions 20 à 39 : aucun résultat de ces plis n'a été lu).
+
+### D34 : Vague 4 : axes objet × action (F7), bagging par gabarits (F20), pondération des gabarits difficiles (F10), avec et sans décodage M50  (version 1, 2026-11-10 14:12:48)
+
+Contexte : M50 est établi (HY9, D33) et fait partie du pipeline gelé ; la vague 4 cherche à améliorer les probabilités AVANT décodage. Procédure D20 : sélection répétitions 0-4 (25 plis), confirmation répétitions 10-14 (25 plis) des variantes passant la porte. RÉFÉRENCE : LR (C = 10, TF-IDF mots) ; référence décodée : LR + M50. VARIANTES (cinq) : AXE0, AXE05, AXE1 = produit d'experts objet × action : log p_objet(j(c)|x) + log p_action(k(c)|x) + γ · log p_classe(c|x) avec γ = 0, 0,5, 1 (têtes : régressions logistiques C = 10 sur le même TF-IDF ; axes tirés des noms de classes, table DG4 : 12 objets, 15 actions) puis softmax ; BAG10 = moyenne des probabilités de 10 régressions logistiques entraînées chacune sur 70 % des GABARITS d'entraînement tirés au hasard ; DRO1 = pondération des gabarits difficiles : perte logarithmique moyenne de chaque gabarit d'entraînement mesurée hors-gabarit (validation croisée interne en 3 plis de gabarits), poids de gabarit ∝ exp(perte), normalisé, puis régression logistique pondérée. MODES : « brut » (argmax) et « M50 » (décodage de D30/D33). CONDITIONS : « toutes » (décision) et « abs8 » (rapportée, mêmes tirages que W3). Mesure principale : macro-F1 du palier A. Porte : au moins une variante dépasse sa référence (LR pour « brut », LR + M50 pour « M50 ») d'au moins 0,02 dans la condition « toutes » avec Holm p < 0,05 (Wilcoxon unilatéral contre le seuil, Holm sur 5 variantes, par mode). Plusieurs tests : IC95, Wilcoxon, signes, permutation. Le test v2 reste scellé (D27).
+
+*Justification.* Demande de l'étudiant (« go for it ») ; F7 est notre idée principale (axes partagés entre classes), F20 et F10 ciblent la dépendance aux gabarits particuliers vus. M50 ayant corrigé l'absorption de masses, on teste si les probabilités elles-mêmes peuvent être améliorées et si les gains s'additionnent.
+
+*Note.* Écrit le 2026-11-10 avant tout calcul de la vague 4.
+
+### D35 : Amendement de la vague 4 : DRO2 (poids bornés) ajouté à DRO1  (version 1, 2026-11-10 14:13:44)
+
+Un test sur un pli (répétition 0, pli 0) a révélé un défaut de la formule préinscrite de DRO1 (poids ∝ exp(perte logarithmique)) : la perte n'est pas bornée (jusqu'à 20,7 quand la classe du gabarit manque au pli d'apprentissage interne) ; les poids se concentrent sur 5 gabarits « équivalents » sur 203 et le modèle est inutilisable (macro-F1 0). DRO1 est CONSERVÉ tel que préinscrit et sera rapporté (probablement dégénéré, ce qui est un résultat sur la formule). DRO2 ajoute avant tout calcul de sélection : poids ∝ exp(0,5 · min(perte, 4)), ce qui borne le rapport des poids à e² ≈ 7,4 et garde un nombre effectif de gabarits élevé. La porte HZ5 compte maintenant 6 variantes (Holm sur 6 au lieu de 5).
+
+*Justification.* Défaut de formule trouvé par un test de code, pas par un résultat de performance ; amendement écrit avant la sélection, sans suppression de DRO1.
+
+*Note.* Écrit le 2026-11-10, après le test sur UN pli (non lu comme résultat) et avant tout calcul de la sélection de la vague 4.
+
+### D36 : Confirmer AXE05 sur 50 nouveaux plis (répétitions 10 à 19) malgré la porte HZ5 fermée  (version 1, 2026-11-10 14:16:51)
+
+AXE05 est choisie parce que son IC95 de sélection est entièrement au-dessus de 0,02 (brut, toutes) ; précédents : D25, D31. Confirmation : répétitions 10 à 19 (50 plis, StratifiedGroupKFold par gabarit, graines 10 à 19), conditions toutes et abs8, modes brut et M50, référence LR (brut) et LR + M50 (M50). Règles HZ7 et HZ8 ci-dessous, écrites avant le calcul. Le test v2 reste scellé.
+
+*Justification.* La porte échoue par manque de puissance ; 50 plis donnent un intervalle plus étroit.
+
+*Note.* Écrit le 2026-11-10 avant toute confirmation de la vague 4 (aucune donnée des répétitions 10 à 19 n'a été lue pour AXE05).
+
 ## Hypothèses (préinscrites, puis confirmées ou réfutées)
 
 ### HA1 : Le découpage au hasard gonfle le score  (version 4, 2026-11-07 22:29:59 ; **statut : confirmée**)
@@ -1676,6 +1708,136 @@ Sur les 50 plis des répétitions 10 à 19 : dans chacune des conditions « tout
 *Historique des versions précédentes (conservées) :*
 - v1 (2026-11-10 13:34:21) : statut préinscrite ; Sur les 50 plis des répétitions 10 à 19 : dans chacune des conditions « toutes » et « abs8 », le gain de macro-F1 du palier A de M50 contre LR a une borne basse d'IC95 bootstrap ≥ 0,02 ET Wilcoxon, si…
 
+### HY9 : M50 gagne contre LR dans les conditions « toutes » et « abs8 » (réplication finale, 100 plis)  (version 2, 2026-11-10 14:12:03 ; **statut : confirmée**)
+
+Sur les 100 plis des répétitions 20 à 39 : dans chacune des conditions « toutes » et « abs8 », le gain de macro-F1 du palier A de M50 contre LR a une borne basse d'IC95 bootstrap ≥ 0,02 ET Wilcoxon, signes et permutation (unilatéraux contre le seuil 0,02) donnent p < 0,05 ; réfutée si, dans l'une des deux, la borne haute est < 0,02 ; sinon non tranchée.
+
+*Justification.* Verdict établi avec la règle de décision préinscrite (D33).
+
+*Preuve.* 100 nouveaux plis (répétitions 20-39). « toutes » : M50 0,5534 contre LR 0,5046 : +0,0488, IC95 [0,041 ; 0,057], Wilcoxon p < 1e-4, permutation p < 1e-4, signes 72/100 (p = 1e-5) : critères remplis. « abs8 » : M50 0,5646 contre LR 0,5292 : +0,0354, IC95 [0,026 ; 0,045] (borne basse ≥ 0,02), Wilcoxon p = 0,0063, permutation p = 0,0012, signes 59/100 (p unilatéral 0,0443) : critères remplis.  Fichiers : artifacts/results/v3/W3d_all_units.csv ; W3d_tests.csv ; artifacts/data (graines : répétitions 20 à 39)
+
+*Note.* DÉCISION D33 APPLIQUÉE : M50 entre dans le pipeline gelé. Autres résultats de la même réplication : M50 contre A1 : toutes −0,0085 (IC95 [−0,015 ; −0,002]), abs8 +0,0104 (IC95 [−0,001 ; 0,022]), abs14 +0,0452 (IC95 [0,027 ; 0,063]) ; A1 contre LR : abs14 −0,0357 (IC95 [−0,059 ; −0,012]) : A1 nuit quand 14 classes sont absentes ; M50 contre LR en abs14 : +0,0095 (IC95 [−0,002 ; 0,022]) : pas de gain mais pas de dommage. Limite à écrire : décodage transductif (utilise la composition du lot de test sans étiquette).
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-10 14:10:53) : statut préinscrite ; Sur les 100 plis des répétitions 20 à 39 : dans chacune des conditions « toutes » et « abs8 », le gain de macro-F1 du palier A de M50 contre LR a une borne basse d'IC95 bootstrap ≥ 0,02 ET Wilcoxon, s…
+
+### HZ1 : Le produit d'experts objet × action améliore la classification (F7)  (version 2, 2026-11-10 14:16:51 ; **statut : non tranchée**)
+
+Au moins une des variantes AXE0, AXE05, AXE1 dépasse LR d'au moins 0,02 de macro-F1 du palier A en mode brut, condition « toutes » (Wilcoxon apparié unilatéral contre le seuil, Holm sur 5 variantes, p < 0,05).
+
+*Justification.* Verdict établi avec la règle de décision préinscrite (D34, D35).
+
+*Preuve.* Sélection (25 plis, répétitions 0-4), mode brut, condition « toutes », contre LR (0,4947) : AXE0 +0,0220 (IC95 [0,005 ; 0,040], Holm 1,0) ; AXE05 +0,0383 (IC95 [0,025 ; 0,052], Wilcoxon p = 0,013, permutation p = 0,008, Holm sur 6 = 0,0765) ; AXE1 +0,0286 (IC95 [0,017 ; 0,040], Holm 0,39). La moyenne dépasse 0,02 pour les trois, mais aucune ne passe Holm : la porte est fermée par la correction pour comparaisons multiples.  Fichiers : artifacts/results/v3/W4a_all_units.csv ; W4a_tests.csv ; W4_selected.json
+
+*Note.* AXE05 (γ = 0,5) est la meilleure ; son IC95 est entièrement au-dessus de 0,02 : candidat à une confirmation (D36).
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-10 14:12:48) : statut préinscrite ; Au moins une des variantes AXE0, AXE05, AXE1 dépasse LR d'au moins 0,02 de macro-F1 du palier A en mode brut, condition « toutes » (Wilcoxon apparié unilatéral contre le seuil, Holm sur 5 variantes, p…
+
+### HZ2 : Le bagging par gabarits améliore la classification (F20)  (version 2, 2026-11-10 14:16:51 ; **statut : réfutée**)
+
+BAG10 dépasse LR d'au moins 0,02, mode brut, condition « toutes » (mêmes critères).
+
+*Justification.* Verdict établi avec la règle de décision préinscrite (D34, D35).
+
+*Preuve.* BAG10 brut : −0,0187, IC95 [−0,027 ; −0,009] (pire que LR) ; en mode M50 −0,0138.  Fichiers : artifacts/results/v3/W4a_all_units.csv ; W4a_tests.csv ; W4_selected.json
+
+*Note.* Entraîner chaque modèle sur 70 % des gabarits lui fait perdre plus que la moyenne ne rattrape : les gabarits sont trop rares pour être retirés.
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-10 14:12:48) : statut préinscrite ; BAG10 dépasse LR d'au moins 0,02, mode brut, condition « toutes » (mêmes critères).
+
+### HZ3 : Pondérer les gabarits difficiles améliore la classification (F10)  (version 2, 2026-11-10 14:16:51 ; **statut : réfutée**)
+
+DRO1 dépasse LR d'au moins 0,02, mode brut, condition « toutes » (mêmes critères).
+
+*Justification.* Verdict établi avec la règle de décision préinscrite (D34, D35).
+
+*Preuve.* DRO1 (formule préinscrite) : macro-F1 0,005 (dégénéré : 5 gabarits effectifs sur 203, perte non bornée) ; −0,49 contre LR.  Fichiers : artifacts/results/v3/W4a_all_units.csv ; W4a_tests.csv ; W4_selected.json
+
+*Note.* Résultat sur la formule : une pondération exponentielle de la perte non bornée est inutilisable ; voir D35 et HZ3b.
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-10 14:12:48) : statut préinscrite ; DRO1 dépasse LR d'au moins 0,02, mode brut, condition « toutes » (mêmes critères).
+
+### HZ4 : Les gains s'additionnent avec le décodage M50  (version 2, 2026-11-10 14:16:51 ; **statut : réfutée**)
+
+Au moins une variante, en mode M50, dépasse LR + M50 d'au moins 0,02 dans la condition « toutes » (Holm sur 5 variantes, p < 0,05).
+
+*Justification.* Verdict établi avec la règle de décision préinscrite (D34, D35).
+
+*Preuve.* Mode M50 contre LR + M50 (0,5544), condition « toutes » : AXE05 +0,0206 (IC95 [0,009 ; 0,032] ; Wilcoxon p = 0,49), AXE1 +0,0147, AXE0 −0,0024, DRO2 +0,0056, BAG10 −0,0138 : aucune ne dépasse 0,02 avec Holm p < 0,05.  Fichiers : artifacts/results/v3/W4a_all_units.csv ; W4a_tests.csv ; W4_selected.json
+
+*Note.* L'avantage du produit d'experts en brut (+0,038) est réduit de moitié par le décodage M50 (+0,021) : les deux corrigent en partie les mêmes erreurs.
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-10 14:12:48) : statut préinscrite ; Au moins une variante, en mode M50, dépasse LR + M50 d'au moins 0,02 dans la condition « toutes » (Holm sur 5 variantes, p < 0,05).
+
+### HZ5 : Une variante passe la porte  (version 2, 2026-11-10 14:16:51 ; **statut : réfutée**)
+
+Au moins une variante dépasse sa référence d'au moins 0,02 avec Holm p < 0,05 dans la condition « toutes » en mode brut ou M50 sur les répétitions 0 à 4 (sinon pas de confirmation et la vague 4 est close sans gain).
+
+*Justification.* Verdict établi avec la règle de décision préinscrite (D34, D35).
+
+*Preuve.* Aucune variante ne passe la porte (gain ≥ 0,02 avec Holm p < 0,05, condition « toutes », brut ou M50) en sélection.  Fichiers : artifacts/results/v3/W4a_all_units.csv ; W4a_tests.csv ; W4_selected.json
+
+*Note.* Même schéma que HY1 : porte fermée par Holm, effet apparent pour AXE05 ; confirmation lancée par D36.
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-10 14:12:48) : statut préinscrite ; Au moins une variante dépasse sa référence d'au moins 0,02 avec Holm p < 0,05 dans la condition « toutes » en mode brut ou M50 sur les répétitions 0 à 4 (sinon pas de confirmation et la vague 4 est cl…
+
+### HZ6 : Le gain de F7 se concentre sur les classes rares  (version 2, 2026-11-10 14:16:51 ; **statut : réfutée**)
+
+Pour une variante AXE passant la porte, le gain de macro-F1 sur les classes à ≤ 3 gabarits de développement est supérieur au gain sur le palier A (Wilcoxon apparié, p < 0,05).
+
+*Justification.* Verdict établi avec la règle de décision préinscrite (D34, D35).
+
+*Preuve.* AXE05 : gain sur les classes à ≤ 3 gabarits de développement +0,0008 contre +0,0383 sur le palier A ; AXE0 +0,0162 contre +0,0220.  Fichiers : artifacts/results/v3/W4a_all_units.csv ; W4a_tests.csv ; W4_selected.json
+
+*Note.* Le gain du produit d'experts ne vient PAS des classes rares : le mécanisme annoncé par F7 (partage d'information d'axe pour les classes à peu de gabarits) n'est pas observé ; le gain porte sur les classes du palier A.
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-10 14:12:48) : statut préinscrite ; Pour une variante AXE passant la porte, le gain de macro-F1 sur les classes à ≤ 3 gabarits de développement est supérieur au gain sur le palier A (Wilcoxon apparié, p < 0,05).
+
+### HZ3b : Une pondération bornée des gabarits difficiles améliore la classification (F10, DRO2)  (version 2, 2026-11-10 14:16:51 ; **statut : réfutée**)
+
+DRO2 dépasse LR d'au moins 0,02 de macro-F1 du palier A, mode brut, condition « toutes » (Wilcoxon apparié unilatéral contre le seuil, Holm sur 6 variantes, p < 0,05).
+
+*Justification.* Verdict établi avec la règle de décision préinscrite (D34, D35).
+
+*Preuve.* DRO2 (poids ∝ exp(0,5 · min(perte, 4))) : +0,0010, IC95 [−0,012 ; 0,013] contre LR ; mode M50 +0,0056.  Fichiers : artifacts/results/v3/W4a_all_units.csv ; W4a_tests.csv ; W4_selected.json
+
+*Note.* La pondération des gabarits difficiles, même bornée, ne change rien.
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-10 14:13:44) : statut préinscrite ; DRO2 dépasse LR d'au moins 0,02 de macro-F1 du palier A, mode brut, condition « toutes » (Wilcoxon apparié unilatéral contre le seuil, Holm sur 6 variantes, p < 0,05).
+
+### HZ7 : AXE05 améliore la classification brute (confirmation)  (version 2, 2026-11-10 14:19:12 ; **statut : non tranchée**)
+
+Sur les 50 plis des répétitions 10 à 19, condition « toutes », mode brut : gain de macro-F1 du palier A d'AXE05 contre LR avec borne basse d'IC95 bootstrap ≥ 0,02 ET Wilcoxon, signes et permutation (unilatéraux contre le seuil 0,02) p < 0,05 ; réfutée si la borne haute est < 0,02 ; sinon non tranchée.
+
+*Justification.* Verdict établi avec la règle de décision préinscrite (D36).
+
+*Preuve.* 50 nouveaux plis (répétitions 10-19), condition « toutes », mode brut : AXE05 0,5386 contre LR 0,5033 : +0,0353, IC95 [0,026 ; 0,045] (borne basse ≥ 0,02 : rempli), Wilcoxon unilatéral p = 0,0077 (rempli), permutation p = 0,0014 (rempli), test des signes : 31 plis sur 50 au-dessus de 0,02, p unilatéral = 0,0595 (NON rempli de peu).  Fichiers : artifacts/results/v3/W4b_all_units.csv ; W4b_tests.csv ; W4b_HZ7_HZ8.csv
+
+*Note.* Même configuration que HY8 (31/50, 0,0595). Un seul des quatre critères échoue, le plus faible : l'effet est positif mais hétérogène d'un pli à l'autre.
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-10 14:16:51) : statut préinscrite ; Sur les 50 plis des répétitions 10 à 19, condition « toutes », mode brut : gain de macro-F1 du palier A d'AXE05 contre LR avec borne basse d'IC95 bootstrap ≥ 0,02 ET Wilcoxon, signes et permutation (u…
+
+### HZ8 : AXE05 améliore le pipeline gelé (LR + décodage M50)  (version 2, 2026-11-10 14:19:12 ; **statut : non tranchée**)
+
+Sur les mêmes 50 plis, condition « toutes », mode M50 : gain d'AXE05 + M50 contre LR + M50 avec borne basse d'IC95 ≥ 0,01 ET Wilcoxon, signes et permutation (unilatéraux contre le seuil 0,01) p < 0,05 : confirmée ; réfutée si la borne haute est < 0,01 ; sinon non tranchée. Si HZ8 est confirmée, AXE05 entre dans le pipeline gelé ; sinon, le pipeline reste LR + M50.
+
+*Justification.* Verdict établi avec la règle de décision préinscrite (D36).
+
+*Preuve.* Mêmes plis, mode M50, condition « toutes » : AXE05 + M50 0,5765 contre LR + M50 0,5583 : +0,0182, IC95 [0,0105 ; 0,026] (borne basse ≥ 0,01 : rempli), Wilcoxon p = 0,0128 (rempli), permutation p = 0,0222 (rempli), signes 31/50 au-dessus de 0,01, p unilatéral 0,0595 (NON rempli de peu).  Fichiers : artifacts/results/v3/W4b_all_units.csv ; W4b_tests.csv ; W4b_HZ7_HZ8.csv
+
+*Note.* DÉCISION D36 APPLIQUÉE : HZ8 n'est pas confirmée, le pipeline gelé reste LR + décodage M50 (AXE05 n'y entre pas). En abs8 en mode M50 : +0,002, IC95 [−0,010 ; 0,014] : aucun gain avec 8 classes absentes. Mention exploratoire pour l'article : le produit d'experts objet × action améliore la classification brute (+0,035), mais ce gain est en grande partie absorbé par le décodage équilibré (+0,018) et n'est pas établi au-delà.
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-10 14:16:51) : statut préinscrite ; Sur les mêmes 50 plis, condition « toutes », mode M50 : gain d'AXE05 + M50 contre LR + M50 avec borne basse d'IC95 ≥ 0,01 ET Wilcoxon, signes et permutation (unilatéraux contre le seuil 0,01) p < 0,05…
+
 ## Résultats
 
 ### RA1 : Bloc A : macro-F1 du palier A par protocole (précédent v1 et actuel v3)  (version 1, 2026-11-07 21:58:55)
@@ -1872,3 +2034,27 @@ Macro-F1 du palier A. TOUTES les classes présentes : LR 0,495 / 0,498 / 0,503 (
 *Justification.* Le décodage à masses équilibrées est la première amélioration nette et reproductible de la phase 2 (+0,04 à +0,06 quand toutes les classes sont présentes) ; sa version simple A1 s'effondre quand beaucoup de classes sont absentes ; la cible mixte M50 (moitié uniforme, moitié prior observé) garde +0,035 avec 8 classes absentes. Résultat à présenter avec la réserve de transduction (le décodage utilise la composition du lot) et avec la limite HY8 (test des signes).
 
 *Preuve.* artifacts/results/v3/W3a_all_units.csv ; W3a_tests.csv ; W3b_all_units.csv ; W3b_tests.csv ; W3c_all_units.csv ; W3c_tests.csv
+
+### RW3d : Réplication finale du décodage M50 (100 plis)  (version 1, 2026-11-10 14:12:03)
+
+Macro-F1 du palier A, 100 plis : toutes : LR 0,5046 ; A1 0,5619 ; M50 0,5534 ; 8 classes absentes : LR 0,5292 ; A1 0,5542 ; M50 0,5646 ; 14 classes absentes : LR 0,5800 ; A1 0,5443 ; M50 0,5895. Gain de M50 sur LR : +0,049 (toutes), +0,035 (abs8), +0,010 (abs14, non significatif).
+
+*Justification.* M50 est établi comme décodage robuste ; sur trois séries indépendantes de plis (25 + 25 + 50 puis 100) les gains vont de +0,035 à +0,06 quand au moins 8 classes sur 30 sont présentes.
+
+*Preuve.* artifacts/results/v3/W3d_all_units.csv ; W3d_tests.csv ; artifacts/data (graines : répétitions 20 à 39)
+
+### RW4smoke : Vague 4, version 1 du script : unité de test (répétition 0, pli 0, condition « toutes »), conservée ici après suppression par erreur du fichier  (version 1, 2026-11-10 14:16:17)
+
+Valeurs affichées lors du test (macro-F1 du palier A ; macro-F1 des classes à ≤ 3 gabarits) : LR brut 0,4607 ; 0,2882 · LR M50 0,4446 ; 0,2755 · AXE0 brut 0,4367 ; 0,3437 · AXE0 M50 0,4667 ; 0,3433 · AXE05 brut 0,4556 ; 0,3321 · AXE05 M50 0,4508 ; 0,3117 · AXE1 brut 0,456 ; 0,3279 · AXE1 M50 0,4458 ; 0,2931 · BAG10 brut 0,432 ; 0,0723 · BAG10 M50 0,4399 ; 0,0422 · DRO1 brut 0,0 ; 0,0 (dégénéré) · DRO1 M50 0,0 ; 0,0.
+
+*Justification.* Le dossier artifacts/results/v3/P2_W4a_selection (une seule unité, issue de la version 1 de v3_phase2_W4.py, jamais commitée) a été supprimé par erreur avant la relance, contre la règle R3 (ne jamais supprimer un résultat) : la suppression n'était pas nécessaire (la liste des variantes changeait la configuration, donc l'identifiant de l'unité). Les valeurs sont conservées ici à partir de la sortie affichée ; la version 1 du script est figée dans versions/scripts/v3_phase2_W4__1.py. Un pli ne constitue pas un résultat de la vague 4.
+
+*Note.* Erreur reconnue le 2026-11-10 ; règle pour la suite : on ne relance jamais un calcul en supprimant un dossier de résultats.
+
+### RW4 : Vague 4 : produit d'experts objet × action (F7), bagging par gabarits (F20), pondération des gabarits difficiles (F10)  (version 1, 2026-11-10 14:19:12)
+
+Sélection (25 plis, répétitions 0-4), condition « toutes », macro-F1 du palier A, brut / avec M50 : LR 0,4947 / 0,5544 ; AXE05 0,5330 / 0,5750 ; AXE1 0,5233 / 0,5691 ; AXE0 0,5167 / 0,5520 ; DRO2 0,4957 / 0,5600 ; BAG10 0,4761 / 0,5405 ; DRO1 0,005 (dégénéré). Confirmation d'AXE05 (50 plis, répétitions 10-19) : brut 0,5386 contre LR 0,5033 (+0,035) ; avec M50 0,5765 contre LR + M50 0,5583 (+0,018) ; 8 classes absentes avec M50 : 0,5827 contre 0,5808 (+0,002).
+
+*Justification.* Aucune de ces formules n'est établie au-delà du pipeline gelé (LR + M50). F7 est la seule à montrer un gain net en brut, mais son mécanisme annoncé (aider les classes rares) n'est pas observé (HZ6) et le décodage en absorbe plus de la moitié. F20 et F10 n'apportent rien (la pondération non bornée est inutilisable).
+
+*Preuve.* artifacts/results/v3/W4b_all_units.csv ; W4b_tests.csv ; W4b_HZ7_HZ8.csv

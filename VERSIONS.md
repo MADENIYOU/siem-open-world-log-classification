@@ -620,3 +620,69 @@ Généré à partir de `artifacts/results/v3/versions.jsonl` (append-only, ne pa
 | Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
 |---|---|---|---|---|---|
 | **1** | 2026-11-10 13:35 | Verdict HY8 et résultat RW3 | Première version | **version courante** | `versions/scripts/v3_verdicts_W3c__1.py` |
+
+## RW3d
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **1** | 2026-11-10 14:10 | Préinscription D33, HY9 (réplication finale de M50) | Première version | **version courante** | `versions/scripts/v3_register_W3d__1.py` |
+
+## W3d
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **1** | 2026-11-10 14:10 | Réplication finale de M50 sur 100 nouveaux plis | Première version ; W3c non remplacée | **version courante** | `versions/scripts/v3_phase2_W3d__1.py` |
+
+## AW3d
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **1** | 2026-11-10 14:11 | Analyse de la réplication finale W3d (HY9) | Première version | **version courante** | `versions/scripts/v3_analyze_W3d__1.py` |
+
+## VW3d
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **1** | 2026-11-10 14:12 | Verdict HY9 et résultat RW3d | Première version | **version courante** | `versions/scripts/v3_verdicts_W3d__1.py` |
+
+## RW4
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **1** | 2026-11-10 14:12 | Préinscription D34, HZ1 à HZ6 (vague 4) | Première version | **version courante** | `versions/scripts/v3_register_W4__1.py` |
+
+## W4
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **1** | 2026-11-10 14:12 | Vague 4 : F7, F20, F10 avec et sans décodage M50 | Première version | La version 1 contenait DRO1 seulement, dont la formule préinscrite est dégénérée (5 gabarits effectifs sur 203) ; D35 (par 2) | `versions/scripts/v3_phase2_W4__1.py` |
+| **2** | 2026-11-10 14:13 | Ajoute DRO2 (poids bornés) et conserve DRO1 tel que préinscrit | La version 1 contenait DRO1 seulement, dont la formule préinscrite est dégénérée (5 gabarits effectifs sur 203) ; D35 | La version 2 confirmait sur 25 plis ; D36 demande 50 plis pour resserrer l'intervalle (porte fermée par manque de puissance) (par 3) | `versions/scripts/v3_phase2_W4__2.py` |
+| **3** | 2026-11-10 14:16 | [CORRIGÉ] Identique à la version 2 (la modification annoncée n'avait pas été appliquée). | La version 2 confirmait sur 25 plis ; D36 demande 50 plis pour resserrer l'intervalle (porte fermée par manque de puissance) | La version 2 (et la version 3, enregistrée à tort avec la même description sans que le fichier ait changé) confirmait sur 25 plis seulement ; D36 préinscrit 50 plis pour resserrer l'intervalle (par 4) | `versions/scripts/v3_phase2_W4__3.py` |
+|  |  | *Note : Correction du 2026-11-10 14:18 (Erreur de ma part : cette version a été enregistrée avec la description « confirmation sur les répétitions 10 à 19 » alors que le fichier était identique à la version 2 (confirmation sur les répétitions 10 à 14) : la modification annoncée (commande sed, puis script Python) n'avait pas été appliquée. La modification réelle est la version 5.) : ancienne valeur {'fait': 'Étape b : confirmation sur les répétitions 10 à 19 (50 plis) au lieu de 10 à 14'}.* |  |  |  |
+| **4** | 2026-11-10 14:17 | [CORRIGÉ] Identique à la version 2 (la modification annoncée n'avait pas été appliquée). | La version 2 (et la version 3, enregistrée à tort avec la même description sans que le fichier ait changé) confirmait sur 25 plis seulement ; D36 préinscrit 50 plis pour resserrer l'intervalle | Les versions 2 à 4 confirmaient sur les répétitions 10 à 14 seulement (25 plis) ; D36 préinscrit 50 plis pour resserrer l'intervalle (par 5) | `versions/scripts/v3_phase2_W4__4.py` |
+|  |  | *Note : Correction du 2026-11-10 14:18 (Erreur de ma part : cette version a été enregistrée avec la description « confirmation sur les répétitions 10 à 19 » alors que le fichier était identique à la version 2 (confirmation sur les répétitions 10 à 14) : la modification annoncée (commande sed, puis script Python) n'avait pas été appliquée. La modification réelle est la version 5.) : ancienne valeur {'fait': "Étape b : confirmation sur les répétitions 10 à 19 (50 plis), comme l'exige D36"}.* |  |  |  |
+| **5** | 2026-11-10 14:18 | Étape b : confirmation sur les répétitions 10 à 19 (50 plis), comme l'exige D36 (modification réellement appliquée, vérifiée par grep) | Les versions 2 à 4 confirmaient sur les répétitions 10 à 14 seulement (25 plis) ; D36 préinscrit 50 plis pour resserrer l'intervalle | **version courante** | `versions/scripts/v3_phase2_W4__5.py` |
+
+## RW4b
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **1** | 2026-11-10 14:13 | Amendement D35 (DRO2) et HZ3b | Première version | **version courante** | `versions/scripts/v3_register_W4b__1.py` |
+
+## AW4
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **1** | 2026-11-10 14:16 | Analyse de la vague 4 (HZ1 à HZ6) | Première version | **version courante** | `versions/scripts/v3_analyze_W4__1.py` |
+
+## RW4c
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **1** | 2026-11-10 14:16 | Verdicts de sélection HZ1-HZ6 ; préinscription D36, HZ7, HZ8 | Première version | **version courante** | `versions/scripts/v3_register_W4c__1.py` |
+
+## VW4
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **1** | 2026-11-10 14:19 | Verdicts HZ7, HZ8 et résultat RW4 | Première version | **version courante** | `versions/scripts/v3_verdicts_W4__1.py` |
