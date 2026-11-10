@@ -35,6 +35,9 @@ def unit(sp, rot, devs, tierA):
 
 if __name__ == "__main__":
     import torch; torch.set_num_threads(3); devs, tierA = V.load_all(); jobs = [(T2.SPLITS[0], 0)] if "--smoke" in sys.argv else [(sp, rot) for sp in T2.SPLITS for rot in range(5)]; t0 = time.time()
+    LIM = int(sys.argv[sys.argv.index("--limit") + 1]) if "--limit" in sys.argv else 10 ** 9; fait = 0
     for n, (sp, rot) in enumerate(jobs, 1):
-        st = unit(sp, rot, devs, tierA); print(f"[{n}/{len(jobs)}] découpe {sp} rot{rot + 1} : {st} ({round((time.time() - t0) / 60, 1)} min)", flush=True)
+        st = unit(sp, rot, devs, tierA); fait += st == "calculé"
+        if fait >= LIM: print(f"limite de {LIM} unités calculées atteinte : sortie pour libérer la mémoire", flush=True); break
+        print(f"[{n}/{len(jobs)}] découpe {sp} rot{rot + 1} : {st} ({round((time.time() - t0) / 60, 1)} min)", flush=True)
     print("terminé", flush=True)

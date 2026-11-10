@@ -4,6 +4,18 @@ import numpy as np, torch, torch.nn as nn
 from transformers import AutoTokenizer, AutoModelForMaskedLM, DataCollatorForLanguageModeling, get_linear_schedule_with_warmup
 import tp2_encoder as E
 TOK = "distilbert-base-uncased"
+MULT = 32
+
+
+def _batch_bucket(ids, idx, pad_id, device, mult=MULT):
+    """Comme tp2_encoder._batch mais longueur arrondie au multiple de 32 supérieur : peu de formes distinctes (sur Mac MPS, chaque forme nouvelle garde un noyau en mémoire et la mémoire gonfle). Le remplissage est masqué : sorties identiques."""
+    L = max(len(ids[j]) for j in idx); L = ((L + mult - 1) // mult) * mult
+    x = torch.full((len(idx), L), pad_id, dtype=torch.long); m = torch.zeros((len(idx), L), dtype=torch.long)
+    for r, j in enumerate(idx): x[r, :len(ids[j])] = torch.tensor(ids[j]); m[r, :len(ids[j])] = 1
+    return x.to(device), m.to(device)
+
+
+E._batch = _batch_bucket      # prend effet pour train_lpft et pour E.predict dans ce processus
 
 
 def train_lpft(name, texts, y_fine, y_fam, n_fine, n_fam, *, max_len=256, lp_epochs=1, lp_lr=1e-3, ft_epochs=2, ft_lr=1e-5, batch_size=32, seed=42, device=None, warmup=0.06):
@@ -27,7 +39,7 @@ def train_lpft(name, texts, y_fine, y_fam, n_fine, n_fam, *, max_len=256, lp_epo
 
 def adapt_mlm(texts, out_dir, *, name=TOK, max_len=128, epochs=1, lr=5e-5, batch_size=32, seed=42, device=None, mlm_prob=0.15):
     """Poursuit le pré-entraînement (mots masqués) sur des logs SANS étiquette ; enregistre l'encodeur de base dans out_dir."""
-    device = device or E.pick_device(); E.set_seed(seed); tok = AutoTokenizer.from_pretrained(TOK); model = AutoModelForMaskedLM.from_pretrained(name).to(device); col = DataCollatorForLanguageModeling(tok, mlm_probability=mlm_prob); enc = tok(list(texts), truncation=True, max_length=max_len)
+    device = device or E.pick_device(); E.set_seed(seed); tok = AutoTokenizer.from_pretrained(TOK); model = AutoModelForMaskedLM.from_pretrained(name).to(device); col = DataCollatorForLanguageModeling(tok, mlm_probability=mlm_prob, pad_to_multiple_of=MULT); enc = tok(list(texts), truncation=True, max_length=max_len)
     ex = [{"input_ids": a, "attention_mask": m} for a, m in zip(enc["input_ids"], enc["attention_mask"])]; rng = np.random.default_rng(seed); per_ep = math.ceil(len(ex) / batch_size); total = per_ep * epochs
     opt = torch.optim.AdamW(model.parameters(), lr=lr, weight_decay=0.01); sched = get_linear_schedule_with_warmup(opt, int(0.06 * total), total); model.train(); t0 = time.perf_counter(); losses = []
     for ep in range(epochs):

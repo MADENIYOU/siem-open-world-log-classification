@@ -1931,21 +1931,31 @@ Une variante E dépasse LR + M50 d'au moins 0,02 en mode M50 (mêmes critères).
 *Historique des versions précédentes (conservées) :*
 - v1 (2026-11-10 14:33:07) : statut préinscrite ; Une variante E dépasse LR + M50 d'au moins 0,02 en mode M50 (mêmes critères).
 
-### HL1 : LP-FT dépasse l'affinage complet  (version 1, 2026-11-10 14:33:07 ; **statut : préinscrite**)
+### HL1 : LP-FT dépasse l'affinage complet  (version 2, 2026-11-10 21:35:02 ; **statut : non tranchée**)
 
 Sur les 20 couples de T2 (4 découpes × 5 rotations, graine 42, 140 logs/classe), le macro-F1 du palier A de LP-FT dépasse celui de l'affinage complet de T2 d'au moins 0,02 : borne basse de l'IC95 ≥ 0,02 ET Wilcoxon, signes, permutation (unilatéraux contre 0,02) p < 0,05 ; réfutée si la borne haute < 0,02.
 
-*Justification.* Kumar et al. 2022 (résumé vérifié) : la sonde avant l'affinage préserve les caractéristiques pré-entraînées sous décalage de distribution.
+*Justification.* Clôture : la règle exigeait les 20 couples ; 11 seulement ont été calculés.
 
-*Note.* Écrit le 2026-11-10 avant tout calcul des vagues 5 à 7.
+*Preuve.* NON TERMINÉE (11 couples sur 20). Estimation partielle : macro-F1 du palier A, LP-FT 0,4657 contre affinage complet T2 0,4702 : écart −0,0045, IC95 [−0,031 ; 0,029], Wilcoxon unilatéral (contre 0,02) p = 0,93, signes 3 en faveur / 8 contre, permutation p = 0,92 : aucun signe d'un avantage de 0,02.  Fichiers : artifacts/results/v3/W7_all_units.csv ; W7_tests.csv ; W7_lpft/ (11 unités)
 
-### HM1 : Adapter l'encodeur au langage des logs (MLM) améliore LP-FT  (version 1, 2026-11-10 14:33:07 ; **statut : préinscrite**)
+*Note.* Verdict « non tranchée, non terminée » : n'est ni confirmée ni réfutée au sens de la règle. Estimation partielle à lire comme exploratoire. INCIDENTS : le calcul s'est bloqué à trois reprises sur la 12e unité (découpe (3, 3), rotation 2) : 19h14, 20h50, 21h25 (processus à ≈ 2 % de processeur, 8 à 21 Go de mémoire, état « stuck »), malgré la libération de la mémoire entre phases (version 2 du script), le lancement par lots (version 3) et l'arrondi des longueurs de lot (module d'encodeur version 2) ; cause non établie (pilote graphique du Mac après quatre jours d'activité, ou unité particulière). Les unités 1 à 11 ont été calculées avec des longueurs de lot exactes ; aucune unité n'a été calculée avec les longueurs arrondies. Clôture décidée par l'étudiant le 2026-11-10.
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-10 14:33:07) : statut préinscrite ; Sur les 20 couples de T2 (4 découpes × 5 rotations, graine 42, 140 logs/classe), le macro-F1 du palier A de LP-FT dépasse celui de l'affinage complet de T2 d'au moins 0,02 : borne basse de l'IC95 ≥ 0,…
+
+### HM1 : Adapter l'encodeur au langage des logs (MLM) améliore LP-FT  (version 2, 2026-11-10 21:35:02 ; **statut : non tranchée**)
 
 Sur les mêmes 20 couples, LP-FT à partir de l'encodeur adapté (MLM sur les logs d'entraînement de la découpe) dépasse LP-FT standard d'au moins 0,02 (mêmes critères).
 
-*Justification.* Gururangan et al. 2020 (à vérifier dans la source) : l'adaptation au domaine aide.
+*Justification.* Clôture : la règle exigeait les 20 couples ; 11 seulement ont été calculés.
 
-*Note.* Écrit le 2026-11-10 avant tout calcul des vagues 5 à 7.
+*Preuve.* NON TERMINÉE (11 couples sur 20). Estimation partielle : LP-FT adapté (MLM) 0,4848 contre LP-FT 0,4657 : +0,0191, IC95 [−0,011 ; 0,045], Wilcoxon unilatéral (contre 0,02) p = 0,62, signes 6/5, permutation p = 0,52 ; la perte de l'adaptation MLM passe de 4,87 à 1,54 (unité 1).  Fichiers : artifacts/results/v3/W7_all_units.csv ; W7_tests.csv ; W7_lpft/ (11 unités)
+
+*Note.* Verdict « non tranchée, non terminée ». L'intervalle contient 0 et 0,02. INCIDENTS : le calcul s'est bloqué à trois reprises sur la 12e unité (découpe (3, 3), rotation 2) : 19h14, 20h50, 21h25 (processus à ≈ 2 % de processeur, 8 à 21 Go de mémoire, état « stuck »), malgré la libération de la mémoire entre phases (version 2 du script), le lancement par lots (version 3) et l'arrondi des longueurs de lot (module d'encodeur version 2) ; cause non établie (pilote graphique du Mac après quatre jours d'activité, ou unité particulière). Les unités 1 à 11 ont été calculées avec des longueurs de lot exactes ; aucune unité n'a été calculée avec les longueurs arrondies. Clôture décidée par l'étudiant le 2026-11-10.
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-10 14:33:07) : statut préinscrite ; Sur les mêmes 20 couples, LP-FT à partir de l'encodeur adapté (MLM sur les logs d'entraînement de la découpe) dépasse LP-FT standard d'au moins 0,02 (mêmes critères).
 
 ## Résultats
 
@@ -2183,3 +2193,11 @@ Macro-F1 du palier A (25 plis), brut / M50 : LR 0,4947 / 0,5544 ; ERM 0,4872 / 0
 *Justification.* Ni l'invariance de risque entre gabarits ni la sémantique d'un encodeur gelé ne relèvent le score : deux leviers de plus fermés, avec des résultats négatifs informatifs.
 
 *Preuve.* artifacts/results/v3/W6a_all_units.csv ; W6a_tests.csv ; W6_selected.json ; emb_distilbert_frozen/index.json
+
+### RW7 : Vague 7 : LP-FT et adaptation MLM de DistilBERT (clôturée, 11 couples sur 20)  (version 1, 2026-11-10 21:35:02)
+
+Protocole de T2 (140 logs par classe, découpes (1,1), (2,2) et début de (3,3)), macro-F1 du palier A sur 11 couples : TF-IDF 0,4965 ; LP-FT adapté (MLM) 0,4848 ; affinage complet T2 0,4702 ; LP-FT 0,4657. LP-FT contre affinage complet −0,0045 ; LP-FT adapté contre LP-FT +0,0191 ; LP-FT adapté contre TF-IDF −0,0117 (IC95 [−0,061 ; 0,036]).
+
+*Justification.* Aucun encodeur ne dépasse TF-IDF sur ces logs, même adapté : le pipeline reste TF-IDF + régression logistique + décodage M50. Résultat partiel, non concluant au sens des règles (couples manquants) mais cohérent avec RT2.
+
+*Preuve.* artifacts/results/v3/W7_all_units.csv ; W7_tests.csv ; W7_lpft/ (11 unités)

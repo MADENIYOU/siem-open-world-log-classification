@@ -728,14 +728,16 @@ Généré à partir de `artifacts/results/v3/versions.jsonl` (append-only, ne pa
 
 | Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
 |---|---|---|---|---|---|
-| **1** | 2026-11-10 14:44 | LP-FT et adaptation MLM de DistilBERT (réutilise HierEncoder) | Première version | **version courante** | `versions/src/tp2_encoder_lpft__1.py` |
+| **1** | 2026-11-10 14:44 | LP-FT et adaptation MLM de DistilBERT (réutilise HierEncoder) | Première version | La version 1 laissait des longueurs de lot toutes différentes : sur Mac MPS la mémoire gonflait (17 Go sur une seule unité) et le calcul s'enlisait ; les sorties sont inchangées (remplissage masqué, moyenne des jetons sans remplissage) (par 2) | `versions/src/tp2_encoder_lpft__1.py` |
+| **2** | 2026-11-10 21:22 | Longueurs de lot arrondies au multiple de 32 (E._batch remplacé dans ce module ; collateur MLM avec pad_to_multiple_of=32) | La version 1 laissait des longueurs de lot toutes différentes : sur Mac MPS la mémoire gonflait (17 Go sur une seule unité) et le calcul s'enlisait ; les sorties sont inchangées (remplissage masqué, moyenne des jetons sans remplissage) | **version courante** | `versions/src/tp2_encoder_lpft__2.py` |
 
 ## W7
 
 | Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
 |---|---|---|---|---|---|
 | **1** | 2026-11-10 14:44 | Vague 7 : LP-FT et LP-FT depuis un DistilBERT adapté (MLM), protocole de T2 | Première version | La version 1 s'est bloquée (0 % de processeur, 21 Go occupés, état « stuck ») au début de la deuxième unité : la mémoire de l'accélérateur n'était pas libérée entre phases ; calculs et résultats inchangés (par 2) | `versions/scripts/v3_transformer_W7__1.py` |
-| **2** | 2026-11-10 16:02 | Libère la mémoire (gc + torch.mps.empty_cache) entre les trois phases de chaque unité | La version 1 s'est bloquée (0 % de processeur, 21 Go occupés, état « stuck ») au début de la deuxième unité : la mémoire de l'accélérateur n'était pas libérée entre phases ; calculs et résultats inchangés | **version courante** | `versions/scripts/v3_transformer_W7__2.py` |
+| **2** | 2026-11-10 16:02 | Libère la mémoire (gc + torch.mps.empty_cache) entre les trois phases de chaque unité | La version 1 s'est bloquée (0 % de processeur, 21 Go occupés, état « stuck ») au début de la deuxième unité : la mémoire de l'accélérateur n'était pas libérée entre phases ; calculs et résultats inchangés | La version 2 libérait la mémoire entre les phases mais la mémoire fuyait encore d'une unité à l'autre (17 Go après 11 unités, unité 12 bloquée depuis 19h14) ; relancer par lots de 3 unités évite l'accumulation (par 3) | `versions/scripts/v3_transformer_W7__2.py` |
+| **3** | 2026-11-10 20:49 | Ajoute --limit N (sortie après N unités calculées) pour relancer le script par lots et libérer la mémoire | La version 2 libérait la mémoire entre les phases mais la mémoire fuyait encore d'une unité à l'autre (17 Go après 11 unités, unité 12 bloquée depuis 19h14) ; relancer par lots de 3 unités évite l'accumulation | **version courante** | `versions/scripts/v3_transformer_W7__3.py` |
 
 ## VW56
 
@@ -755,3 +757,9 @@ Généré à partir de `artifacts/results/v3/versions.jsonl` (append-only, ne pa
 |---|---|---|---|---|---|
 | **1** | 2026-11-10 16:44 | Générateur de la partie 2 du notebook (sections ajoutées à la fin, tableaux et figures depuis le journal et les résultats) | Première version ; la partie 1 (v1) n'est jamais touchée | La première version rognait la barre la plus haute et archivait un exemplaire de 4,6 Mo à chaque relance (par 2) | `versions/scripts/build_notebook_part2__1.py` |
 | **2** | 2026-11-10 16:45 | Axe des hauteurs de la figure des verdicts agrandi ; archive du notebook seulement à la première construction | La première version rognait la barre la plus haute et archivait un exemplaire de 4,6 Mo à chaque relance | **version courante** | `versions/scripts/build_notebook_part2__2.py` |
+
+## VW7
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **1** | 2026-11-10 21:35 | Clôture de la vague 7 : HL1, HM1 non tranchées (non terminées), résultat RW7 | Première version | **version courante** | `versions/scripts/v3_verdicts_W7__1.py` |
