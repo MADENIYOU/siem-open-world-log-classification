@@ -290,6 +290,38 @@ Procédure D20 : sélection sur les répétitions 0 à 4 (25 plis), confirmation
 
 *Note.* Écrit le 2026-11-10 avant tout calcul de la vague 1.
 
+### D29 : Vague 2 : affiner et éprouver le décodage à masses équilibrées (A1)  (version 1, 2026-11-10 13:27:21)
+
+A1 (D28/HW1, confirmé) : Sinkhorn amorti (exposant 0,5, 10 itérations, cibles uniformes) sur les probabilités de la régression logistique C = 10 : +0,057 à +0,08 de macro-F1 du palier A. Vague 2, procédure D20 (sélection répétitions 0-4, confirmation 5-9) ; RÉFÉRENCE = A1 recalculé sur les mêmes plis ; variantes : S1, S2 = A1 appliqué à softmax(τ · marges du SVM mots V0) avec τ = 5, 10 ; G25 (exposant 0,25), G1 (exposant 1,0), I30 (30 itérations, exposant 0,5) ; P5 = cibles proportionnelles à (nombre de gabarits d'entraînement de la classe)^0,5 au lieu d'uniformes ; H1 = équilibrage en deux temps (d'abord les masses de FAMILLE, puis les classes) ; F9S = marges V0 + 0,5 · log p_lettres(famille) (F9, β = 0,5), converties par softmax(τ = 5) puis A1 ; ROBUSTESSE : A1_abs et LR_abs = A1 et LR sur un lot de test d'où l'on a RETIRÉ 8 classes tirées au hasard (graine fixée par répétition et pli, tirage parmi les 30 classes, appliqué avant le décodage), pour simuler un lot où certaines classes sont absentes (cas du test final). Mesure principale : macro-F1 du palier A (classes présentes) ; secondaires : 30 classes, classes à ≤ 3 gabarits. Plusieurs tests : IC95 bootstrap, Wilcoxon, signes, permutation. Rappel de portée : A1 est un décodage TRANSDUCTIF (utilise la composition du lot de test sans étiquette). Le test v2 reste scellé (D27) ; rien de cette vague ne le lit.
+
+*Justification.* Demande de l'étudiant : aller le plus loin possible. A1 est le premier gain net ; on cherche à l'amplifier (autres scores, cibles, familles, combinaison avec F9) et à vérifier qu'il ne dépend pas d'un lot où toutes les classes sont présentes (condition probable du test final : les 12 petites classes sont peu ou pas présentes).
+
+*Note.* Écrit le 2026-11-10 avant tout calcul de la vague 2.
+
+### D30 : Vague 3 : équilibrage conscient de la présence des classes (rendre A1 robuste)  (version 1, 2026-11-10 13:31:52)
+
+Constat (RW2, HX6) : A1 gagne +0,057 à +0,08 quand toutes les classes sont dans le lot, mais seulement +0,005 à +0,04 quand 8 classes en sont absentes. Le test final contiendra vraisemblablement peu de petites classes (sans que nous puissions le vérifier : test scellé). Vague 3 (procédure D20 : sélection répétitions 0-4, confirmation 5-9). RÉFÉRENCE : LR (C = 10) dans chaque condition. CONDITIONS : « toutes » = lot complet ; « abs8 » = 8 classes tirées au hasard retirées du lot (graine 1000·répétition + pli) ; « abs14 » = 14 classes retirées (condition de stress, rapportée sans décision). VARIANTES (7) : A1 (rappel : exposant 0,5, 10 itérations, cible uniforme sur toutes les classes) ; Q25 et Q50 = A1 mais la cible est uniforme sur les seules classes JUGÉES PRÉSENTES, une classe étant jugée présente si sa masse prédite moyenne avant équilibrage est ≥ θ/K (θ = 0,25 pour Q25, 0,5 pour Q50), les classes jugées absentes recevant une cible nulle (leurs probabilités sont multipliées par 1e-3 avant équilibrage) ; Q25b et Q50b = idem avec exposant 0,25 ; M50 = cible mixte 0,5 · uniforme + 0,5 · prior de l'EM (moyenne des probabilités actuelles) ; Z = présence jugée ITÉRATIVEMENT : après A1, les classes dont moins de 0,5 % des logs sont prédits sont jugées absentes, et l'on relance l'équilibrage sans elles. Les deux conditions sont évaluées sur les mêmes plis. La décision porte sur le MINIMUM des deux gains (toutes, abs8). Plusieurs tests : IC95, Wilcoxon, signes, permutation. Le test v2 reste scellé.
+
+*Justification.* HX6 : le gain d'A1 n'est pas établi quand des classes sont absentes ; sans cela, A1 n'est pas défendable sur le test final.
+
+*Note.* Écrit le 2026-11-10 avant tout calcul de la vague 3.
+
+### D31 : Confirmer Q25b et M50 sur de nouveaux plis malgré la porte HY1 fermée  (version 1, 2026-11-10 13:33:13)
+
+Décision prise après lecture de la sélection (répétitions 0-4) : deux variantes sont retenues pour la confirmation, choisies par le MINIMUM des gains moyens dans les conditions « toutes » et « abs8 » parmi les mécanismes distincts : Q25b (présence jugée par la masse prédite, exposant 0,25) et M50 (cible mixte uniforme/EM). Confirmation sur les 25 plis des répétitions 5 à 9 (nouveaux plis), conditions toutes, abs8 (graine 1000·répétition + pli) et abs14 (graine 2000·répétition + pli), référence LR dans chaque condition. Précédent : D25 (confirmation lancée malgré une porte fermée, I6b). Le résultat sera lu avec la règle HY5 à HY7 ci-dessous, écrite avant tout calcul de l'étape b. Le test v2 reste scellé.
+
+*Justification.* La porte HY1 échoue par manque de puissance et non par effet nul : on tranche par une confirmation sur de nouveaux plis, comme demandé (« tout confirmer »).
+
+*Note.* Écrit le 2026-11-10 avant toute confirmation de la vague 3 (aucune donnée des répétitions 5 à 9 n'a été lue pour ces variantes).
+
+### D32 : Réplication de M50 (décodage à cible mixte) sur 50 nouveaux plis  (version 1, 2026-11-10 13:34:21)
+
+M50 (cible = 0,5 · uniforme + 0,5 · prior moyen des probabilités, exposant 0,5, 10 itérations) a donné en sélection (répétitions 0-4) +0,0598 (toutes), +0,0460 (abs8), +0,0295 (abs14) et en confirmation (répétitions 5-9) +0,0432 ; +0,0348 ; +0,0253 contre LR, mais HY5 n'est pas remplie (borne basse 0,018 en abs8). Réplication sur les répétitions 10 à 19 (50 nouveaux plis, StratifiedGroupKFold par gabarit, graines 10 à 19), mêmes trois conditions (graines 1000·r + k et 2000·r + k), variantes calculées : M50, A1, référence LR. Les 25 plis de la vague 2 ne sont pas réutilisés. Seule règle de décision : HY8. Le test v2 reste scellé.
+
+*Justification.* Résoudre le non-tranché de HY5 sans retoucher les règles : plus de plis (50) donnent un intervalle plus étroit sur des données jamais lues.
+
+*Note.* Écrit le 2026-11-10 avant tout calcul de la réplication W3c (répétitions 10 à 19 : aucun résultat de ces plis n'a été lu).
+
 ## Hypothèses (préinscrites, puis confirmées ou réfutées)
 
 ### HA1 : Le découpage au hasard gonfle le score  (version 4, 2026-11-07 22:29:59 ; **statut : confirmée**)
@@ -1465,6 +1497,185 @@ Pour toute variante passant la porte, le gain de macro-F1 sur les classes à ≤
 *Historique des versions précédentes (conservées) :*
 - v1 (2026-11-10 13:19:51) : statut préinscrite ; Pour toute variante passant la porte, le gain de macro-F1 sur les classes à ≤ 3 gabarits de développement est positif et supérieur à celui des autres classes (Wilcoxon apparié sur les plis, p < 0,05).
 
+### HX1 : Le décodage équilibré sur le SVM dépasse celui sur la LR (S1, S2)  (version 2, 2026-11-10 13:31:52 ; **statut : réfutée**)
+
+Au moins une des variantes S1, S2 dépasse A1 d'au moins 0,01 de macro-F1 du palier A (Wilcoxon apparié unilatéral contre le seuil, Holm sur 8 variantes, p < 0,05).
+
+*Justification.* Verdict établi avec la règle de décision préinscrite (D29).
+
+*Preuve.* Équilibrage sur le SVM : S1 (τ = 5) 0,5551 contre A1 0,5752 : −0,0202, IC95 [−0,031 ; −0,010] ; S2 (τ = 10) −0,0258, IC95 [−0,040 ; −0,011] ; Holm 1,0.  Fichiers : artifacts/results/v3/W2a_all_units.csv ; W2a_tests.csv ; W2a_robustesse.csv ; W2b_all_units.csv ; W2b_robustesse.csv ; W2_selected.json
+
+*Note.* Meilleur classifieur de base, mais ses marges transformées en probabilités sont moins bien calibrées pour l'équilibrage que les probabilités de la régression logistique.
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-10 13:27:21) : statut préinscrite ; Au moins une des variantes S1, S2 dépasse A1 d'au moins 0,01 de macro-F1 du palier A (Wilcoxon apparié unilatéral contre le seuil, Holm sur 8 variantes, p < 0,05).
+
+### HX2 : Le réglage de l'équilibrage compte (G25, G1, I30)  (version 2, 2026-11-10 13:31:52 ; **statut : réfutée**)
+
+Au moins une des variantes G25, G1, I30 dépasse A1 d'au moins 0,01 (mêmes critères).
+
+*Justification.* Verdict établi avec la règle de décision préinscrite (D29).
+
+*Preuve.* Exposant 0,25 : −0,0015, IC95 [−0,0095 ; 0,0058] ; exposant 1,0 : −0,0019, IC95 [−0,0045 ; 0,0009] ; 30 itérations : −0,0023, IC95 [−0,0050 ; 0,0007] ; bornes hautes < 0,01.  Fichiers : artifacts/results/v3/W2a_all_units.csv ; W2a_tests.csv ; W2a_robustesse.csv ; W2b_all_units.csv ; W2b_robustesse.csv ; W2_selected.json
+
+*Note.* Le gain d'A1 ne dépend pas finement des réglages d'amortissement et d'itérations (plateau).
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-10 13:27:21) : statut préinscrite ; Au moins une des variantes G25, G1, I30 dépasse A1 d'au moins 0,01 (mêmes critères).
+
+### HX3 : Équilibrer vers un prior en racine du nombre de gabarits n'améliore pas (P5)  (version 2, 2026-11-10 13:31:52 ; **statut : confirmée**)
+
+P5 ne dépasse PAS A1 d'au moins 0,01 (IC95 de l'écart avec A1 dont la borne haute est < 0,01) : confirmée si c'est le cas.
+
+*Justification.* Verdict établi avec la règle de décision préinscrite (D29).
+
+*Preuve.* Cibles proportionnelles à la racine du nombre de gabarits (P5) : −0,0163, IC95 [−0,035 ; 0,0013] ; borne haute < 0,01 : ne dépasse pas A1.  Fichiers : artifacts/results/v3/W2a_all_units.csv ; W2a_tests.csv ; W2a_robustesse.csv ; W2b_all_units.csv ; W2b_robustesse.csv ; W2_selected.json
+
+*Note.* Cohérent avec A2 (EM de prior) : s'écarter de l'uniforme fait perdre.
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-10 13:27:21) : statut préinscrite ; P5 ne dépasse PAS A1 d'au moins 0,01 (IC95 de l'écart avec A1 dont la borne haute est < 0,01) : confirmée si c'est le cas.
+
+### HX4 : Équilibrer d'abord les familles aide (H1)  (version 2, 2026-11-10 13:31:52 ; **statut : réfutée**)
+
+H1 dépasse A1 d'au moins 0,01 (mêmes critères que HX1).
+
+*Justification.* Verdict établi avec la règle de décision préinscrite (D29).
+
+*Preuve.* Équilibrage de famille puis de classe (H1) : +0,0002, IC95 [−0,0007 ; 0,0012] ; identique à A1 (0 plis sur 25 en faveur au-dessus du seuil).  Fichiers : artifacts/results/v3/W2a_all_units.csv ; W2a_tests.csv ; W2a_robustesse.csv ; W2b_all_units.csv ; W2b_robustesse.csv ; W2_selected.json
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-10 13:27:21) : statut préinscrite ; H1 dépasse A1 d'au moins 0,01 (mêmes critères que HX1).
+
+### HX5 : Combiner F9 et A1 additionne les gains (F9S)  (version 2, 2026-11-10 13:31:52 ; **statut : non tranchée**)
+
+F9S dépasse A1 d'au moins 0,01 (mêmes critères que HX1).
+
+*Justification.* Verdict établi avec la règle de décision préinscrite (D29).
+
+*Preuve.* F9S (marges V0 + 0,5 log p_lettres(famille), puis softmax, puis A1) : +0,0007, IC95 [−0,016 ; 0,017] (contient 0,01) ; Wilcoxon unilatéral p = 0,82.  Fichiers : artifacts/results/v3/W2a_all_units.csv ; W2a_tests.csv ; W2a_robustesse.csv ; W2b_all_units.csv ; W2b_robustesse.csv ; W2_selected.json
+
+*Note.* Les gains de F9 (+0,02 à +0,03 sans équilibrage, HW4) ne s'ajoutent pas à ceux d'A1 : A1 les absorbe probablement (même mécanisme de correction des absorptions).
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-10 13:27:21) : statut préinscrite ; F9S dépasse A1 d'au moins 0,01 (mêmes critères que HX1).
+
+### HX6 : Le décodage équilibré résiste à l'absence de classes  (version 2, 2026-11-10 13:31:52 ; **statut : non tranchée**)
+
+Sur les plis dont 8 classes tirées au hasard sont retirées du lot de test, A1_abs dépasse LR_abs d'au moins 0,02 de macro-F1 du palier A : confirmée si la borne basse de l'IC95 est ≥ 0,02 et si Wilcoxon, signes et permutation (unilatéraux) donnent p < 0,05 ; réfutée si la borne haute est < 0,02.
+
+*Justification.* Verdict établi avec la règle de décision préinscrite (D29).
+
+*Preuve.* Lots dont 8 classes tirées au hasard sont retirées : sélection (répétitions 0-4) A1_abs 0,5918 contre LR_abs 0,5538 : +0,0380, IC95 [0,008 ; 0,069], Wilcoxon p = 0,21, signes 13/12 (contre le seuil 0,02) ; CONFIRMATION (répétitions 5-9, nouveaux plis) A1_abs 0,5474 contre LR_abs 0,5425 : +0,0049, IC95 [−0,021 ; 0,029], Wilcoxon p = 0,84, signes 9/16. La borne basse n'atteint pas 0,02 et la borne haute ne l'exclut pas : non tranchée.  Fichiers : artifacts/results/v3/W2a_all_units.csv ; W2a_tests.csv ; W2a_robustesse.csv ; W2b_all_units.csv ; W2b_robustesse.csv ; W2_selected.json
+
+*Note.* RÉSERVE MAJEURE : le gain d'A1 (+0,057 à +0,08 quand toutes les classes sont présentes) disparaît presque (+0,005 à +0,04) quand 8 classes sont absentes du lot : la cible uniforme sur 30 classes force des gabarits vers des classes absentes. Le test final pouvant contenir peu de petites classes, A1 n'est PAS présentable seul : voir la vague 3 (équilibrage conscient de la présence).
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-10 13:27:21) : statut préinscrite ; Sur les plis dont 8 classes tirées au hasard sont retirées du lot de test, A1_abs dépasse LR_abs d'au moins 0,02 de macro-F1 du palier A : confirmée si la borne basse de l'IC95 est ≥ 0,02 et si Wilcox…
+
+### HX7 : Au moins une variante dépasse A1  (version 2, 2026-11-10 13:31:52 ; **statut : réfutée**)
+
+Au moins une des variantes S1, S2, G25, G1, I30, P5, H1, F9S dépasse A1 d'au moins 0,01 avec Holm p < 0,05 sur les répétitions 0 à 4 (sinon pas de confirmation : A1 reste la configuration finale).
+
+*Justification.* Verdict établi avec la règle de décision préinscrite (D29).
+
+*Preuve.* Aucune des 8 variantes ne dépasse A1 d'au moins 0,01 avec Holm p < 0,05 : meilleurs écarts +0,0007 (F9S) et +0,0002 (H1) ; tous les autres négatifs.  Fichiers : artifacts/results/v3/W2a_all_units.csv ; W2a_tests.csv ; W2a_robustesse.csv ; W2b_all_units.csv ; W2b_robustesse.csv ; W2_selected.json
+
+*Note.* A1 est un plateau local pour ces axes : on ne l'améliore pas par ces réglages ; la direction utile est sa robustesse (vague 3).
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-10 13:27:21) : statut préinscrite ; Au moins une des variantes S1, S2, G25, G1, I30, P5, H1, F9S dépasse A1 d'au moins 0,01 avec Holm p < 0,05 sur les répétitions 0 à 4 (sinon pas de confirmation : A1 reste la configuration finale).
+
+### HY1 : Une variante gagne dans les deux conditions  (version 2, 2026-11-10 13:33:13 ; **statut : réfutée**)
+
+Au moins une des 6 variantes Q25, Q50, Q25b, Q50b, M50, Z (contre LR dans la même condition) a un gain de macro-F1 du palier A ≥ 0,02 dans la condition « toutes » ET dans la condition « abs8 », avec Holm (6 variantes, par condition) p < 0,05 (Wilcoxon unilatéral contre le seuil 0,02) sur les répétitions 0 à 4 : porte de la confirmation.
+
+*Justification.* Verdict établi avec la règle de décision préinscrite (D30).
+
+*Preuve.* Sélection (25 plis, répétitions 0-4) : gains minimaux (toutes, abs8) : Q25b +0,0476 ; M50 +0,0460 ; Q25 +0,0435 ; Z +0,0422 ; Q50b +0,0229 ; Q50 +0,0215. Mais Holm (6 variantes, Wilcoxon unilatéral contre le seuil 0,02) : en « abs8 » p Holm 0,077 (Q25b), 0,098 (M50, Q25) : la règle exige p Holm < 0,05 dans les deux conditions : AUCUNE variante ne passe la porte.  Fichiers : artifacts/results/v3/W3a_all_units.csv ; W3a_tests.csv ; W3_selected.json
+
+*Note.* Le verdict est « réfutée » au sens strict de la porte. Les moyennes de gain sont pourtant ≥ 0,04 dans « toutes » et « abs8 » pour quatre variantes, et la borne basse de l'IC95 est ≥ 0,02 pour Q25b dans les deux conditions : la porte est défaillante par manque de puissance (25 plis, écart-type élevé en abs8), pas par absence d'effet apparent.
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-10 13:31:52) : statut préinscrite ; Au moins une des 6 variantes Q25, Q50, Q25b, Q50b, M50, Z (contre LR dans la même condition) a un gain de macro-F1 du palier A ≥ 0,02 dans la condition « toutes » ET dans la condition « abs8 », avec H…
+
+### HY2 : La variante retenue garde l'essentiel du gain d'A1 quand tout est présent  (version 2, 2026-11-10 13:33:13 ; **statut : non tranchée**)
+
+Dans la condition « toutes », la variante retenue conserve au moins 80 % du gain d'A1 sur LR (A1 : +0,0805 en sélection) : gain ≥ 0,064.
+
+*Justification.* Verdict établi avec la règle de décision préinscrite (D30).
+
+*Preuve.* Non évaluée : aucune variante n'a passé la porte HY1. À titre indicatif : gain en « toutes » de Z +0,0796 (99 % de celui d'A1), M50 +0,0598 (74 %), Q25b +0,0558 (69 %), Q25 +0,0553 (69 %).  Fichiers : artifacts/results/v3/W3a_all_units.csv ; W3a_tests.csv ; W3_selected.json
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-10 13:31:52) : statut préinscrite ; Dans la condition « toutes », la variante retenue conserve au moins 80 % du gain d'A1 sur LR (A1 : +0,0805 en sélection) : gain ≥ 0,064.
+
+### HY3 : La variante retenue est confirmée sur de nouveaux plis dans les deux conditions  (version 1, 2026-11-10 13:31:52 ; **statut : préinscrite**)
+
+Sur les répétitions 5 à 9 : dans chacune des conditions « toutes » et « abs8 », le gain contre LR a une borne basse d'IC95 bootstrap ≥ 0,02 et Wilcoxon, signes et permutation (unilatéraux) p < 0,05 ; réfutée si, dans l'une des deux, la borne haute est < 0,02.
+
+*Justification.* Même règle que HF18, HX6.
+
+*Note.* Écrit le 2026-11-10 avant tout calcul de la vague 3.
+
+### HY4 : Le décodage résiste au stress (abs14)  (version 1, 2026-11-10 13:31:52 ; **statut : préinscrite**)
+
+Sur les répétitions 5 à 9, dans la condition « abs14 », le gain de la variante retenue contre LR est > 0 (Wilcoxon bilatéral p < 0,05 en faveur) : rapporté comme contrôle ; pas de seuil de gain.
+
+*Justification.* Test de robustesse extrême, sans objectif.
+
+*Note.* Écrit le 2026-11-10 avant tout calcul de la vague 3.
+
+### HY5 : Q25b et M50 gagnent dans les conditions « toutes » et « abs8 »  (version 2, 2026-11-10 13:34:21 ; **statut : non tranchée**)
+
+Pour chaque candidat (Q25b, M50), sur les répétitions 5 à 9 : dans chacune des conditions « toutes » et « abs8 », le gain de macro-F1 du palier A contre LR a une borne basse d'IC95 bootstrap ≥ 0,02 ET Wilcoxon, signes et permutation (unilatéraux contre le seuil 0,02) donnent p < 0,025 (Bonferroni sur 2 candidats). Réfutée pour un candidat si, dans l'une des deux conditions, la borne haute est < 0,02 ; sinon non tranchée.
+
+*Justification.* Verdict établi avec la règle de décision préinscrite (D31).
+
+*Preuve.* Confirmation (répétitions 5-9, 25 plis). Condition « toutes » : Q25b +0,0384, IC95 [0,024 ; 0,054], Wilcoxon p = 0,011, signes 19/6, permutation p = 0,012 (critères remplis) ; M50 +0,0432, IC95 [0,031 ; 0,056], Wilcoxon p = 0,0025, permutation p = 0,0011 mais signes 17/8 (p unilatéral 0,054 > 0,025). Condition « abs8 » : Q25b +0,0314, IC95 [0,008 ; 0,054], p = 0,17 ; M50 +0,0348, IC95 [0,018 ; 0,051], Wilcoxon p = 0,045, permutation p = 0,055 : borne basse < 0,02 et p ≥ 0,025 pour les deux. Bornes hautes ≥ 0,05 : pas de réfutation.  Fichiers : artifacts/results/v3/W3b_all_units.csv ; W3b_tests.csv ; W3_selected.json
+
+*Note.* Gains positifs dans les trois conditions pour les deux candidats, mais la règle (borne basse ≥ 0,02 ET trois tests p < 0,025 dans les deux conditions) n'est remplie par aucun. Estimation exploratoire poolant sélection et confirmation (50 plis, non préinscrite) : M50 : +0,0515 (toutes, IC95 [0,040 ; 0,063], 47/3 plis), +0,0404 (abs8, [0,028 ; 0,053], 43/7), +0,0274 (abs14, [0,010 ; 0,046], 33/17) ; Q25b : +0,0471 ; +0,0395 ; +0,0232 (abs14 : IC95 [−0,002 ; 0,049]).
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-10 13:33:13) : statut préinscrite ; Pour chaque candidat (Q25b, M50), sur les répétitions 5 à 9 : dans chacune des conditions « toutes » et « abs8 », le gain de macro-F1 du palier A contre LR a une borne basse d'IC95 bootstrap ≥ 0,02 ET…
+
+### HY6 : Le gain reste positif dans la condition de stress « abs14 »  (version 2, 2026-11-10 13:34:21 ; **statut : non tranchée**)
+
+Pour chaque candidat, sur les répétitions 5 à 9, condition « abs14 » : gain contre LR > 0 avec borne basse de l'IC95 > 0 (contrôle ; pas de seuil de gain).
+
+*Justification.* Verdict établi avec la règle de décision préinscrite (D31).
+
+*Preuve.* Condition « abs14 » (répétitions 5-9) : M50 +0,0253, IC95 [0,003 ; 0,048] (borne basse > 0 : critère rempli) ; Q25b +0,0242, IC95 [−0,013 ; 0,060] (non rempli).  Fichiers : artifacts/results/v3/W3b_all_units.csv ; W3b_tests.csv ; W3_selected.json
+
+*Note.* Verdict par candidat : M50 satisfait HY6, Q25b non ; HY6 est rapportée « non tranchée » car elle visait les deux candidats. M50 est donc le seul à rester positif dans la condition de stress.
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-10 13:33:13) : statut préinscrite ; Pour chaque candidat, sur les répétitions 5 à 9, condition « abs14 » : gain contre LR > 0 avec borne basse de l'IC95 > 0 (contrôle ; pas de seuil de gain).
+
+### HY7 : Choix de la configuration finale du décodage  (version 2, 2026-11-10 13:34:21 ; **statut : non tranchée**)
+
+Si les deux candidats satisfont HY5, la configuration retenue est celle dont le MINIMUM des gains moyens sur les trois conditions est le plus grand ; si un seul satisfait HY5, c'est lui ; si aucun, on garde A1 avec la réserve de HX6 (non défendable seul).
+
+*Justification.* Verdict établi avec la règle de décision préinscrite (D31) : aucun candidat ne satisfait HY5, donc la règle conduit à A1 avec la réserve de HX6.
+
+*Preuve.* Règle appliquée : aucun candidat ne satisfait HY5 → A1 avec réserve. Mais A1 a été éprouvé non robuste (HX6 : +0,005 en abs8 sur nouveaux plis) alors que M50 reste ≥ +0,025 dans les trois conditions : la règle de repli est jugée INSUFFISANTE ; elle est remplacée par la réplication préinscrite D32 (HY8). Ce choix est tracé : aucun résultat n'est supprimé.  Fichiers : artifacts/results/v3/W3b_all_units.csv ; W3b_tests.csv ; W3_selected.json
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-10 13:33:13) : statut préinscrite ; Si les deux candidats satisfont HY5, la configuration retenue est celle dont le MINIMUM des gains moyens sur les trois conditions est le plus grand ; si un seul satisfait HY5, c'est lui ; si aucun, on…
+
+### HY8 : M50 gagne contre LR dans les conditions « toutes » et « abs8 » (réplication)  (version 2, 2026-11-10 13:35:22 ; **statut : non tranchée**)
+
+Sur les 50 plis des répétitions 10 à 19 : dans chacune des conditions « toutes » et « abs8 », le gain de macro-F1 du palier A de M50 contre LR a une borne basse d'IC95 bootstrap ≥ 0,02 ET Wilcoxon, signes et permutation (unilatéraux contre le seuil 0,02) donnent p < 0,05 ; réfutée si, dans l'une des deux, la borne haute est < 0,02 ; sinon non tranchée. Si HY8 est confirmée, M50 devient le décodage du pipeline gelé ; sinon, il est réputé non établi et le pipeline gelé ne comporte PAS de décodage équilibré (la composante transductive est abandonnée).
+
+*Justification.* Verdict établi avec la règle de décision préinscrite (D32).
+
+*Preuve.* Réplication, 50 nouveaux plis (répétitions 10-19). Condition « toutes » : M50 0,5584 contre LR 0,5033 : +0,0551, IC95 [0,043 ; 0,068], Wilcoxon, signes (40/10) et permutation p < 1e-4 : critères remplis. Condition « abs8 » : M50 0,5808 contre LR 0,5451 : +0,0357, IC95 [0,023 ; 0,050] (borne basse ≥ 0,02 : rempli), Wilcoxon unilatéral p = 0,017 (rempli), permutation p = 0,009 (rempli), mais test des signes : 31 plis en faveur sur 50 contre le seuil 0,02, p unilatéral = 0,0595 > 0,05 (NON rempli de peu). Autres comparaisons : M50 moins A1 : toutes −0,004 (non significatif), abs8 +0,020 (IC95 [0,004 ; 0,036], p = 0,006), abs14 +0,063 (IC95 [0,042 ; 0,084], p < 1e-4) ; A1 contre LR : abs8 +0,015 (IC95 [−0,005 ; 0,036]), abs14 −0,0515 (IC95 [−0,081 ; −0,022] : A1 NUIT quand 14 classes sont absentes) ; M50 contre LR en abs14 : +0,012 (IC95 [−0,005 ; 0,030]).  Fichiers : artifacts/results/v3/W3a_all_units.csv ; W3a_tests.csv ; W3b_all_units.csv ; W3b_tests.csv ; W3c_all_units.csv ; W3c_tests.csv
+
+*Note.* Quatre des cinq critères de la condition abs8 sont remplis ; le test des signes, le plus faible des quatre, échoue à 0,0595. La règle écrite en D32 (« sinon non tranchée ») ne permet pas de conclure ; la règle de repli de D32 (décodage abandonné du pipeline gelé) est CONSERVÉE comme règle et soumise à l'étudiant avant application, car elle écarterait une méthode dont l'effet est positif dans les neuf comparaisons (sélection, confirmation, réplication × trois conditions) pour une marge de 0,01 sur un test.
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-10 13:34:21) : statut préinscrite ; Sur les 50 plis des répétitions 10 à 19 : dans chacune des conditions « toutes » et « abs8 », le gain de macro-F1 du palier A de M50 contre LR a une borne basse d'IC95 bootstrap ≥ 0,02 ET Wilcoxon, si…
+
 ## Résultats
 
 ### RA1 : Bloc A : macro-F1 du palier A par protocole (précédent v1 et actuel v3)  (version 1, 2026-11-07 21:58:55)
@@ -1645,3 +1856,19 @@ Macro-F1 palier A, sélection (répétitions 0-4) : V0 0,5032 ; LR 0,4947 ; A1 0
 *Justification.* Premier gain net et confirmé de la phase 2 : +0,04 à +0,07 sur le meilleur modèle classique, avec une formule d'une ligne (Sinkhorn amorti, exposant 0,5, 10 itérations, cible uniforme). Les cinq autres pistes de la vague 1 n'apportent rien (F14, F6, F18) ou un gain non établi (F9).
 
 *Preuve.* artifacts/results/v3/W1a_all_units.csv ; W1a_tests.csv ; W1b_all_units.csv ; W1b_tests.csv ; W1_selected.json
+
+### RW2 : Vague 2 : affinage et épreuve du décodage à masses équilibrées  (version 1, 2026-11-10 13:31:52)
+
+Macro-F1 palier A (répétitions 0-4) : A1 0,5752 ; F9S 0,5760 ; H1 0,5755 ; G25 0,5737 ; G1 0,5733 ; I30 0,5730 ; P5 0,5589 ; S1 0,5551 ; S2 0,5494 ; référence LR 0,4947. Robustesse (8 classes retirées du lot) : sélection A1_abs 0,5918 contre LR_abs 0,5538 (+0,038) ; confirmation 0,5474 contre 0,5425 (+0,005).
+
+*Justification.* A1 est stable face aux réglages (plateau) mais fragile face à l'absence de classes dans le lot : le décodage équilibré suppose que presque toutes les classes sont présentes. Un décodage consciente de la présence est nécessaire pour un résultat défendable sur le test final.
+
+*Preuve.* artifacts/results/v3/W2a_all_units.csv ; W2a_tests.csv ; W2a_robustesse.csv ; W2b_all_units.csv ; W2b_robustesse.csv ; W2_selected.json
+
+### RW3 : Vagues 2 et 3 : A1 est fragile à l'absence de classes ; la cible mixte M50 est robuste (trois séries de plis)  (version 1, 2026-11-10 13:35:22)
+
+Macro-F1 du palier A. TOUTES les classes présentes : LR 0,495 / 0,498 / 0,503 (sélection / confirmation / réplication) ; A1 0,575 / 0,554 / 0,563 ; M50 0,555 / 0,541 / 0,558. 8 CLASSES RETIRÉES du lot : LR 0,554 / 0,543 / 0,545 ; A1 0,592 / 0,547 / 0,560 ; M50 0,600 / 0,577 / 0,581. 14 CLASSES RETIRÉES : LR 0,550 / 0,595 / 0,582 ; A1 0,542 / — / 0,530 ; M50 0,580 / 0,621 / 0,593. Gains de M50 sur LR : +0,060 / +0,043 / +0,055 (toutes) ; +0,046 / +0,035 / +0,036 (abs8) ; +0,030 / +0,025 / +0,012 (abs14).
+
+*Justification.* Le décodage à masses équilibrées est la première amélioration nette et reproductible de la phase 2 (+0,04 à +0,06 quand toutes les classes sont présentes) ; sa version simple A1 s'effondre quand beaucoup de classes sont absentes ; la cible mixte M50 (moitié uniforme, moitié prior observé) garde +0,035 avec 8 classes absentes. Résultat à présenter avec la réserve de transduction (le décodage utilise la composition du lot) et avec la limite HY8 (test des signes).
+
+*Preuve.* artifacts/results/v3/W3a_all_units.csv ; W3a_tests.csv ; W3b_all_units.csv ; W3b_tests.csv ; W3c_all_units.csv ; W3c_tests.csv

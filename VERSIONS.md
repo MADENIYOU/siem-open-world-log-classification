@@ -548,3 +548,75 @@ Généré à partir de `artifacts/results/v3/versions.jsonl` (append-only, ne pa
 | Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
 |---|---|---|---|---|---|
 | **1** | 2026-11-10 13:26 | Verdicts HW1 à HW8 et résultat RW1 | Première version | **version courante** | `versions/scripts/v3_verdicts_W1__1.py` |
+
+## RW2
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **1** | 2026-11-10 13:27 | Préinscription D29, HX1 à HX7 (vague 2) | Première version | **version courante** | `versions/scripts/v3_register_W2__1.py` |
+
+## W2
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **1** | 2026-11-10 13:27 | Vague 2 : affinage et éprouve du décodage équilibré (A1) | Première version | **version courante** | `versions/scripts/v3_phase2_W2__1.py` |
+
+## AW2
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **1** | 2026-11-10 13:30 | Analyse de la vague 2 (HX1 à HX7) | Première version | **version courante** | `versions/scripts/v3_analyze_W2__1.py` |
+
+## VW2
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **1** | 2026-11-10 13:31 | Verdicts HX1 à HX7 et résultat RW2 | Première version | **version courante** | `versions/scripts/v3_verdicts_W2__1.py` |
+
+## RW3
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **1** | 2026-11-10 13:31 | Préinscription D30, HY1 à HY4 (vague 3) | Première version | **version courante** | `versions/scripts/v3_register_W3__1.py` |
+
+## W3
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **1** | 2026-11-10 13:32 | Vague 3 : équilibrage conscient de la présence (7 variantes, 3 conditions) | Première version | **version courante** | `versions/scripts/v3_phase2_W3__1.py` |
+
+## AW3
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **1** | 2026-11-10 13:32 | Analyse de la vague 3 (HY1 à HY4) | Première version | **version courante** | `versions/scripts/v3_analyze_W3__1.py` |
+
+## RW3b
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **1** | 2026-11-10 13:33 | Verdicts HY1, HY2 ; préinscription D31, HY5 à HY7 | Première version | **version courante** | `versions/scripts/v3_register_W3b__1.py` |
+
+## RW3c
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **1** | 2026-11-10 13:34 | Verdicts HY5-HY7 ; préinscription D32, HY8 | Première version | **version courante** | `versions/scripts/v3_register_W3c__1.py` |
+
+## W3c
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **1** | 2026-11-10 13:34 | Réplication de M50 sur 50 nouveaux plis | Première version | **version courante** | `versions/scripts/v3_phase2_W3c__1.py` |
+
+## AW3c
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **1** | 2026-11-10 13:34 | Analyse de la réplication W3c (HY8) | Première version | **version courante** | `versions/scripts/v3_analyze_W3c__1.py` |
+
+## VW3c
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **1** | 2026-11-10 13:35 | Verdict HY8 et résultat RW3 | Première version | **version courante** | `versions/scripts/v3_verdicts_W3c__1.py` |

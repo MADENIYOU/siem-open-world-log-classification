@@ -1,0 +1,20 @@
+"""Verdicts HX1 à HX7 (D29) et résultat RW2. Idempotent."""
+import sys, pathlib
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1] / "src"))
+import tp2_journal as J
+def last(i): return [e for e in J.entries() if e["id"] == i][-1]
+F = "artifacts/results/v3/W2a_all_units.csv ; W2a_tests.csv ; W2a_robustesse.csv ; W2b_all_units.csv ; W2b_robustesse.csv ; W2_selected.json"
+def verdict(i, statut, preuve, note=""):
+    if last(i)["statut"] == "préinscrite": J.add(i, "hypothese", last(i)["titre"], last(i)["texte"], justification="Verdict établi avec la règle de décision préinscrite (D29).", statut=statut, preuve=preuve + "  Fichiers : " + F, note=note)
+verdict("HX1", "réfutée", "Équilibrage sur le SVM : S1 (τ = 5) 0,5551 contre A1 0,5752 : −0,0202, IC95 [−0,031 ; −0,010] ; S2 (τ = 10) −0,0258, IC95 [−0,040 ; −0,011] ; Holm 1,0.", "Meilleur classifieur de base, mais ses marges transformées en probabilités sont moins bien calibrées pour l'équilibrage que les probabilités de la régression logistique.")
+verdict("HX2", "réfutée", "Exposant 0,25 : −0,0015, IC95 [−0,0095 ; 0,0058] ; exposant 1,0 : −0,0019, IC95 [−0,0045 ; 0,0009] ; 30 itérations : −0,0023, IC95 [−0,0050 ; 0,0007] ; bornes hautes < 0,01.", "Le gain d'A1 ne dépend pas finement des réglages d'amortissement et d'itérations (plateau).")
+verdict("HX3", "confirmée", "Cibles proportionnelles à la racine du nombre de gabarits (P5) : −0,0163, IC95 [−0,035 ; 0,0013] ; borne haute < 0,01 : ne dépasse pas A1.", "Cohérent avec A2 (EM de prior) : s'écarter de l'uniforme fait perdre.")
+verdict("HX4", "réfutée", "Équilibrage de famille puis de classe (H1) : +0,0002, IC95 [−0,0007 ; 0,0012] ; identique à A1 (0 plis sur 25 en faveur au-dessus du seuil).")
+verdict("HX5", "non tranchée", "F9S (marges V0 + 0,5 log p_lettres(famille), puis softmax, puis A1) : +0,0007, IC95 [−0,016 ; 0,017] (contient 0,01) ; Wilcoxon unilatéral p = 0,82.", "Les gains de F9 (+0,02 à +0,03 sans équilibrage, HW4) ne s'ajoutent pas à ceux d'A1 : A1 les absorbe probablement (même mécanisme de correction des absorptions).")
+verdict("HX6", "non tranchée", "Lots dont 8 classes tirées au hasard sont retirées : sélection (répétitions 0-4) A1_abs 0,5918 contre LR_abs 0,5538 : +0,0380, IC95 [0,008 ; 0,069], Wilcoxon p = 0,21, signes 13/12 (contre le seuil 0,02) ; CONFIRMATION (répétitions 5-9, nouveaux plis) A1_abs 0,5474 contre LR_abs 0,5425 : +0,0049, IC95 [−0,021 ; 0,029], Wilcoxon p = 0,84, signes 9/16. La borne basse n'atteint pas 0,02 et la borne haute ne l'exclut pas : non tranchée.", "RÉSERVE MAJEURE : le gain d'A1 (+0,057 à +0,08 quand toutes les classes sont présentes) disparaît presque (+0,005 à +0,04) quand 8 classes sont absentes du lot : la cible uniforme sur 30 classes force des gabarits vers des classes absentes. Le test final pouvant contenir peu de petites classes, A1 n'est PAS présentable seul : voir la vague 3 (équilibrage conscient de la présence).")
+verdict("HX7", "réfutée", "Aucune des 8 variantes ne dépasse A1 d'au moins 0,01 avec Holm p < 0,05 : meilleurs écarts +0,0007 (F9S) et +0,0002 (H1) ; tous les autres négatifs.", "A1 est un plateau local pour ces axes : on ne l'améliore pas par ces réglages ; la direction utile est sa robustesse (vague 3).")
+if not J.exists("RW2"):
+    J.add("RW2", "resultat", "Vague 2 : affinage et épreuve du décodage à masses équilibrées",
+          "Macro-F1 palier A (répétitions 0-4) : A1 0,5752 ; F9S 0,5760 ; H1 0,5755 ; G25 0,5737 ; G1 0,5733 ; I30 0,5730 ; P5 0,5589 ; S1 0,5551 ; S2 0,5494 ; référence LR 0,4947. Robustesse (8 classes retirées du lot) : sélection A1_abs 0,5918 contre LR_abs 0,5538 (+0,038) ; confirmation 0,5474 contre 0,5425 (+0,005).",
+          justification="A1 est stable face aux réglages (plateau) mais fragile face à l'absence de classes dans le lot : le décodage équilibré suppose que presque toutes les classes sont présentes. Un décodage consciente de la présence est nécessaire pour un résultat défendable sur le test final.", preuve=F)
+print("ok")
