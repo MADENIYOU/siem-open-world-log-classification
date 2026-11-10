@@ -378,6 +378,14 @@ Candidats : G_C30_T1_a0.25 (meilleure configuration de la grille en sélection :
 
 *Note.* Écrit le 2026-11-10 avant toute confirmation de la vague 8 (aucune donnée des répétitions 10 à 19 n'a été lue pour ces variantes).
 
+### D40 : Vague 9 : composer plusieurs leviers (plan factoriel, interactions, composition apprise)  (version 1, 2026-11-10 21:48:47)
+
+Demande de l'étudiant (2026-11-10, mardi) : au lieu d'un levier à la fois, composer deux ou trois leviers et faire varier leurs degrés. RÉFÉRENCE PIPE = TF-IDF mots → LR C = 10 → décodage M50 (α = 0,5, T = 1). COMPOSANTES de score de classe c pour un log x : Lc = log p_LR(c|x) ; Lo = log p_objet(o(c)|x) et La = log p_action(a(c)|x) (têtes logistiques C = 10 sur le même TF-IDF, axes des noms de classes, table DG4) ; Lf = log p_lettres(famille(c)|x) (LR C = 10 sur TF-IDF caractères 3-5, famille de la taxonomie). Score s = wc·Lc + wo·Lo + wa·La + wf·Lf ; probabilités = softmax(s) puis élévation à la puissance 1/T et renormalisation, puis décodage de cible (1 − α)/K + α·prior observé (Sinkhorn amorti 0,5, 10 itérations). PLAN FACTORIEL (108 configurations par pli) : A (base) ∈ {LR : wc = 1, wo = wa = 0 ; AXE05 : wc = 0,5, wo = wa = 1 ; AXE1 : wc = wo = wa = 1} × B (poids des lettres wf) ∈ {0 ; 0,5 ; 1 ; 2} × T ∈ {0,5 ; 1 ; 2} × α ∈ {0,25 ; 0,5 ; 0,75} ; PIPE = (LR, 0, 1, 0,5). COMPOSITION APPRISE STK : les quatre poids (wc, wo, wa, wf ≥ 0) sont estimés par minimisation de l'entropie croisée de la vraie classe sur des prédictions HORS-GABARIT du jeu d'entraînement (validation croisée interne en 3 plis de gabarits, chaque composante réentraînée à chaque pli), puis décodage M50 (α = 0,5, T = 1). Sélection : répétitions 0-4 (25 plis) ; confirmation : répétitions 10-19 (50 plis) des quatre candidats retenus (les trois meilleures configurations de moyenne de macro-F1 en sélection, hors PIPE et à leviers distincts, plus STK), seuil pratique 0,01 contre PIPE, correction pour 4 candidats (p < 0,0125). Mesure : macro-F1 du palier A ; conditions toutes (décision) et abs8 (contrôle). Plusieurs tests : IC95, Wilcoxon, signes, permutation, Holm. Le test v2 reste scellé (D27).
+
+*Justification.* Les leviers de la phase 2 donnent chacun un gain partiel non établi (axes objet × action +0,018 avec décodage, lettres vers la famille +0,02 à +0,03 en brut, prior 0,25 +0,015) ; leur COMPOSITION pourrait être additive, sous-additive (même défaut corrigé deux fois) ou sur-additive ; le plan factoriel mesure effets principaux et interactions, STK laisse les données choisir les poids.
+
+*Note.* Écrit le 2026-11-10 avant tout calcul de la vague 9.
+
 ## Hypothèses (préinscrites, puis confirmées ou réfutées)
 
 ### HA1 : Le découpage au hasard gonfle le score  (version 4, 2026-11-07 22:29:59 ; **statut : confirmée**)
@@ -2058,6 +2066,84 @@ Pour le candidat retenu par HQ6, le gain contre PIPE dans la condition « abs8 �
 *Historique des versions précédentes (conservées) :*
 - v1 (2026-11-10 21:43:22) : statut préinscrite ; Pour le candidat retenu par HQ6, le gain contre PIPE dans la condition « abs8 » des répétitions 10-19 est > 0 avec borne basse d'IC95 > 0 (contrôle ; sans seuil de gain). Non évaluée si aucun candidat…
 
+### HK1 : Chaque levier a un effet principal d'au moins 0,01 sur le score décodé  (version 2, 2026-11-10 22:03:15 ; **statut : non tranchée**)
+
+Dans le plan factoriel (25 plis, répétitions 0-4, condition « toutes »), pour chacun des 9 contrastes de niveaux suivants, la différence MOYENNE de macro-F1 du palier A sur les cellules des autres facteurs (une valeur par pli) est ≥ 0,01 (Wilcoxon unilatéral contre le seuil, Holm sur 9, p < 0,05) : A : AXE05 contre LR ; A : AXE1 contre LR ; B : 0,5 contre 0 ; B : 1 contre 0 ; B : 2 contre 0 ; T : 0,5 contre 1 ; T : 2 contre 1 ; α : 0,25 contre 0,5 ; α : 0,75 contre 0,5. Verdict par contraste, rapporté séparément.
+
+*Justification.* Verdict établi avec la règle de décision préinscrite (D40).
+
+*Preuve.* Effets principaux moyens sur les 108 cellules (25 plis, seuil 0,01, Holm sur 9) : A AXE05 contre LR +0,0198 (IC95 [0,011 ; 0,029], Holm 0,34) ; A AXE1 +0,0125 (Holm 1,0) ; B 0,5 : +0,0074 ; B 1 : +0,0092 ; B 2 : +0,0087 (bornes hautes 0,010 à 0,017) ; T 0,5 : −0,0076 ; T 2 : +0,0058 (IC95 [0,003 ; 0,009]) ; α 0,25 : +0,0151 (IC95 [0,009 ; 0,022], Holm 1,0) ; α 0,75 : −0,0218. Aucun contraste ne passe Holm.  Fichiers : artifacts/results/v3/W9a_all_units.csv ; W9a_grille.csv ; W9a_HK1.csv ; W9a_HK2.csv ; W9a_HK3.csv ; W9b_all_units.csv ; W9b_tests.csv ; W9_selected.json
+
+*Note.* Les effets MOYENS sont faibles ou négatifs (température 0,5, prior 0,75 nuisent) alors que la combinaison (AXE05, température 2, prior 0,25) atteint +0,05 : l'effet d'un levier dépend du réglage des autres, ce que montre le plan factoriel. Contrastes réfutés individuellement : T 0,5, T 2 (borne haute < 0,01), α 0,75.
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-10 21:48:47) : statut préinscrite ; Dans le plan factoriel (25 plis, répétitions 0-4, condition « toutes »), pour chacun des 9 contrastes de niveaux suivants, la différence MOYENNE de macro-F1 du palier A sur les cellules des autres fac…
+
+### HK2 : Les leviers s'additionnent (pas de sous-additivité)  (version 2, 2026-11-10 22:03:15 ; **statut : non tranchée**)
+
+Pour les trois paires (A = AXE05 avec B = 0,5), (A = AXE05 avec α = 0,25), (B = 0,5 avec α = 0,25), l'INTERACTION = gain de la combinaison − somme des gains des deux leviers pris seuls (relativement au niveau de base), moyennée sur les cellules des autres facteurs, est ≥ 0 : confirmée si la borne basse de l'IC95 bootstrap est ≥ −0,005 (additivité) ; réfutée (sous-additivité) si la borne haute est < −0,005 ; sinon non tranchée ; sur-additivité rapportée si la borne basse est > 0,005.
+
+*Justification.* Verdict établi avec la règle de décision préinscrite (D40).
+
+*Preuve.* Interactions (additivité = 0 ; seuil ±0,005) : AXE05 × lettres 0,5 : −0,0104 (IC95 [−0,015 ; −0,006]) : SOUS-additif (borne haute < −0,005) ; AXE05 × prior 0,25 : −0,0009 (IC95 [−0,006 ; 0,004]) : non tranchée ; lettres 0,5 × prior 0,25 : −0,0001 (IC95 [−0,0023 ; 0,0023]) : additif (borne basse ≥ −0,005).  Fichiers : artifacts/results/v3/W9a_all_units.csv ; W9a_grille.csv ; W9a_HK1.csv ; W9a_HK2.csv ; W9a_HK3.csv ; W9b_all_units.csv ; W9b_tests.csv ; W9_selected.json
+
+*Note.* Les axes objet × action et les lettres corrigent en partie les mêmes erreurs (le gain de lettres, déjà faible, se réduit quand AXE05 est présent) ; le prior 0,25 s'ajoute aux lettres sans interférence.
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-10 21:48:47) : statut préinscrite ; Pour les trois paires (A = AXE05 avec B = 0,5), (A = AXE05 avec α = 0,25), (B = 0,5 avec α = 0,25), l'INTERACTION = gain de la combinaison − somme des gains des deux leviers pris seuls (relativement a…
+
+### HK3 : La composition apprise STK dépasse PIPE  (version 2, 2026-11-10 22:03:15 ; **statut : confirmée**)
+
+En sélection, STK dépasse PIPE d'au moins 0,02 de macro-F1 du palier A (Wilcoxon unilatéral contre le seuil, p < 0,05).
+
+*Justification.* Verdict établi avec la règle de décision préinscrite (D40).
+
+*Preuve.* Composition apprise STK (poids moyens wc 0,087 ; wo 0,037 ; wa 0,346 ; wf 0,603 : la tête « action » et la famille par les lettres dominent, la classe directe est presque ignorée) : 0,5940 contre PIPE 0,5544 : +0,0396 (IC95 [0,026 ; 0,054]), Wilcoxon unilatéral (contre 0,02) p = 0,0057, permutation p = 0,0066, signes 16/9 en sélection.  Fichiers : artifacts/results/v3/W9a_all_units.csv ; W9a_grille.csv ; W9a_HK1.csv ; W9a_HK2.csv ; W9a_HK3.csv ; W9b_all_units.csv ; W9b_tests.csv ; W9_selected.json
+
+*Note.* Résultat structurel : les données hors-gabarit choisissent presque exclusivement les deux composantes « partagées entre classes » (action, famille), ce qui va dans le sens de l'hypothèse de départ (partage d'information entre classes).
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-10 21:48:47) : statut préinscrite ; En sélection, STK dépasse PIPE d'au moins 0,02 de macro-F1 du palier A (Wilcoxon unilatéral contre le seuil, p < 0,05).
+
+### HK4 : Un candidat composé améliore PIPE sur plis neufs  (version 2, 2026-11-10 22:03:15 ; **statut : confirmée**)
+
+Sur les 50 plis des répétitions 10-19, condition « toutes » : pour au moins un des quatre candidats, gain contre PIPE avec borne basse d'IC95 ≥ 0,01 ET Wilcoxon, signes et permutation (unilatéraux contre 0,01) p < 0,0125 ; réfutée si pour les quatre la borne haute < 0,01 ; sinon non tranchée. Si plusieurs candidats remplissent la règle, le plus grand gain moyen est retenu pour le pipeline gelé ; si aucun, PIPE reste.
+
+*Justification.* Verdict établi avec la règle de décision préinscrite (D40).
+
+*Preuve.* Confirmation (répétitions 10-19, 50 plis), condition « toutes », PIPE 0,5583, seuil 0,01, p < 0,0125 : AXE05_B1_T2_a0.25 0,5933 : +0,0350 (IC95 [0,025 ; 0,045], signes 41/9, Wilcoxon et permutation p < 1e-4) ; AXE05_B0.5_T2_a0.25 +0,0338 ([0,024 ; 0,044], 41/9) ; AXE05_B2_T2_a0.25 +0,0331 ([0,022 ; 0,044], 39/11) ; STK +0,0289 ([0,020 ; 0,038], 35/15, p = 0,0002). Les quatre candidats satisfont la règle ; le plus grand gain moyen est AXE05_B1_T2_a0.25.  Fichiers : artifacts/results/v3/W9a_all_units.csv ; W9a_grille.csv ; W9a_HK1.csv ; W9a_HK2.csv ; W9a_HK3.csv ; W9b_all_units.csv ; W9b_tests.csv ; W9_selected.json
+
+*Note.* Première amélioration composée établie sur plis neufs : environ +0,03 à +0,035 au-dessus du pipeline décodé de la vague 3, soit environ +0,085 au-dessus de la régression logistique brute (0,5033 → 0,5933).
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-10 21:48:47) : statut préinscrite ; Sur les 50 plis des répétitions 10-19, condition « toutes » : pour au moins un des quatre candidats, gain contre PIPE avec borne basse d'IC95 ≥ 0,01 ET Wilcoxon, signes et permutation (unilatéraux con…
+
+### HK5 : Le candidat retenu tient avec 8 classes absentes  (version 2, 2026-11-10 22:03:15 ; **statut : non tranchée**)
+
+Pour le candidat retenu par HK4, gain contre PIPE dans la condition « abs8 » des répétitions 10-19 > 0 avec borne basse d'IC95 > 0 ; non évaluée si aucun candidat n'est retenu.
+
+*Justification.* Verdict établi avec la règle de décision préinscrite (D40).
+
+*Preuve.* Condition « abs8 » (répétitions 10-19), contre PIPE 0,5808 : AXE05_B1_T2_a0.25 0,5875 : +0,0068 (IC95 [−0,009 ; 0,023]) : borne basse < 0 pour le candidat retenu ; à titre indicatif STK +0,0174 (IC95 [0,004 ; 0,032], 25/25) : borne basse > 0.  Fichiers : artifacts/results/v3/W9a_all_units.csv ; W9a_grille.csv ; W9a_HK1.csv ; W9a_HK2.csv ; W9a_HK3.csv ; W9b_all_units.csv ; W9b_tests.csv ; W9_selected.json
+
+*Note.* Le candidat à plus fort gain n'est pas établi avec 8 classes absentes ; STK, qui n'a pas de température ni de poids du prior réglés, l'est. Départage par une réplication préinscrite (D41).
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-10 21:48:47) : statut préinscrite ; Pour le candidat retenu par HK4, gain contre PIPE dans la condition « abs8 » des répétitions 10-19 > 0 avec borne basse d'IC95 > 0 ; non évaluée si aucun candidat n'est retenu.
+
+### HK6 : Les gains de sélection se retrouvent en confirmation (pas de retour vers la moyenne)  (version 2, 2026-11-10 22:03:15 ; **statut : réfutée**)
+
+Pour chaque candidat, le gain de confirmation (50 plis) est ≥ 75 % du gain de sélection (25 plis) : rapporté par candidat (mesure du biais de sélection du maximum d'un plan de 108 configurations).
+
+*Justification.* Verdict établi avec la règle de décision préinscrite (D40).
+
+*Preuve.* Rapport gain de confirmation / gain de sélection : AXE05_B1_T2_a0.25 0,66 ; AXE05_B0.5_T2_a0.25 0,66 ; AXE05_B2_T2_a0.25 0,67 ; STK 0,73 : aucun n'atteint 75 %.  Fichiers : artifacts/results/v3/W9a_all_units.csv ; W9a_grille.csv ; W9a_HK1.csv ; W9a_HK2.csv ; W9a_HK3.csv ; W9b_all_units.csv ; W9b_tests.csv ; W9_selected.json
+
+*Note.* Un tiers environ du gain de sélection du meilleur de 108 configurations disparaît sur plis neufs (retour vers la moyenne) ; STK (4 poids appris, 0 réglage) perd moins (27 %).
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-10 21:48:47) : statut préinscrite ; Pour chaque candidat, le gain de confirmation (50 plis) est ≥ 75 % du gain de sélection (25 plis) : rapporté par candidat (mesure du biais de sélection du maximum d'un plan de 108 configurations).
+
 ## Résultats
 
 ### RA1 : Bloc A : macro-F1 du palier A par protocole (précédent v1 et actuel v3)  (version 1, 2026-11-07 21:58:55)
@@ -2310,3 +2396,11 @@ Sélection (25 plis, « toutes »), macro-F1 du palier A : PIPE 0,5544 ; ST1 0,5
 *Justification.* Aucun levier de la vague 8 ne s'établit : les gains de sélection (+0,015 à +0,025) se réduisent à +0,003 à +0,006 sur plis neufs. Le pipeline gelé reste TF-IDF mots → régression logistique C = 10 → décodage M50 (poids 0,5, température 1). Illustre le biais du maximum d'une grille et de la sélection sur 25 plis.
 
 *Preuve.* artifacts/results/v3/W8a_all_units.csv ; W8a_tests.csv ; W8a_grille.csv ; W8b_all_units.csv ; W8b_tests.csv ; W8_selected.json
+
+### RW9 : Vague 9 : composition de leviers (axes objet × action, lettres vers la famille, température, prior) et composition apprise STK  (version 1, 2026-11-10 22:03:15)
+
+Sélection (25 plis, « toutes »), macro-F1 du palier A : PIPE 0,5544 ; meilleure configuration AXE05, lettres 1, température 2, prior 0,25 : 0,6071 (+0,0527) ; STK 0,5940 (+0,0396). Confirmation (50 plis neufs) : PIPE 0,5583 ; AXE05_B1_T2_a0.25 0,5933 (+0,0350) ; STK 0,5872 (+0,0289). Avec 8 classes absentes (confirmation) : AXE05 +0,0068 ; STK +0,0174.
+
+*Justification.* Première amélioration obtenue en COMPOSANT des leviers : aucun levier seul ne dépassait +0,02 de façon établie, leur combinaison réglée (axes objet × action + température 2 + prior 0,25) donne +0,035 sur plis neufs ; la composition apprise STK, sans réglage, donne +0,029 et résiste mieux à l'absence de classes.
+
+*Preuve.* artifacts/results/v3/W9a_all_units.csv ; W9a_grille.csv ; W9a_HK1.csv ; W9a_HK2.csv ; W9a_HK3.csv ; W9b_all_units.csv ; W9b_tests.csv ; W9_selected.json

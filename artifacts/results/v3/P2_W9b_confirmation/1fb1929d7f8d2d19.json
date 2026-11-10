@@ -1,0 +1,98 @@
+{
+ "hash": "1fb1929d7f8d2d19",
+ "block": "P2_W9b_confirmation",
+ "name": "W9b r15 pli4",
+ "cfg": {
+  "phase": 2,
+  "iteration": "W9b",
+  "repeat": 15,
+  "fold": 4,
+  "cap": 400,
+  "variants": [
+   "AXE05_B0.5_T2_a0.25",
+   "AXE05_B1_T2_a0.25",
+   "AXE05_B2_T2_a0.25",
+   "STK"
+  ],
+  "file": "SIEVE_00"
+ },
+ "code_version": "W9b.1",
+ "result": {
+  "AXE05_B0.5_T2_a0.25|toutes": {
+   "f1A": 0.46705644268755286,
+   "f1_30": 0.36787306456636587
+  },
+  "AXE05_B1_T2_a0.25|toutes": {
+   "f1A": 0.4878055092058202,
+   "f1_30": 0.38230695867590714
+  },
+  "LR_B0_T1_a0.5|toutes": {
+   "f1A": 0.44446232347616954,
+   "f1_30": 0.3516968193618124
+  },
+  "STK|toutes": {
+   "f1A": 0.41863734030505473,
+   "f1_30": 0.3336344669740867
+  },
+  "AXE05_B2_T2_a0.25|toutes": {
+   "f1A": 0.4958296938481528,
+   "f1_30": 0.38676903969001425
+  },
+  "AXE05_B0.5_T2_a0.25|abs8": {
+   "f1A": 0.3461914956309173,
+   "f1_30": 0.2812805902001203
+  },
+  "AXE05_B1_T2_a0.25|abs8": {
+   "f1A": 0.35578459662658524,
+   "f1_30": 0.28907498475910054
+  },
+  "LR_B0_T1_a0.5|abs8": {
+   "f1A": 0.37420244843087713,
+   "f1_30": 0.3040394893500877
+  },
+  "STK|abs8": {
+   "f1A": 0.3436331222187595,
+   "f1_30": 0.2792019118027422
+  },
+  "AXE05_B2_T2_a0.25|abs8": {
+   "f1A": 0.3652494158184032,
+   "f1_30": 0.29676515035245266
+  },
+  "_info": {
+   "stk_weights": [
+    0.13,
+    0.046,
+    0.343,
+    0.595
+   ],
+   "stk_oof_nll": 1.7243,
+   "stk_n": 39010
+  }
+ },
+ "seconds": 49.05,
+ "machine": {
+  "host": "MacBook-Pro-de-Madeniyou.local",
+  "platform": "macOS-27.0.1-arm64-arm-64bit",
+  "python": "3.12.16"
+ },
+ "commit": "027682d",
+ "code": {
+  "v3_phase2_W9.py": "5c368350314f",
+  "tp2_attacks.py": "37a5b3530f02",
+  "tp2_data.py": "7f392cbaae6e",
+  "tp2_encoder.py": "faec7df763bf",
+  "tp2_encoder_lpft.py": "edfd147c10d7",
+  "tp2_fields.py": "70b8fa07b590",
+  "tp2_journal.py": "d98d2c73b0a1",
+  "tp2_logtext.py": "2b5360ac2128",
+  "tp2_new_figs.py": "e48636202d7c",
+  "tp2_openset.py": "05d7b8a91592",
+  "tp2_runner.py": "7765735476e7",
+  "tp2_sota_figs.py": "4ba8388989c4",
+  "tp2_split_v3.py": "d9a4181a2a60",
+  "tp2_stats.py": "1bf4f78f39c3",
+  "tp2_vec.py": "6d09bf373fd2",
+  "tp2_versions.py": "b7dd47bdb2f6"
+ },
+ "date": "2026-11-10 21:59:10"
+}

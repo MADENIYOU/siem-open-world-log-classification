@@ -795,3 +795,27 @@ Généré à partir de `artifacts/results/v3/versions.jsonl` (append-only, ne pa
 | Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
 |---|---|---|---|---|---|
 | **1** | 2026-11-10 21:45 | Verdicts HQ1, HQ5-HQ7 et résultat RW8 | Première version | **version courante** | `versions/scripts/v3_verdicts_W8__1.py` |
+
+## RW9
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **1** | 2026-11-10 21:48 | Préinscription D40, HK1 à HK6 (vague 9 : composition de leviers) | Première version | **version courante** | `versions/scripts/v3_register_W9__1.py` |
+
+## W9
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **1** | 2026-11-10 21:49 | Vague 9 : composition de leviers (plan factoriel 108 configurations + composition apprise STK) | Première version | **version courante** | `versions/scripts/v3_phase2_W9__1.py` |
+
+## AW9
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **1** | 2026-11-10 21:54 | Analyse de la vague 9 (effets principaux, interactions, STK, candidats ; confirmation) | Première version | **version courante** | `versions/scripts/v3_analyze_W9__1.py` |
+
+## VW9
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **1** | 2026-11-10 22:03 | Verdicts HK1 à HK6 et résultat RW9 | Première version | **version courante** | `versions/scripts/v3_verdicts_W9__1.py` |
