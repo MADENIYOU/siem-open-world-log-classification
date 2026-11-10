@@ -500,3 +500,21 @@ Généré à partir de `artifacts/results/v3/versions.jsonl` (append-only, ne pa
 | Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
 |---|---|---|---|---|---|
 | **1** | 2026-11-10 00:03 | Préinscription D26, HG1 à HG10 (ronde 3) | Première version | **version courante** | `versions/scripts/v3_register_R3__1.py` |
+
+## HOOK
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **2** | 2026-11-10 13:17 | Ajoute le contrôle du scellement du test v2 (bloque le commit en cas d'écart) | La version 1 ne faisait que figer les versions de code et ne bloquait jamais ; la version 2 garde en plus le test v2 (D27, validé par l'étudiant) | **version courante** | `versions/scripts/hooks/pre-commit__2` |
+
+## CHKSEAL
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **1** | 2026-11-10 13:17 | Contrôle du scellement (journal, empreintes, scan des scripts) | Première version (D27) | **version courante** | `versions/scripts/check_test_seal__1.py` |
+
+## SEAL
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **1** | 2026-11-10 13:17 | Scellement vérifiable du test v2 : empreinte des identifiants, sans lire aucun log | Première version (D27) | **version courante** | `versions/scripts/v3_seal_test_v2__1.py` |

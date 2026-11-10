@@ -274,6 +274,14 @@ DIAGNOSTIC DG2 (exploratoire, répétition 0, 5 plis, SVM mots) : macro-F1 0,496
 
 *Note.* Écrit le 2026-11-10 avant tout calcul de la ronde 3.
 
+### D27 : Scellement vérifiable du test v2 : empreinte, garde automatique, contrôle au commit  (version 1, 2026-11-10 13:17:33)
+
+Demande de l'étudiant (2026-11-10) : le test v2 est intouchable, même pour un comptage. Trois contrôles, qui ne lisent aucun log : (1) empreinte SHA-256 de la liste triée des identifiants des 57 gabarits du test v2 et du fichier groups_v3.csv, enregistrée dans artifacts/data/test_v2_seal.json (scripts/v3_seal_test_v2.py ne lit que les colonnes « group » et « role ») ; (2) scripts/check_test_seal.py : refuse tout script ou module (hors les trois qui construisent ou scellent le découpage) qui mentionne « test2 », « SealedSplits » ou « unlock » ; (3) le crochet git pre-commit exécute ce contrôle et BLOQUE le commit en cas d'écart (empreinte modifiée, journal d'accès non vide hors ouverture déclarée, script interdit).
+
+*Justification.* Règle 11 de la méthodologie d'article : le scellement doit être vérifiable par un lecteur extérieur, pas seulement affirmé.
+
+*Note.* Écrit le 2026-11-10 ; validé par l'étudiant (« vas y je valide »).
+
 ## Hypothèses (préinscrites, puis confirmées ou réfutées)
 
 ### HA1 : Le découpage au hasard gonfle le score  (version 4, 2026-11-07 22:29:59 ; **statut : confirmée**)

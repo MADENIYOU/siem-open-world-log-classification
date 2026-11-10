@@ -1,8 +1,11 @@
 #!/bin/sh
-# Crochet git « pre-commit » (installé avec l'accord de l'étudiant, 2026-11-07) : fige dans versions/auto tout état de script, module, notebook ou
-# générateur de présentation non encore conservé, puis l'ajoute au commit. Ne bloque jamais le commit. Installation : cp scripts/hooks/pre-commit .git/hooks/pre-commit
+# Crochet git « pre-commit ». (1) installé avec l'accord de l'étudiant le 2026-11-07 : fige dans versions/auto tout état de script, module, notebook ou
+# générateur de présentation non encore conservé, puis l'ajoute au commit (ne bloque pas). (2) ajouté le 2026-11-10 (D27, validé par l'étudiant) :
+# contrôle du scellement du test v2 ; BLOQUE le commit si le journal d'accès n'est pas vide, si l'empreinte des identifiants scellés a changé,
+# ou si un script autre que ceux qui construisent le découpage mentionne le test v2. Installation : cp scripts/hooks/pre-commit .git/hooks/pre-commit
 ROOT="$(git rev-parse --show-toplevel)"
 PY="$ROOT/../../TP1/.venv312/bin/python"
 [ -x "$PY" ] || PY="$(command -v python3)"
 "$PY" "$ROOT/scripts/check_versions.py" --fix >/dev/null 2>&1 && git add "$ROOT/versions/auto" 2>/dev/null
+"$PY" "$ROOT/scripts/check_test_seal.py" || { echo "Commit refusé : le scellement du test v2 n'est pas conforme (voir ci-dessus)."; exit 1; }
 exit 0
