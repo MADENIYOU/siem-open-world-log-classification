@@ -1,0 +1,17 @@
+"""Verdicts HJ1 à HJ5 (D43) et résultat RW11. Idempotent."""
+import sys, pathlib
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1] / "src"))
+import tp2_journal as J
+def last(i): return [e for e in J.entries() if e["id"] == i][-1]
+F = "artifacts/results/v3/W11a_all_units.csv ; W11a_tests.csv ; W11a_poids_STK4.csv ; W11a_poids_STK7.csv ; W11a_poids_STK9.csv ; W11_selected.json"
+def verdict(i, statut, preuve, note=""):
+    if last(i)["statut"] == "préinscrite": J.add(i, "hypothese", last(i)["titre"], last(i)["texte"], justification="Verdict établi avec la règle de décision préinscrite (D43).", statut=statut, preuve=preuve + "  Fichiers : " + F, note=note)
+verdict("HJ1", "réfutée", "Sélection (25 plis, « toutes ») : STK7 0,5804 contre STK4 0,5940 : −0,0136, IC95 [−0,025 ; −0,003], signes 2/23 ; abs8 −0,0047 ; abs14 −0,0169. La borne haute (−0,003) est sous le seuil +0,01 et même sous 0.", "Ajouter les têtes de caractères pour classe, objet et action FAIT PERDRE du score, en classes toutes présentes comme avec 14 classes absentes.")
+verdict("HJ2", "réfutée", "STK9 0,5810 contre STK4 0,5940 : −0,0130, IC95 [−0,024 ; −0,003], signes 2/23 ; abs8 −0,0070 ; abs14 −0,0181.", "Famille par les mots et bigrammes n'arrangent rien : le poids de la tête bigrammes est 0,000 sur les 25 plis.")
+verdict("HJ3", "non tranchée", "Non testée sur plis neufs : la sélection est entièrement négative (IC95 des deux variantes sous 0), donc la confirmation sur les répétitions 40-49 (35 minutes de calcul) ne peut pas changer la conclusion. Écart à la règle D43 (« confirmation menée quand même »), consigné ici : décision de ne pas dépenser ce calcul, motivée par l'intervalle de sélection entièrement négatif.  Fichiers : " + F, "Les confirmations « malgré la porte fermée » des vagues précédentes (D25, D31, D36, D39) visaient des effets positifs dont l'intervalle contenait le seuil ; ici l'effet est négatif et l'intervalle ne le contient pas.")
+verdict("HJ4", "non tranchée", "Non évaluée (pas de confirmation) ; à titre indicatif en sélection : STK9 abs8 −0,0070, abs14 −0,0181 ; STK7 abs8 −0,0047, abs14 −0,0169.")
+verdict("HJ5", "confirmée", "Descriptif. Poids moyens STK4 (25 plis, écart-type) : classe 0,087 (0,034) ; objet 0,037 (0,055) ; action 0,346 (0,077) ; famille-lettres 0,603 (0,083). STK7 : classe 0,035 ; objet 0,027 ; action-mots 0,219 ; famille-lettres 0,564 ; classe-lettres 0,061 ; objet-lettres 0,036 ; action-lettres 0,147. STK9 : famille-lettres 0,490 ; action-mots 0,209 ; action-lettres 0,159 ; famille-mots 0,085 ; bigrammes 0,000.", "Poids stables d'un pli à l'autre (écart-type 0,03 à 0,12) : les têtes « action » et « famille » dominent toujours ; la classe directe et les bigrammes sont presque ignorées.")
+if not J.exists("RW11"):
+    J.add("RW11", "resultat", "Vague 11 : composition apprise élargie (STK7, STK9)", "Sélection (25 plis), macro-F1 du palier A, toutes / 8 absentes / 14 absentes : PIPE 0,5544 / 0,5998 / 0,5796 ; STK4 0,5940 / 0,6284 / 0,6262 ; STK7 0,5804 / 0,6237 / 0,6093 ; STK9 0,5810 / 0,6214 / 0,6081.",
+          justification="Plus de têtes ne donne pas plus de score : les poids appris par entropie croisée hors-gabarit se dégradent quand les têtes sont corrélées (surajustement du critère d'apprentissage, qui n'est pas la macro-F1 après décodage). STK4, qui a quatre têtes peu corrélées, reste le pipeline gelé. Piste suivante : apprendre les poids directement sur la macro-F1 décodée hors-gabarit.", preuve=F)
+print("ok")

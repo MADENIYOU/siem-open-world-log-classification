@@ -843,3 +843,28 @@ Généré à partir de `artifacts/results/v3/versions.jsonl` (append-only, ne pa
 | Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
 |---|---|---|---|---|---|
 | **1** | 2026-11-10 22:25 | Verdicts HK7 à HK10, décision D42 (pipeline gelé provisoire), résultat RW10 | Première version | **version courante** | `versions/scripts/v3_verdicts_W10__1.py` |
+
+## RW11
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **1** | 2026-11-10 22:40 | Préinscription D43, HJ1 à HJ5 (vague 11) | Première version | **version courante** | `versions/scripts/v3_register_W11__1.py` |
+
+## W11
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **1** | 2026-11-10 22:40 | Vague 11 : composition apprise élargie (STK4, STK7, STK9) | Première version | La version 1 plantait au premier pli (ValueError : comparaison d'un tableau avec une chaîne) ; aucun résultat n'avait été produit (par 2) | `versions/scripts/v3_phase2_W11__1.py` |
+| **2** | 2026-11-10 22:40 | Corrige la comparaison tableau-chaîne (isinstance) dans la fonction des têtes | La version 1 plantait au premier pli (ValueError : comparaison d'un tableau avec une chaîne) ; aucun résultat n'avait été produit | **version courante** | `versions/scripts/v3_phase2_W11__2.py` |
+
+## AW11
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **1** | 2026-11-10 22:44 | Analyse de la vague 11 (HJ1 à HJ5) | Première version | **version courante** | `versions/scripts/v3_analyze_W11__1.py` |
+
+## VW11
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **1** | 2026-11-10 23:18 | Verdicts HJ1 à HJ5 et résultat RW11 | Première version | **version courante** | `versions/scripts/v3_verdicts_W11__1.py` |

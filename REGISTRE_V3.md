@@ -402,6 +402,14 @@ PIPELINE : (1) TF-IDF mots (lettres ≥ 2, min_df = 2, sublinéaire) et TF-IDF c
 
 *Note.* Écrit le 2026-11-10.
 
+### D43 : Vague 11 : composition apprise élargie (STK7, STK9)  (version 1, 2026-11-10 22:40:05)
+
+Demande de l'étudiant (« lançons la vague maintenant »). RÉFÉRENCE STK4 = pipeline gelé D42 (têtes : classe-mots Lc, objet-mots Lo, action-mots La, famille-lettres Lf ; décodage M50, T = 1, α = 0,5). TÊTES NOUVELLES (régression logistique C = 10, log-probabilité ramenée aux 30 classes) : Lcc = classe par les caractères 3-5 ; Loc = objet par les caractères ; Lac = action par les caractères ; Lfw = famille par les mots ; Lcb = classe par les uni- et bigrammes de mots (lettres ≥ 2, min_df = 2). VARIANTES : STK7 = STK4 + Lcc + Loc + Lac ; STK9 = STK7 + Lfw + Lcb. Les poids (tous ≥ 0) sont appris comme en D40/D42 par minimisation de l'entropie croisée hors-gabarit (validation croisée interne en 3 plis de gabarits, toutes les têtes réentraînées à chaque pli), puis softmax et décodage M50 (α = 0,5, T = 1) : aucun réglage à la main. SÉLECTION : répétitions 0-4 (25 plis) ; CONFIRMATION : répétitions 40-49 (50 plis, jamais utilisés) du ou des variantes retenues contre STK4 et PIPE (décodage M50 seul) ; conditions toutes (décision), abs8 et abs14 (graines 1000·r + k et 2000·r + k). Mesure : macro-F1 du palier A. Plusieurs tests : IC95, Wilcoxon, signes, permutation, Holm. Le test v2 reste scellé (D27).
+
+*Justification.* STK a mis presque tout son poids sur les têtes partagées entre classes (action, famille) ; d'autres têtes, notamment fondées sur les caractères, peuvent apporter de l'information complémentaire ; les poids étant appris, l'ajout ne crée aucun réglage manuel.
+
+*Note.* Écrit le 2026-11-10 (22h30) avant tout calcul de la vague 11.
+
 ## Hypothèses (préinscrites, puis confirmées ou réfutées)
 
 ### HA1 : Le découpage au hasard gonfle le score  (version 4, 2026-11-07 22:29:59 ; **statut : confirmée**)
@@ -2212,6 +2220,69 @@ Pour le pipeline retenu par HK9, gain contre PIPE > 0 avec borne basse d'IC95 > 
 *Historique des versions précédentes (conservées) :*
 - v1 (2026-11-10 22:03:49) : statut préinscrite ; Pour le pipeline retenu par HK9, gain contre PIPE > 0 avec borne basse d'IC95 > 0 dans les conditions abs8 et abs14 (répétitions 20-39) ; rapportée par condition.
 
+### HJ1 : Ajouter les têtes de caractères améliore STK (STK7)  (version 2, 2026-11-10 23:18:18 ; **statut : réfutée**)
+
+En sélection (25 plis, condition « toutes »), STK7 dépasse STK4 d'au moins 0,01 de macro-F1 du palier A (Wilcoxon unilatéral contre le seuil, Holm sur 2 variantes, p < 0,05).
+
+*Justification.* Verdict établi avec la règle de décision préinscrite (D43).
+
+*Preuve.* Sélection (25 plis, « toutes ») : STK7 0,5804 contre STK4 0,5940 : −0,0136, IC95 [−0,025 ; −0,003], signes 2/23 ; abs8 −0,0047 ; abs14 −0,0169. La borne haute (−0,003) est sous le seuil +0,01 et même sous 0.  Fichiers : artifacts/results/v3/W11a_all_units.csv ; W11a_tests.csv ; W11a_poids_STK4.csv ; W11a_poids_STK7.csv ; W11a_poids_STK9.csv ; W11_selected.json
+
+*Note.* Ajouter les têtes de caractères pour classe, objet et action FAIT PERDRE du score, en classes toutes présentes comme avec 14 classes absentes.
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-10 22:40:05) : statut préinscrite ; En sélection (25 plis, condition « toutes »), STK7 dépasse STK4 d'au moins 0,01 de macro-F1 du palier A (Wilcoxon unilatéral contre le seuil, Holm sur 2 variantes, p < 0,05).
+
+### HJ2 : Ajouter la famille par les mots et les bigrammes améliore STK (STK9)  (version 2, 2026-11-10 23:18:18 ; **statut : réfutée**)
+
+En sélection, STK9 dépasse STK4 d'au moins 0,01 (mêmes critères que HJ1).
+
+*Justification.* Verdict établi avec la règle de décision préinscrite (D43).
+
+*Preuve.* STK9 0,5810 contre STK4 0,5940 : −0,0130, IC95 [−0,024 ; −0,003], signes 2/23 ; abs8 −0,0070 ; abs14 −0,0181.  Fichiers : artifacts/results/v3/W11a_all_units.csv ; W11a_tests.csv ; W11a_poids_STK4.csv ; W11a_poids_STK7.csv ; W11a_poids_STK9.csv ; W11_selected.json
+
+*Note.* Famille par les mots et bigrammes n'arrangent rien : le poids de la tête bigrammes est 0,000 sur les 25 plis.
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-10 22:40:05) : statut préinscrite ; En sélection, STK9 dépasse STK4 d'au moins 0,01 (mêmes critères que HJ1).
+
+### HJ3 : La variante retenue est confirmée sur plis neufs  (version 2, 2026-11-10 23:18:18 ; **statut : non tranchée**)
+
+Si HJ1 ou HJ2 est vérifiée en sélection, la variante au plus grand gain est confirmée sur les 50 plis des répétitions 40-49, condition « toutes » : gain contre STK4 avec borne basse d'IC95 ≥ 0,01 ET Wilcoxon, signes et permutation (unilatéraux contre 0,01) p < 0,05 ; réfutée si la borne haute < 0,01. Si ni HJ1 ni HJ2 n'est vérifiée, la confirmation est menée quand même pour la variante au plus grand gain moyen (précédents D25, D31, D36) avec la même règle.
+
+*Justification.* Verdict établi avec la règle de décision préinscrite (D43).
+
+*Preuve.* Non testée sur plis neufs : la sélection est entièrement négative (IC95 des deux variantes sous 0), donc la confirmation sur les répétitions 40-49 (35 minutes de calcul) ne peut pas changer la conclusion. Écart à la règle D43 (« confirmation menée quand même »), consigné ici : décision de ne pas dépenser ce calcul, motivée par l'intervalle de sélection entièrement négatif.  Fichiers : artifacts/results/v3/W11a_all_units.csv ; W11a_tests.csv ; W11a_poids_STK4.csv ; W11a_poids_STK7.csv ; W11a_poids_STK9.csv ; W11_selected.json  Fichiers : artifacts/results/v3/W11a_all_units.csv ; W11a_tests.csv ; W11a_poids_STK4.csv ; W11a_poids_STK7.csv ; W11a_poids_STK9.csv ; W11_selected.json
+
+*Note.* Les confirmations « malgré la porte fermée » des vagues précédentes (D25, D31, D36, D39) visaient des effets positifs dont l'intervalle contenait le seuil ; ici l'effet est négatif et l'intervalle ne le contient pas.
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-10 22:40:05) : statut préinscrite ; Si HJ1 ou HJ2 est vérifiée en sélection, la variante au plus grand gain est confirmée sur les 50 plis des répétitions 40-49, condition « toutes » : gain contre STK4 avec borne basse d'IC95 ≥ 0,01 ET W…
+
+### HJ4 : La variante retenue ne dégrade pas la robustesse  (version 2, 2026-11-10 23:18:18 ; **statut : non tranchée**)
+
+Sur les répétitions 40-49, pour la variante retenue, le gain contre STK4 dans les conditions abs8 et abs14 a une borne basse d'IC95 > −0,01 (non-infériorité).
+
+*Justification.* Verdict établi avec la règle de décision préinscrite (D43).
+
+*Preuve.* Non évaluée (pas de confirmation) ; à titre indicatif en sélection : STK9 abs8 −0,0070, abs14 −0,0181 ; STK7 abs8 −0,0047, abs14 −0,0169.  Fichiers : artifacts/results/v3/W11a_all_units.csv ; W11a_tests.csv ; W11a_poids_STK4.csv ; W11a_poids_STK7.csv ; W11a_poids_STK9.csv ; W11_selected.json
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-10 22:40:05) : statut préinscrite ; Sur les répétitions 40-49, pour la variante retenue, le gain contre STK4 dans les conditions abs8 et abs14 a une borne basse d'IC95 > −0,01 (non-infériorité).
+
+### HJ5 : Les poids appris sont stables et parlants  (version 2, 2026-11-10 23:18:18 ; **statut : confirmée**)
+
+Descriptif (aucune règle de décision) : poids moyens par tête sur les 25 plis de sélection et leur écart-type ; rapportés.
+
+*Justification.* Verdict établi avec la règle de décision préinscrite (D43).
+
+*Preuve.* Descriptif. Poids moyens STK4 (25 plis, écart-type) : classe 0,087 (0,034) ; objet 0,037 (0,055) ; action 0,346 (0,077) ; famille-lettres 0,603 (0,083). STK7 : classe 0,035 ; objet 0,027 ; action-mots 0,219 ; famille-lettres 0,564 ; classe-lettres 0,061 ; objet-lettres 0,036 ; action-lettres 0,147. STK9 : famille-lettres 0,490 ; action-mots 0,209 ; action-lettres 0,159 ; famille-mots 0,085 ; bigrammes 0,000.  Fichiers : artifacts/results/v3/W11a_all_units.csv ; W11a_tests.csv ; W11a_poids_STK4.csv ; W11a_poids_STK7.csv ; W11a_poids_STK9.csv ; W11_selected.json
+
+*Note.* Poids stables d'un pli à l'autre (écart-type 0,03 à 0,12) : les têtes « action » et « famille » dominent toujours ; la classe directe et les bigrammes sont presque ignorées.
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-10 22:40:05) : statut préinscrite ; Descriptif (aucune règle de décision) : poids moyens par tête sur les 25 plis de sélection et leur écart-type ; rapportés.
+
 ## Résultats
 
 ### RA1 : Bloc A : macro-F1 du palier A par protocole (précédent v1 et actuel v3)  (version 1, 2026-11-07 21:58:55)
@@ -2480,3 +2551,11 @@ Macro-F1 du palier A, PIPE (décodage M50 seul) : 0,5534 (toutes) ; 0,5645 (8 ab
 *Justification.* Le pipeline final gagne environ +0,088 sur la régression logistique brute (0,5046 → 0,5922, classes toutes présentes), dont +0,049 apportés par le décodage et +0,039 par la composition apprise ; il garde son avantage quand 8 ou 14 classes sur 30 sont absentes du lot. Les réglages fins (température, prior) ne trouvent pas de mieux robuste : la composition apprise sans réglage suffit.
 
 *Preuve.* artifacts/results/v3/W10a_all_units.csv ; W10a_grille.csv ; W10c_all_units.csv ; W10c_tests.csv ; W10_selected.json ; W10_choice.json
+
+### RW11 : Vague 11 : composition apprise élargie (STK7, STK9)  (version 1, 2026-11-10 23:18:18)
+
+Sélection (25 plis), macro-F1 du palier A, toutes / 8 absentes / 14 absentes : PIPE 0,5544 / 0,5998 / 0,5796 ; STK4 0,5940 / 0,6284 / 0,6262 ; STK7 0,5804 / 0,6237 / 0,6093 ; STK9 0,5810 / 0,6214 / 0,6081.
+
+*Justification.* Plus de têtes ne donne pas plus de score : les poids appris par entropie croisée hors-gabarit se dégradent quand les têtes sont corrélées (surajustement du critère d'apprentissage, qui n'est pas la macro-F1 après décodage). STK4, qui a quatre têtes peu corrélées, reste le pipeline gelé. Piste suivante : apprendre les poids directement sur la macro-F1 décodée hors-gabarit.
+
+*Preuve.* artifacts/results/v3/W11a_all_units.csv ; W11a_tests.csv ; W11a_poids_STK4.csv ; W11a_poids_STK7.csv ; W11a_poids_STK9.csv ; W11_selected.json
