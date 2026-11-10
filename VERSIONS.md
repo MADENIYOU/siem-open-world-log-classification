@@ -488,3 +488,15 @@ Généré à partir de `artifacts/results/v3/versions.jsonl` (append-only, ne pa
 | Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
 |---|---|---|---|---|---|
 | **1** | 2026-11-10 00:00 | Verdicts HT1b, HT2b, HF15, HF16, tranche HT1, résultat RT2 | Première version | **version courante** | `versions/scripts/v3_verdicts_T2__1.py` |
+
+## DG2
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **1** | 2026-11-10 00:03 | Diagnostic exploratoire du plafond : F1 par classe, oracle d'agrégation par vrai gabarit, lissage par voisins du test | Première version (diagnostic, aucun verdict) | **version courante** | `versions/scripts/v3_diag_DG2__1.py` |
+
+## RR3
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **1** | 2026-11-10 00:03 | Préinscription D26, HG1 à HG10 (ronde 3) | Première version | **version courante** | `versions/scripts/v3_register_R3__1.py` |

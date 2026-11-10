@@ -194,6 +194,86 @@ Constat des blocs A à V : environ 0,50 de macro-F1 des classes connues pour tou
 
 *Preuve.* scripts/v3_phase2_I1.py
 
+### D17 : Confirmation I1b : mots + lettres (ENS) améliore-t-il la famille ?  (version 1, 2026-11-09 13:17:00)
+
+Constat exploratoire d'I1 (vu APRÈS les chiffres, donc non confirmatoire) : ENS (somme des marges SVM mots et SVM caractères) a un macro-F1 de famille de 0,719 contre 0,692 (+0,028, Wilcoxon p = 0,0006, 19 plis sur 25) et une distance dans l'arbre de 0,787 contre 0,812 (−0,025, p = 0,012), sans changer le macro-F1 des classes (−0,001). Pour confirmer : 25 NOUVEAUX plis (répétitions 5 à 9, mêmes StratifiedGroupKFold par gabarit avec les graines 5 à 9), seules les deux variantes V0 et ENS, mêmes réglages, même développement de SIEVE_00 ; le test v2 reste scellé. Limite écrite : ce sont les mêmes gabarits répartis autrement, donc la confirmation vaut pour le hasard du découpage, pas pour de nouveaux gabarits ; la confirmation sur de nouveaux gabarits se fera sur le test v2 (une seule ouverture, à la fin).
+
+*Justification.* Demande de l'étudiant (2026-11-09) : confirmer maintenant le constat exploratoire. Règle R2 : une hypothèse vue dans les données ne se confirme pas avec les mêmes données ; on préinscrit donc la règle puis on la teste sur des découpages non utilisés.
+
+*Note.* Écrit le 2026-11-09 avant tout calcul de la confirmation I1b.
+
+### D18 : Phase 2, itération I2 : champs typés (changer la nature de l'information)  (version 1, 2026-11-09 13:18:20)
+
+Après I1 (HF1 à HF6 réfutées : vocabulaire, marqueur, pondération, ensemble mots+lettres ne lèvent pas le plafond de 0,50), I2 ajoute une information que le sac de mots ne voit pas : la STRUCTURE du log. Jetons ajoutés aux mots du SVM : (a) le programme émetteur (mot avant « [pid]: », ex. crond, useradd) ; (b) le NOM de chaque champ « clé=valeur » (srcip, dstport, uid…) et de chaque champ entre crochets « [Clé valeur] » ; (c) le TYPE de chaque valeur (ip, port/nombre, hex, chemin, heure, date, courriel, mot, mélange) combiné au nom du champ (ex. « srcip:ip ») ; (d) le gabarit de forme du log (suite des types de ses 8 premiers éléments). Variantes, même protocole que I1 (30 classes, P2 25 plis, SIEVE_00, développement seul, SVM C = 1, 400 logs par gabarit) : V0 baseline ; FT = mots + jetons typés (concaténés avant TF-IDF) ; FTo = jetons typés seuls (sans mots) ; FTE = FT + marges du SVM caractères (somme). Le test v2 reste scellé. Les deux autres pistes annoncées pour la suite sont consignées comme itérations à venir : I3 = fusion avec le Transformer (quand la grille T est finie) ; I4 = confirmation préinscrite du rejet au niveau de la famille sur de nouvelles rotations (HD7 a montré que ce détecteur est plus fragile sous attaque).
+
+*Justification.* Demande de l'étudiant (2026-11-07 et 2026-11-09) : étiqueter les champs pertinents des logs, combiner les représentations ; lacune de la littérature n°3 de PLAN_V3 §3.1 (étiquetage de champs de logs de sécurité). I1 a réfuté l'idée de ne toucher qu'au vocabulaire.
+
+*Note.* Écrit le 2026-11-09 avant tout calcul de l'itération I2.
+
+### D19 : Itération I4 : le rejet par la confiance de FAMILLE est-il meilleur que le MSP sur de nouvelles rotations ?  (version 1, 2026-11-09 14:00:38)
+
+Constat exploratoire du bloc C (125 unités, vu après les chiffres) : AUROC d'inconnu de la probabilité maximale de la famille 0,666 contre 0,623 pour le MSP, 0,639 pour l'énergie, 0,633 pour le MSP hiérarchique. HD7 (bloc D) a de plus montré que ce détecteur perd davantage que le MSP sous attaque. Confirmation : 5 NOUVELLES rotations de 6 classes masquées (tirage aléatoire de graine 20261109 de partitions des 30 classes, refusé si un ensemble de 6 classes est identique à une rotation du v1) × 25 NOUVEAUX plis (répétitions 5 à 9, StratifiedGroupKFold par gabarit, graines 5 à 9 comme en I1b), SIEVE_00, développement seul, même modèle (régression logistique C = 4 sur TF-IDF mots, entraînement sur les classes connues, 400 logs au plus par gabarit). Scores comparés : msp, maxlogit, energy, hier_msp, fam_msp. Unité de statistique = (rotation, répétition), AUROC moyenné sur les 5 plis : 25 unités. Le test v2 reste scellé ; la confirmation sur de nouveaux gabarits revient à l'ouverture finale.
+
+*Justification.* D12 : la confiance de famille est le candidat principal et exige une hypothèse préinscrite sur de nouvelles données. Règle R2 : un constat vu dans les données ne se confirme pas sur les mêmes données.
+
+*Note.* Écrit le 2026-11-09 avant tout calcul de l'itération I4.
+
+### D20 : Règle de la phase 2 : itérer au maximum avant d'ouvrir le jeu de test  (version 1, 2026-11-09 17:55:28)
+
+Demande de l'étudiant (2026-11-09) : en phase 2, on effectue autant d'itérations que possible pour augmenter la précision le plus possible ; c'est seulement quand le maximum de précision possible est atteint qu'on teste avec le jeu de test (test v2 scellé, une seule ouverture). Critère d'arrêt écrit : trois itérations consécutives sans gain significatif de macro-F1 des classes (palier A) sur de nouveaux plis, ou la veille de l'échéance (samedi 2026-11-14, ouverture le vendredi 2026-11-13 au plus tard pour laisser la rédaction). Procédure de chaque itération : hypothèses préinscrites ; sélection de la configuration sur les répétitions 0 à 4 du développement ; confirmation de la configuration retenue sur les répétitions 5 à 9 (nouveaux plis) ; jamais de sélection sur les données de confirmation ; le pipeline final est figé (version enregistrée) avant l'ouverture du test.
+
+*Justification.* Précise D6/R5 du plan (test ouvert une fois à la fin) : le moment de l'ouverture est le maximum atteint, pas une date fixe. Remplace le critère « fin de semaine ou 3 itérations sans gain » par le même critère rendu explicite.
+
+*Note.* Écrit le 2026-11-09.
+
+### D21 : Itération I5 : régler mots + lettres (procédure D20)  (version 1, 2026-11-09 17:55:59)
+
+Grille (SVM linéaire, 30 classes, SIEVE_00, développement seul) : C des mots ∈ {0,3 ; 1 ; 3} ; lettres : n-grammes char_wb ∈ {(2,4), (3,5), (4,6)} avec C ∈ {0,3 ; 1} ; poids de la marge lettres dans la somme ∈ {0 (mots seuls), 0,5 ; 1 ; 2 ; lettres seules} ; soit 3 × 3 × 2 × 3 combinaisons de somme plus les références. SÉLECTION : macro-F1 des classes (palier A) moyen sur les 25 plis des répétitions 0 à 4 ; la configuration au meilleur score est retenue (aucun autre critère, aucun arbitrage manuel). CONFIRMATION (I5b) : la configuration retenue est calculée sur les 25 plis des répétitions 5 à 9 et comparée à V0 (SVM mots, C = 1, résultats d'I1b, mêmes plis) ; la sélection n'utilise jamais ces plis. Le test v2 reste scellé (D20).
+
+*Justification.* D20 : itérer pour monter la précision ; la séparation sélection (rép. 0-4) / confirmation (rép. 5-9) évite l'optimisme de choisir le maximum d'une grille et de l'annoncer.
+
+*Note.* Écrit le 2026-11-09 avant tout calcul de l'itération I5.
+
+### D22 : Réplication Transformer T2 : trancher HT1 et HT2, et fusion Transformer + TF-IDF (I3)  (version 1, 2026-11-09 21:31:12)
+
+HT1 et HT2 sont « non tranchées » (écarts moyens à 0,0204 et 0,0325, pile sur les seuils 0,02 et 0,03, intervalles qui les contiennent) parce que la grille T n'utilise qu'UNE découpe (répétition 0, pli 0). Réplication T2 : fichier sans bruit (p = 0), 4 NOUVELLES découpes du développement (répétition 1 pli 1, répétition 2 pli 2, répétition 3 pli 3, répétition 4 pli 4), 5 rotations de v1, graine 42 : 20 modèles, mêmes réglages que T1 (DistilBERT sans casse, 256 jetons, 2 époques, 3e-5, 140 logs d'entraînement par classe, jusqu'à 133 logs de test par classe), unité de statistique = couple (découpe, rotation) = 20. En plus de la baseline TF-IDF sur les mêmes logs, la FUSION (I3) : moyenne des probabilités de classe du Transformer et de la régression logistique TF-IDF ; confiance de famille de la fusion = moyenne des probabilités de famille des deux. Plusieurs tests statistiques par comparaison : Wilcoxon apparié, test des signes, test de permutation apparié (10 000 retournements de signe), IC95 bootstrap ; la décision suit la règle écrite pour chaque hypothèse (l'IC95 bootstrap tranche ; les autres tests sont rapportés). Le test v2 reste scellé.
+
+*Justification.* Demande de l'étudiant (2026-11-09) : trancher HT1 et HT2 et faire la fusion avec le Transformer maintenant. Une réplication sur de nouvelles découpes est la manière préinscrite de trancher une hypothèse « non tranchée » (règle R2 : on ne retranche pas sur les mêmes données).
+
+*Note.* Écrit le 2026-11-09 avant tout calcul de la réplication T2.
+
+### D23 : Itération I6 : retenter I1, I2 et I5 avec de nouveaux hyperparamètres  (version 1, 2026-11-09 21:32:42)
+
+Demande de l'étudiant (2026-11-09) : retenter les itérations avec de nouveaux hyperparamètres, plusieurs rotations, plusieurs tests statistiques. I6 reprend les trois leviers de classification de la phase 2 avec des valeurs NON essayées jusqu'ici. Grille (classification à 30 classes, SIEVE_00, développement seul, 400 logs au plus par gabarit) : REPRÉSENTATION DES MOTS (retour sur I1) W1 lettres ≥ 2 min_df = 1 ; W2 uni+bigrammes de mots min_df = 2 ; W3 jetons alphanumériques (chiffres conservés) min_df = 2 ; W4 TF binaire ; W5 sensible à la casse ; STRUCTURE (retour sur I2) W6 = mots + jetons « programme » et « nom de champ » seulement (sans types ni forme, qui avaient fait baisser) ; MODÈLES (retour sur I5) SVM C = 0,1 ; SVM C = 10 ; SVM C = 1 classes équilibrées ; régression logistique C = 30 ; Ridge alpha = 1 ; soit 6 × 5 = 30 configurations de mots, plus deux configurations de lettres (char_wb 1-3 et char 3-5, SVM C = 10). SÉLECTION : répétitions 0 à 4 (25 plis), macro-F1 des classes (palier A), la meilleure configuration est retenue ; CONFIRMATION : sur les 25 plis des répétitions 5 à 9 contre V0 (résultats d'I1b). Plusieurs tests statistiques à chaque étape : Wilcoxon apparié, test des signes, test de permutation apparié, IC95 bootstrap, et Friedman avec Nemenyi sur l'ensemble de la grille (quelles configurations sont indiscernables). La décision suit la règle écrite pour chaque hypothèse. Le test v2 reste scellé (D20).
+
+*Justification.* D20 : itérer au maximum avant d'ouvrir le test ; l'étudiant demande de retenter avec d'autres valeurs : c'est une nouvelle itération, avec la même discipline de sélection puis confirmation.
+
+*Note.* Écrit le 2026-11-09 avant tout calcul de l'itération I6.
+
+### D24 : Itération I7 : retenter le rejet d'inconnus (I4) avec de nouveaux hyperparamètres et de nouvelles rotations  (version 1, 2026-11-09 21:35:36)
+
+Demande de l'étudiant (2026-11-09). I7 : SÉLECTION sur un second jeu de 5 rotations (ensemble B : partitions des 30 classes tirées avec la graine 20261110, refusées si identiques à une rotation de v1 ou de l'ensemble de I4) × répétitions 0 à 4 (25 plis, 125 unités) ; CONFIRMATION sur un troisième jeu de 5 rotations (ensemble C : graine 20261111, mêmes refus) × répétitions 5 à 9 (25 nouveaux plis, 125 unités). Hyperparamètres : C de la tête ∈ {1 ; 16 ; 64} (I4 : 4) ; scores : msp, energy, hier_msp, fam_msp (I4), fam_margin (écart entre les deux plus grandes probabilités de famille), fam_negent (opposé de l'entropie des probabilités de famille), fam_x_msp (produit des confiances famille et classe), rank_fam_energy (moyenne des rangs de fam_msp et energy), soit 3 × 8 = 24 combinaisons. Unité de statistique = (rotation, répétition), AUROC moyenné sur les 5 plis. Sélection : meilleur AUROC moyen sur l'ensemble B ; référence : msp avec C = 4 (I4). Plusieurs tests statistiques : IC95 bootstrap, Wilcoxon, test des signes, permutation, Friedman + Nemenyi sur les 24 combinaisons à l'étape de sélection. Le test v2 reste scellé (D20).
+
+*Justification.* L'étudiant demande de retenter avec de nouveaux hyperparamètres, plusieurs rotations et plusieurs tests ; la séparation sélection (rotations B) / confirmation (rotations C, nouveaux plis) évite de présenter un maximum de grille comme un résultat.
+
+*Note.* Écrit le 2026-11-09 avant tout calcul de l'itération I7.
+
+### D25 : Lancer la confirmation I6b malgré la porte fermée ; trancher HI6 et HI7 par la réplication I7c  (version 1, 2026-11-09 22:09:48)
+
+(1) I6b : l'étudiant demande de lancer la confirmation que la règle D23 ne prévoyait pas (porte HF17 fermée : gain en développement +0,0085 < 0,02). La décision HF17 reste « réfutée » (elle porte sur la porte) ; HF18 est évaluée avec sa règle écrite sur les 25 plis des répétitions 5 à 9 de la configuration retenue W1_lr30 (V0 = I1b, mêmes plis) : un résultat nul sera une information, un résultat positif devrait être traité avec prudence (porte fermée en sélection). (2) I7c : HI6 et HI7 sont non tranchées parce que l'intervalle est large (25 unités). Réplication : TROIS nouveaux jeux de 5 rotations (ensembles D, E, F : graines 20261112, 20261113, 20261114, refusées si identiques à une rotation déjà utilisée : v1, I4, I7a, I7b ou un ensemble précédent) × 5 nouvelles répétitions de plis (répétitions 10 à 14, StratifiedGroupKFold par gabarit graines 10 à 14) = 75 unités (rotation, répétition) ; uniquement la combinaison retenue en sélection (C64_fam_negent) et la référence msp (C = 4), les 24 combinaisons étant calculées comme d'habitude mais NON utilisées pour décider. Plusieurs tests : IC95 bootstrap, Wilcoxon, signes, permutation.
+
+*Justification.* Demande de l'étudiant (2026-11-09) : lancer I6b et trancher HI6 et HI7. Pour trancher il faut resserrer l'intervalle : 75 unités au lieu de 25, sur des rotations jamais vues, avec une règle écrite avant le calcul (R2).
+
+*Note.* Écrit le 2026-11-09 avant tout calcul d'I6b et d'I7c.
+
+### D26 : Ronde 3 : cibler la généralisation d'une classe à partir de très peu de gabarits  (version 1, 2026-11-10 00:03:47)
+
+DIAGNOSTIC DG2 (exploratoire, répétition 0, 5 plis, SVM mots) : macro-F1 0,4965 ; si l'on AGRÈGE les marges par VRAI gabarit au test (borne haute oracle), le macro-F1 reste 0,4968 : le plafond ne vient donc pas du bruit entre logs d'un même gabarit mais de gabarits ENTIERS mal classés ; l'agrégation par voisins du test (5 à 50) ne gagne rien non plus (0,488 à 0,492). Huit classes ont un F1 voisin de 0 (file-read, file-write, file-modification, file-deleted, directory-deleted, file-action-failure, user-session-open, http-request-failure) : elles n'ont que 1 à 3 gabarits dans le développement, donc quand un gabarit est au test il en reste 0 à 2 pour apprendre ; exemple : le gabarit de test « Accessed URL … » de file-read est classé connexion échouée, alors que le gabarit d'entraînement dit « opened-file ». Le goulot est donc l'apprentissage avec 1 à 2 gabarits par classe : il faut apporter de la SÉMANTIQUE (que « accessed », « opened », « read » désignent la même action) ou rendre l'apprentissage robuste à un changement de gabarit. Pistes (≤ 3 variantes chacune, sélection sur répétitions 0 à 4 avec la baseline V0 de mêmes plis, porte : meilleure variante ≥ V0 + 0,02 avec Holm p < 0,05 sur l'ensemble des 10 variantes ; confirmation sur répétitions 5 à 9 selon la règle HF18) : (E) EMBEDDINGS gelés DistilBERT (moyenne des vecteurs de la dernière couche, 768 valeurs, sans réglage fin) : E1 régression logistique sur les embeddings ; E2 somme standardisée des marges de E1 et de V0 ; E3 V0 plus similarité cosinus à l'embedding du nom de la classe (« file read ») avec poids 1 (prior de sens) ; (L) LEXIQUE de concepts d'action : L1 mots + jetons de concepts (src/tp2_lexicon.py, écrit AVANT les résultats, lexique général indépendant des logs de test) ; L2 jetons de concepts seuls ; (A) AUGMENTATION pour simuler des gabarits nouveaux : A1 données + une copie avec suppression aléatoire de 30 % des mots ; A2 + deux copies à 50 % ; A3 A2 avec pondération par gabarit ; (S) DISCRIMINANT AU NIVEAU DU GABARIT : S1 analyse discriminante dont la dispersion intra-classe est calculée sur les MOYENNES PAR GABARIT (SVD à 200 dimensions), classe = moyenne la plus proche en distance de Mahalanobis rétrécie ; S2 somme standardisée de S1 et V0. Le test v2 reste scellé (D20).
+
+*Justification.* Demande de l'étudiant (2026-11-10) : essayer d'autres hypothèses, méthodes, algorithmes et formules maison partout où un progrès est plausible, itérer à fond. DG2 cible la cause (gabarits entiers mal classés, classes à 1-3 gabarits) au lieu de régler des paramètres qui, eux, n'ont rien changé (I1, I2, I5, I6).
+
+*Note.* Écrit le 2026-11-10 avant tout calcul de la ronde 3.
+
 ## Hypothèses (préinscrites, puis confirmées ou réfutées)
 
 ### HA1 : Le découpage au hasard gonfle le score  (version 4, 2026-11-07 22:29:59 ; **statut : confirmée**)
@@ -582,37 +662,58 @@ L'AUROC du MSP décroît avec p pour TF-IDF mots (Spearman négatif, p < 0,05 su
 *Historique des versions précédentes (conservées) :*
 - v1 (2026-11-07 23:25:34) : statut préinscrite ; L'AUROC du MSP décroît avec p pour TF-IDF mots (Spearman négatif, p < 0,05 sur les moyennes par unité).
 
-### HT1 : Le Transformer n'améliore pas la classification des classes connues  (version 1, 2026-11-07 23:25:34 ; **statut : préinscrite**)
+### HT1 : Le Transformer n'améliore pas la classification des classes connues  (version 3, 2026-11-10 00:00:10 ; **statut : confirmée**)
 
 Sur les mêmes logs de test, le macro-F1 des classes connues du Transformer dépasse celui de la baseline TF-IDF d'au plus 0,02 (Wilcoxon sur les 30 couples fichier × rotation, moyenne des graines, Holm).
 
-*Justification.* Notebook v1 : encodeur 0,46 contre TF-IDF 0,49 au test (l'encodeur ne fait pas mieux), hypothèse de décalage de domaine.
+*Justification.* Tranchée par la réplication préinscrite D22 (HT1b, 20 couples) ; l'entrée « non tranchée » précédente est conservée.
 
-*Note.* Écrit le 2026-11-07 avant tout calcul des blocs V et T.
+*Preuve.* Voir HT1b : Transformer − TF-IDF = −0,0545, IC95 [−0,086 ; −0,020].
 
-### HT2 : Mahalanobis aide sur les vecteurs du Transformer  (version 1, 2026-11-07 23:25:34 ; **statut : préinscrite**)
+*Note.* Source : T2. Le Transformer n'améliore pas de plus de 0,02 ; sur 140 logs par classe il est même moins bon que TF-IDF sur les nouvelles découpes.
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-07 23:25:34) : statut préinscrite ; Sur les mêmes logs de test, le macro-F1 des classes connues du Transformer dépasse celui de la baseline TF-IDF d'au plus 0,02 (Wilcoxon sur les 30 couples fichier × rotation, moyenne des graines, Holm…
+- v2 (2026-11-09 21:14:59) : statut non tranchée ; Sur les mêmes logs de test, le macro-F1 des classes connues du Transformer dépasse celui de la baseline TF-IDF d'au plus 0,02 (Wilcoxon sur les 30 couples fichier × rotation, moyenne des graines, Holm…
+
+### HT2 : Mahalanobis aide sur les vecteurs du Transformer  (version 2, 2026-11-09 21:14:59 ; **statut : non tranchée**)
 
 L'AUROC de Mahalanobis (vecteurs de 768 valeurs) dépasse celui du MSP du même Transformer d'au moins 0,03 (Wilcoxon sur les 30 couples, Holm p < 0,05).
 
-*Justification.* Notebook v1 (10.4c) : +0,057 dans les cinq rotations ; Podolskiy et al. et Zhou et al. (sources v1) la donnent efficace sur des Transformers affinés.
+*Justification.* Verdict établi avec la règle de décision préinscrite (voir la version précédente).
 
-*Note.* Écrit le 2026-11-07 avant tout calcul des blocs V et T.
+*Preuve.* AUROC d'inconnu de Mahalanobis moins MSP (même Transformer) : +0,0325, IC95 [0,0195 ; 0,0463], p unilatéral (écart > 0,03) 0,44 ; 21 couples sur 30 en faveur. Moyennes : Mahalanobis 0,593 ; MSP 0,560.  Fichiers : artifacts/results/v3/T_all_units.csv ; T_tests.csv
 
-### HT3 : La confiance sur la famille aide aussi pour le Transformer  (version 1, 2026-11-07 23:25:34 ; **statut : préinscrite**)
+*Note.* Gain moyen égal au seuil de 0,03, intervalle qui le contient. Les deux restent faibles (< 0,60). Plan : DistilBERT sans casse, 256 jetons, 2 époques, 3e-5 ; 6 niveaux de bruit × 5 rotations × 3 graines = 90 modèles ; une seule découpe du développement (répétition 0, pli 0) ; 140 logs d'entraînement par classe (donc F1 plus bas qu'avec les données complètes : baseline TF-IDF 0,37 ici contre 0,50 ailleurs).
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-07 23:25:34) : statut préinscrite ; L'AUROC de Mahalanobis (vecteurs de 768 valeurs) dépasse celui du MSP du même Transformer d'au moins 0,03 (Wilcoxon sur les 30 couples, Holm p < 0,05).
+
+### HT3 : La confiance sur la famille aide aussi pour le Transformer  (version 2, 2026-11-09 21:14:59 ; **statut : confirmée**)
 
 L'AUROC de la confiance sur la FAMILLE du Transformer dépasse celui de son MSP d'au moins 0,02 (Wilcoxon sur les 30 couples, Holm p < 0,05).
 
-*Justification.* Extension de la décision D12 (comparaison exploratoire du bloc C, à confirmer sur un autre modèle).
+*Justification.* Verdict établi avec la règle de décision préinscrite (voir la version précédente).
 
-*Note.* Écrit le 2026-11-07 avant tout calcul des blocs V et T.
+*Preuve.* AUROC famille moins MSP du Transformer : +0,0699, IC95 [0,048 ; 0,091], p Holm 0,0004 ; 26 couples sur 30 en faveur. Moyennes : famille 0,630 ; MSP 0,560.  Fichiers : artifacts/results/v3/T_all_units.csv ; T_tests.csv
 
-### HT4 : Le Transformer perd moins avec le bruit que TF-IDF  (version 1, 2026-11-07 23:25:34 ; **statut : préinscrite**)
+*Note.* Troisième série de données (après le bloc C et I4) où la confiance de famille est le meilleur détecteur ; ici le gain (+0,07) est le plus grand. Plan : DistilBERT sans casse, 256 jetons, 2 époques, 3e-5 ; 6 niveaux de bruit × 5 rotations × 3 graines = 90 modèles ; une seule découpe du développement (répétition 0, pli 0) ; 140 logs d'entraînement par classe (donc F1 plus bas qu'avec les données complètes : baseline TF-IDF 0,37 ici contre 0,50 ailleurs).
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-07 23:25:34) : statut préinscrite ; L'AUROC de la confiance sur la FAMILLE du Transformer dépasse celui de son MSP d'au moins 0,02 (Wilcoxon sur les 30 couples, Holm p < 0,05).
+
+### HT4 : Le Transformer perd moins avec le bruit que TF-IDF  (version 2, 2026-11-09 21:14:59 ; **statut : réfutée**)
 
 La perte de macro-F1 des classes connues entre p = 0 et p = 0,5 est plus petite pour le Transformer que pour la baseline TF-IDF (Wilcoxon sur les 15 couples rotation × graine, p < 0,05).
 
-*Justification.* Les sous-mots d'un Transformer tolèrent mieux les mots abîmés que le sac de mots.
+*Justification.* Verdict établi avec la règle de décision préinscrite (voir la version précédente).
 
-*Note.* Écrit le 2026-11-07 avant tout calcul des blocs V et T.
+*Preuve.* Perte de macro-F1 entre p = 0 et p = 0,5 : Transformer 0,0565 contre TF-IDF 0,0311 ; différence (TF-IDF − Transformer) −0,0254, IC95 [−0,045 ; −0,006], p unilatéral 0,99 ; le Transformer perd moins dans 4 couples sur 15 seulement.  Fichiers : artifacts/results/v3/T_all_units.csv ; T_tests.csv
+
+*Note.* Le signe est l'inverse de l'hypothèse : le Transformer perd PLUS que TF-IDF quand on ajoute du bruit (l'avance de 0,03 à p = 0 devient 0,005 à p = 0,5). Avec 2 époques sur 140 logs par classe, son avantage ne résiste pas au bruit. Plan : DistilBERT sans casse, 256 jetons, 2 époques, 3e-5 ; 6 niveaux de bruit × 5 rotations × 3 graines = 90 modèles ; une seule découpe du développement (répétition 0, pli 0) ; 140 logs d'entraînement par classe (donc F1 plus bas qu'avec les données complètes : baseline TF-IDF 0,37 ici contre 0,50 ailleurs).
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-07 23:25:34) : statut préinscrite ; La perte de macro-F1 des classes connues entre p = 0 et p = 0,5 est plus petite pour le Transformer que pour la baseline TF-IDF (Wilcoxon sur les 15 couples rotation × graine, p < 0,05).
 
 ### HD1 : Chaque attaque dégrade le monde connu  (version 2, 2026-11-09 13:07:19 ; **statut : confirmée**)
 
@@ -773,53 +874,476 @@ Calibrée sur des gabarits distincts, la prédiction conforme à 90 % couvre au 
 *Historique des versions précédentes (conservées) :*
 - v1 (2026-11-09 12:40:19) : statut préinscrite ; Calibrée sur des gabarits distincts, la prédiction conforme à 90 % couvre au moins 87 % des logs connus du test ; calibrée sur les mêmes gabarits que l'entraînement, elle couvre moins de 87 % (moyenne…
 
-### HF1 : Le support par gabarit améliore le macro-F1  (version 1, 2026-11-09 13:02:03 ; **statut : préinscrite**)
+### HF1 : Le support par gabarit améliore le macro-F1  (version 2, 2026-11-09 13:14:27 ; **statut : réfutée**)
 
 Pour au moins un des trois seuils m = 2, 3, 5 gabarits, le macro-F1 des classes (palier A) dépasse celui du SVM mots d'au moins 0,02 (Wilcoxon apparié sur 25 plis, Holm sur 3, p < 0,05).
 
-*Justification.* Les mots d'un seul gabarit sont des valeurs ou des mots propres au gabarit, qui encombrent le vocabulaire sans se généraliser.
+*Justification.* Verdict établi avec la règle de décision préinscrite (voir la version précédente).
 
-*Note.* Écrit le 2026-11-09 avant tout calcul de l'itération I1.
+*Preuve.* Écart de macro-F1 (palier A) contre le SVM mots (0,5032) : T2 −0,007 (IC95 [−0,023 ; 0,009], p Holm 0,31) ; T3 −0,031 (p Holm 0,002) ; T5 −0,086 (p Holm 3e-5). Aucun seuil ne gagne 0,02 ; T3 et T5 font significativement PIRE.  Fichiers : artifacts/results/v3/I1_all_units.csv ; I1_resume.csv ; I1_tests_pairs.csv
 
-### HF2 : Le marqueur « valeur » apporte quelque chose de plus que la suppression  (version 1, 2026-11-09 13:02:03 ; **statut : préinscrite**)
+*Note.* L'hypothèse de travail de D16 (les mots propres à un seul gabarit nuisent) est fausse : ces mots aident aussi à reconnaître les classes dont les gabarits se ressemblent. Plus on restreint, plus la distance dans l'arbre augmente (0,81 → 0,92 → 0,98).
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-09 13:02:03) : statut préinscrite ; Pour au moins un des trois seuils m = 2, 3, 5 gabarits, le macro-F1 des classes (palier A) dépasse celui du SVM mots d'au moins 0,02 (Wilcoxon apparié sur 25 plis, Holm sur 3, p < 0,05).
+
+### HF2 : Le marqueur « valeur » apporte quelque chose de plus que la suppression  (version 2, 2026-11-09 13:14:27 ; **statut : réfutée**)
 
 T3M (mots écartés remplacés par un marqueur) dépasse T3 (mots écartés supprimés) d'au moins 0,01 (Wilcoxon apparié, p < 0,05).
 
-*Justification.* Le nombre de champs variables d'un log est une information de structure qui disparaît si on supprime les mots.
+*Justification.* Verdict établi avec la règle de décision préinscrite (voir la version précédente).
 
-*Note.* Écrit le 2026-11-09 avant tout calcul de l'itération I1.
+*Preuve.* T3M moins T3 : −0,0013, IC95 [−0,007 ; 0,005], p = 0,92 : l'intervalle exclut +0,01.  Fichiers : artifacts/results/v3/I1_all_units.csv ; I1_resume.csv ; I1_tests_pairs.csv
 
-### HF3 : Mots et caractères se complètent  (version 1, 2026-11-09 13:02:03 ; **statut : préinscrite**)
+*Note.* Le marqueur « valeur » unique n'apporte rien ; il ne rattrape pas la perte due à la restriction.
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-09 13:02:03) : statut préinscrite ; T3M (mots écartés remplacés par un marqueur) dépasse T3 (mots écartés supprimés) d'au moins 0,01 (Wilcoxon apparié, p < 0,05).
+
+### HF3 : Mots et caractères se complètent  (version 2, 2026-11-09 13:14:27 ; **statut : réfutée**)
 
 ENS dépasse le SVM mots d'au moins 0,02 (Wilcoxon apparié, Holm).
 
-*Justification.* Deux représentations qui se trompent différemment ; mais au bloc V, mots et caractères étaient équivalents seuls.
+*Justification.* Verdict établi avec la règle de décision préinscrite (voir la version précédente).
 
-*Note.* Écrit le 2026-11-09 avant tout calcul de l'itération I1.
+*Preuve.* ENS moins SVM mots : −0,0010, IC95 [−0,012 ; 0,009], p = 0,65 : l'intervalle exclut +0,02.  Fichiers : artifacts/results/v3/I1_all_units.csv ; I1_resume.csv ; I1_tests_pairs.csv
 
-### HF4 : Pondérer les gabarits à égalité aide  (version 1, 2026-11-09 13:02:03 ; **statut : préinscrite**)
+*Note.* Constat exploratoire (non préinscrit, à confirmer) : ENS améliore le macro-F1 de FAMILLE (0,719 contre 0,692) et la distance dans l'arbre (0,787 contre 0,812) sans changer le macro-F1 des classes.
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-09 13:02:03) : statut préinscrite ; ENS dépasse le SVM mots d'au moins 0,02 (Wilcoxon apparié, Holm).
+
+### HF4 : Pondérer les gabarits à égalité aide  (version 2, 2026-11-09 13:14:27 ; **statut : réfutée**)
 
 WGT dépasse le SVM mots d'au moins 0,02 (Wilcoxon apparié, Holm).
 
-*Justification.* Les gros gabarits dominent l'apprentissage même avec le plafond de 400 logs.
+*Justification.* Verdict établi avec la règle de décision préinscrite (voir la version précédente).
 
-*Note.* Écrit le 2026-11-09 avant tout calcul de l'itération I1.
+*Preuve.* WGT moins SVM mots : −0,0043, IC95 [−0,008 ; −0,001], p = 0,045 : légèrement PIRE, loin de +0,02.  Fichiers : artifacts/results/v3/I1_all_units.csv ; I1_resume.csv ; I1_tests_pairs.csv
 
-### HF5 : La combinaison dépasse chacun de ses composants  (version 1, 2026-11-09 13:02:03 ; **statut : préinscrite**)
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-09 13:02:03) : statut préinscrite ; WGT dépasse le SVM mots d'au moins 0,02 (Wilcoxon apparié, Holm).
+
+### HF5 : La combinaison dépasse chacun de ses composants  (version 2, 2026-11-09 13:14:27 ; **statut : réfutée**)
 
 COMB dépasse chacune des variantes qu'elle combine (Wilcoxon apparié, Holm).
 
-*Justification.* Les gains portent sur des mécanismes différents.
+*Justification.* Verdict établi avec la règle de décision préinscrite (voir la version précédente).
 
-*Note.* Écrit le 2026-11-09 avant tout calcul de l'itération I1.
+*Preuve.* Aucune combinaison ne dépasse chacun de ses composants : C2 contre ENS −0,006 (p Holm 0,96), C3 contre ENS −0,009, C3 contre WGT −0,006, C1 contre WGT −0,030 (p Holm 0,002). C2 et C3 dépassent seulement T3 (+0,024 et +0,022), c'est-à-dire qu'elles réparent partiellement la perte de T3.  Fichiers : artifacts/results/v3/I1_all_units.csv ; I1_resume.csv ; I1_tests_pairs.csv
 
-### HF6 : Objectif de score  (version 1, 2026-11-09 13:02:03 ; **statut : préinscrite**)
+*Note.* Les trois combinaisons ont été calculées en même temps (C1, C2, C3) ; aucune n'a été choisie après coup.
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-09 13:02:03) : statut préinscrite ; COMB dépasse chacune des variantes qu'elle combine (Wilcoxon apparié, Holm).
+
+### HF6 : Objectif de score  (version 2, 2026-11-09 13:14:27 ; **statut : réfutée**)
 
 Le macro-F1 des classes (palier A) de la meilleure variante atteint au moins 0,55 en moyenne sur les 25 plis (baseline 0,503).
 
-*Justification.* Objectif de l'étudiant : viser le maximum ; 0,55 est un seuil fixé d'avance pour dire si l'itération a franchi une marche notable.
+*Justification.* Verdict établi avec la règle de décision préinscrite (voir la version précédente).
 
-*Note.* Écrit le 2026-11-09 avant tout calcul de l'itération I1.
+*Preuve.* Meilleur macro-F1 (palier A) : V0 0,5032 ; ENS 0,5022 ; WGT 0,4989. Cible 0,55 non atteinte ; aucune variante ne dépasse la baseline.  Fichiers : artifacts/results/v3/I1_all_units.csv ; I1_resume.csv ; I1_tests_pairs.csv
+
+*Note.* Conclusion de I1 : la représentation à base de mots (vocabulaire, marqueurs, pondération, ajout des lettres) ne lève pas le plafond d'environ 0,50 ; la piste suivante doit changer la nature de l'information (champs typés, Transformer, fusion de scores) ou la tâche (niveau famille).
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-09 13:02:03) : statut préinscrite ; Le macro-F1 des classes (palier A) de la meilleure variante atteint au moins 0,55 en moyenne sur les 25 plis (baseline 0,503).
+
+### HF7 : Mots + lettres améliore le F1 de famille  (version 2, 2026-11-09 13:22:39 ; **statut : confirmée**)
+
+Sur les 25 nouveaux plis, le macro-F1 de famille de ENS dépasse celui de V0 (SVM mots) d'au moins 0,01 (Wilcoxon apparié unilatéral p < 0,05). Réfutée si l'IC95 bootstrap de l'écart exclut +0,01 ; sinon non tranchée.
+
+*Justification.* Verdict établi avec la règle de décision préinscrite (voir la version précédente).
+
+*Preuve.* 25 nouveaux plis : macro-F1 de famille ENS 0,720 contre V0 0,690, gain +0,029, IC95 [0,015 ; 0,048] (borne basse au-dessus du seuil 0,01), Wilcoxon unilatéral p = 2e-5, 22 plis sur 25 en faveur.  Fichiers : artifacts/results/v3/I1b_all_units.csv ; I1b_tests.csv
+
+*Note.* Reproduit le constat exploratoire d'I1 (+0,028) : l'effet est stable. Limite : mêmes gabarits que le développement d'I1, répartis autrement ; la confirmation sur de nouveaux gabarits revient au test v2.
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-09 13:17:00) : statut préinscrite ; Sur les 25 nouveaux plis, le macro-F1 de famille de ENS dépasse celui de V0 (SVM mots) d'au moins 0,01 (Wilcoxon apparié unilatéral p < 0,05). Réfutée si l'IC95 bootstrap de l'écart exclut +0,01 ; sin…
+
+### HF8 : Mots + lettres rapproche les erreurs dans l'arbre  (version 2, 2026-11-09 13:22:39 ; **statut : confirmée**)
+
+Sur les 25 nouveaux plis, la distance moyenne dans l'arbre de ENS est inférieure à celle de V0 d'au moins 0,01 (Wilcoxon apparié, p < 0,05).
+
+*Justification.* Verdict établi avec la règle de décision préinscrite (voir la version précédente).
+
+*Preuve.* Distance moyenne dans l'arbre : ENS 0,781 contre V0 0,808, gain +0,028, IC95 [0,013 ; 0,044], p unilatéral 0,0019, 20 plis sur 25 en faveur.  Fichiers : artifacts/results/v3/I1b_all_units.csv ; I1b_tests.csv
+
+*Note.*  Limite : mêmes gabarits que le développement d'I1, répartis autrement ; la confirmation sur de nouveaux gabarits revient au test v2.
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-09 13:17:00) : statut préinscrite ; Sur les 25 nouveaux plis, la distance moyenne dans l'arbre de ENS est inférieure à celle de V0 d'au moins 0,01 (Wilcoxon apparié, p < 0,05).
+
+### HF9 : Mots + lettres ne dégrade pas le macro-F1 des classes  (version 2, 2026-11-09 13:22:39 ; **statut : non tranchée**)
+
+Sur les 25 nouveaux plis, l'écart de macro-F1 (palier A) ENS − V0 est supérieur à −0,01 : l'IC95 bootstrap de l'écart est entièrement au-dessus de −0,01 (équivalence unilatérale).
+
+*Justification.* Verdict établi avec la règle de décision préinscrite (voir la version précédente).
+
+*Preuve.* Écart de macro-F1 des classes ENS − V0 : −0,0011, IC95 [−0,0109 ; 0,0091] ; la borne basse dépasse de 0,0009 le seuil −0,01 : l'équivalence unilatérale n'est pas établie au sens strict de la règle ; 12 plis sur 25 en faveur d'ENS.  Fichiers : artifacts/results/v3/I1b_all_units.csv ; I1b_tests.csv
+
+*Note.* L'écart moyen est quasi nul (0,001) ; la règle d'équivalence exigeait un intervalle entièrement au-dessus de −0,01 et l'intervalle dépasse ce seuil de très peu. Pas de dégradation visible, mais pas de preuve d'absence de dégradation. Ni les données d'I1 (−0,001, IC [−0,012 ; 0,009]) ni celles d'I1b ne la permettent seules. Limite : mêmes gabarits que le développement d'I1, répartis autrement ; la confirmation sur de nouveaux gabarits revient au test v2.
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-09 13:17:00) : statut préinscrite ; Sur les 25 nouveaux plis, l'écart de macro-F1 (palier A) ENS − V0 est supérieur à −0,01 : l'IC95 bootstrap de l'écart est entièrement au-dessus de −0,01 (équivalence unilatérale).
+
+### HF10 : Les jetons typés ajoutés aux mots améliorent le macro-F1  (version 2, 2026-11-09 13:25:59 ; **statut : réfutée**)
+
+FT dépasse V0 d'au moins 0,02 en macro-F1 (palier A), Wilcoxon apparié sur 25 plis, Holm sur HF10 et HF12, p < 0,05. Réfutée si l'IC95 bootstrap de l'écart exclut +0,02.
+
+*Justification.* Verdict établi avec la règle de décision préinscrite (voir la version précédente).
+
+*Preuve.* Macro-F1 palier A, 25 plis : FT 0,489 contre V0 0,503, écart −0,014, IC95 [−0,027 ; −0,001] (exclut +0,02), p Holm 0,08 : pas de gain, tendance à la baisse.  Fichiers : artifacts/results/v3/I2_all_units.csv ; I2_resume.csv ; I2_tests.csv
+
+*Note.* Les jetons typés (programme, champs, types, forme) n'ajoutent pas d'information utile aux classes par rapport aux mots ; la structure est déjà contenue dans le texte.
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-09 13:18:20) : statut préinscrite ; FT dépasse V0 d'au moins 0,02 en macro-F1 (palier A), Wilcoxon apparié sur 25 plis, Holm sur HF10 et HF12, p < 0,05. Réfutée si l'IC95 bootstrap de l'écart exclut +0,02.
+
+### HF11 : La structure seule porte de l'information  (version 2, 2026-11-09 13:25:59 ; **statut : réfutée**)
+
+FTo (jetons typés sans aucun mot) atteint au moins 60 % du macro-F1 de V0 (0,30 si V0 = 0,503) et dépasse nettement le hasard (1/30 par classe) : IC95 bootstrap de la moyenne de FTo entièrement au-dessus de 0,30.
+
+*Justification.* Verdict établi avec la règle de décision préinscrite (voir la version précédente).
+
+*Preuve.* FTo (structure seule, sans mot) : macro-F1 0,265, IC95 [0,244 ; 0,285] : la borne haute reste sous le seuil 0,30 (60 % de V0).  Fichiers : artifacts/results/v3/I2_all_units.csv ; I2_resume.csv ; I2_tests.csv
+
+*Note.* Constat à retenir : la structure seule est loin du hasard (1/30 soit 0,03) et retrouve la moitié du score de V0 (53 %), mais ne suffit pas. Écart FTo − V0 : −0,238, 0 pli sur 25 en faveur de FTo.
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-09 13:18:20) : statut préinscrite ; FTo (jetons typés sans aucun mot) atteint au moins 60 % du macro-F1 de V0 (0,30 si V0 = 0,503) et dépasse nettement le hasard (1/30 par classe) : IC95 bootstrap de la moyenne de FTo entièrement au-des…
+
+### HF12 : Structure + mots + lettres dépasse V0  (version 2, 2026-11-09 13:25:59 ; **statut : réfutée**)
+
+FTE dépasse V0 d'au moins 0,02 en macro-F1 (palier A), même test et même Holm que HF10 ; et FTE dépasse FT de façon significative en macro-F1 de famille d'au moins 0,01 (Wilcoxon apparié).
+
+*Justification.* Verdict établi avec la règle de décision préinscrite (voir la version précédente).
+
+*Preuve.* FTE contre V0 : macro-F1 des classes −0,017, IC95 [−0,028 ; −0,005], p Holm 0,029 : FTE fait légèrement PIRE que V0, la première condition (+0,02) échoue. Second volet : famille FTE − FT +0,008, IC95 [−0,002 ; 0,017], p = 0,16 : sous le seuil 0,01.  Fichiers : artifacts/results/v3/I2_all_units.csv ; I2_resume.csv ; I2_tests.csv
+
+*Note.* Constat exploratoire (non préinscrit) : FT améliore le F1 de famille de +0,021 contre V0 (IC95 [0,006 ; 0,037], p = 0,026), moins qu'ENS (+0,029) ; les jetons typés n'ajoutent donc pas à ce que les lettres apportent déjà.
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-09 13:18:20) : statut préinscrite ; FTE dépasse V0 d'au moins 0,02 en macro-F1 (palier A), même test et même Holm que HF10 ; et FTE dépasse FT de façon significative en macro-F1 de famille d'au moins 0,01 (Wilcoxon apparié).
+
+### HI1 : La confiance de famille bat le MSP  (version 2, 2026-11-09 14:02:51 ; **statut : confirmée**)
+
+AUROC d'inconnu de fam_msp supérieur à celui du msp d'au moins 0,02 (Wilcoxon apparié unilatéral sur 25 unités (rotation, répétition), Holm sur trois comparaisons : fam_msp contre msp, contre energy, contre hier_msp, p < 0,05). Réfutée si l'IC95 bootstrap de l'écart avec le msp exclut +0,02.
+
+*Justification.* Verdict établi avec la règle de décision préinscrite (voir la version précédente).
+
+*Preuve.* AUROC d'inconnu moyen (25 unités) : fam_msp 0,693 ; msp 0,665 ; energy 0,670 ; hier_msp 0,664. Gains de fam_msp : +0,028 contre msp (IC95 [0,008 ; 0,048], p Holm 0,007, 16 unités sur 25), +0,023 contre energy (IC95 [0,002 ; 0,043], p Holm 0,020), +0,029 contre hier_msp (IC95 [0,013 ; 0,045], p Holm 0,002).  Fichiers : artifacts/results/v3/I4_all_units.csv ; I4_resume.csv ; I4_HI1.csv ; I4_HI2.csv ; I4_HI3.csv ; artifacts/data/rotations_v2_I4.json
+
+*Note.* Confirmée au sens de la règle écrite (gain moyen ≥ 0,02 et p Holm < 0,05), mais avec réserve : la borne basse de chaque IC95 est sous 0,02 (0,008 contre msp), l'effet est donc positif de façon fiable mais sa taille (0,02 à 0,03) n'est pas établie précisément. Il reproduit l'ordre du bloc C (famille 0,666 contre MSP 0,623) avec un gain plus petit (0,028 contre 0,043). Limite : mêmes gabarits que le développement, nouvelles rotations et nouveaux plis ; nouveaux gabarits = test v2. Une unité (rotation 1, répétition 5, pli 0) avait été calculée au test de fumée ; le verdict repose sur les 25 unités (rotation, répétition) complètes.
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-09 14:00:38) : statut préinscrite ; AUROC d'inconnu de fam_msp supérieur à celui du msp d'au moins 0,02 (Wilcoxon apparié unilatéral sur 25 unités (rotation, répétition), Holm sur trois comparaisons : fam_msp contre msp, contre energy, …
+
+### HI2 : L'avantage de famille tient dans au moins 4 rotations sur 5  (version 2, 2026-11-09 14:02:51 ; **statut : réfutée**)
+
+L'AUROC moyen de fam_msp dépasse celui du msp dans au moins 4 des 5 nouvelles rotations.
+
+*Justification.* Verdict établi avec la règle de décision préinscrite (voir la version précédente).
+
+*Preuve.* Rotations où fam_msp dépasse msp : 3 sur 5 (rotation 1 : 0,658 contre 0,580 ; rotation 3 : 0,740 contre 0,685 ; rotation 4 : 0,666 contre 0,598) ; rotations 2 (0,712 contre 0,737) et 5 (0,689 contre 0,726) en défaveur ; règle : au moins 4 sur 5.  Fichiers : artifacts/results/v3/I4_all_units.csv ; I4_resume.csv ; I4_HI1.csv ; I4_HI2.csv ; I4_HI3.csv ; artifacts/data/rotations_v2_I4.json
+
+*Note.* L'avantage moyen vient de trois rotations ; il n'est pas général. Cohérent avec HC8 (forte variabilité entre rotations : AUROC du msp de 0,58 à 0,74 selon la rotation). Limite : mêmes gabarits que le développement, nouvelles rotations et nouveaux plis ; nouveaux gabarits = test v2. Une unité (rotation 1, répétition 5, pli 0) avait été calculée au test de fumée ; le verdict repose sur les 25 unités (rotation, répétition) complètes.
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-09 14:00:38) : statut préinscrite ; L'AUROC moyen de fam_msp dépasse celui du msp dans au moins 4 des 5 nouvelles rotations.
+
+### HI3 : Moins d'inconnus acceptés  (version 2, 2026-11-09 14:02:51 ; **statut : réfutée**)
+
+FPR@95 moyen de fam_msp inférieur à celui du msp d'au moins 0,03 (Wilcoxon apparié, p < 0,05).
+
+*Justification.* Verdict établi avec la règle de décision préinscrite (voir la version précédente).
+
+*Preuve.* FPR@95 moyen : msp 0,851 ; fam_msp 0,859 : baisse −0,008 (IC95 [−0,045 ; 0,024], p = 0,85) ; la règle exigeait −0,03.  Fichiers : artifacts/results/v3/I4_all_units.csv ; I4_resume.csv ; I4_HI1.csv ; I4_HI2.csv ; I4_HI3.csv ; artifacts/data/rotations_v2_I4.json
+
+*Note.* Le gain d'AUROC ne se traduit pas à l'usage : à 95 % de connus conservés, 85 % des inconnus sont acceptés avec tous les scores. Limite : mêmes gabarits que le développement, nouvelles rotations et nouveaux plis ; nouveaux gabarits = test v2. Une unité (rotation 1, répétition 5, pli 0) avait été calculée au test de fumée ; le verdict repose sur les 25 unités (rotation, répétition) complètes.
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-09 14:00:38) : statut préinscrite ; FPR@95 moyen de fam_msp inférieur à celui du msp d'au moins 0,03 (Wilcoxon apparié, p < 0,05).
+
+### HI4 : Le niveau absolu reste insuffisant  (version 2, 2026-11-09 14:02:51 ; **statut : confirmée**)
+
+AUROC moyen de fam_msp inférieur à 0,80 (valeur « acceptable » du critère S2) : IC95 bootstrap de la moyenne entièrement sous 0,80.
+
+*Justification.* Verdict établi avec la règle de décision préinscrite (voir la version précédente).
+
+*Preuve.* AUROC moyen de fam_msp : 0,693, IC95 [0,680 ; 0,706], entièrement sous 0,80.  Fichiers : artifacts/results/v3/I4_all_units.csv ; I4_resume.csv ; I4_HI1.csv ; I4_HI2.csv ; I4_HI3.csv ; artifacts/data/rotations_v2_I4.json
+
+*Note.* Le détecteur d'inconnus reste insuffisant au sens du critère S2, y compris le meilleur. Limite : mêmes gabarits que le développement, nouvelles rotations et nouveaux plis ; nouveaux gabarits = test v2. Une unité (rotation 1, répétition 5, pli 0) avait été calculée au test de fumée ; le verdict repose sur les 25 unités (rotation, répétition) complètes.
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-09 14:00:38) : statut préinscrite ; AUROC moyen de fam_msp inférieur à 0,80 (valeur « acceptable » du critère S2) : IC95 bootstrap de la moyenne entièrement sous 0,80.
+
+### HF13 : Le réglage améliore le macro-F1 des classes sur de nouveaux plis  (version 2, 2026-11-09 19:14:25 ; **statut : non tranchée**)
+
+La configuration retenue sur les répétitions 0 à 4 dépasse V0 d'au moins 0,02 en macro-F1 (palier A) sur les 25 plis des répétitions 5 à 9 (Wilcoxon apparié unilatéral, p < 0,05). Réfutée si l'IC95 bootstrap de l'écart exclut +0,02 ; sinon non tranchée.
+
+*Justification.* Verdict établi avec la règle de décision préinscrite (voir la version précédente).
+
+*Preuve.* Non testée : la porte HF14 est restée fermée, la confirmation I5b sur les répétitions 5 à 9 n'a pas été lancée (règle D21).  Fichiers : artifacts/results/v3/I5a_resume.csv ; I5_selected.json
+
+*Note.* À ne pas lire comme réfutée ni confirmée : aucune donnée de confirmation n'a été consommée.
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-09 17:55:59) : statut préinscrite ; La configuration retenue sur les répétitions 0 à 4 dépasse V0 d'au moins 0,02 en macro-F1 (palier A) sur les 25 plis des répétitions 5 à 9 (Wilcoxon apparié unilatéral, p < 0,05). Réfutée si l'IC95 bo…
+
+### HF14 : Une configuration vaut le coup d'être confirmée  (version 2, 2026-11-09 19:14:25 ; **statut : réfutée**)
+
+Sur les répétitions 0 à 4, la meilleure configuration dépasse V0 d'au moins 0,02 en macro-F1 des classes (porte : en dessous, la confirmation n'est pas lancée ; le meilleur d'une grille est biaisé vers le haut, donc ce gain n'est pas un résultat).
+
+*Justification.* Verdict établi avec la règle de décision préinscrite (voir la version précédente).
+
+*Preuve.* Répétitions 0 à 4 (25 plis) : la meilleure des 3 × 3 × 2 × 3 + références configurations (somme_mC3_l46C1_w0.5 : mots C = 3 + lettres 4-6 C = 1 poids 0,5) a un macro-F1 de 0,5106 contre 0,5032 pour V0 : gain +0,0074, sous le seuil de 0,02 ; 17 plis sur 25 en faveur. Ce gain est le MAXIMUM d'une grille de plus de 70 configurations, donc biaisé vers le haut.  Fichiers : artifacts/results/v3/I5a_resume.csv ; I5_selected.json
+
+*Note.* Aucune configuration ne justifie la confirmation. Les réglages par défaut (C = 1, n-grammes 3-5, poids 1 : 0,5022) sont à moins de 0,01 du meilleur : le plafond de 0,50 n'est pas un problème de réglage.
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-09 17:55:59) : statut préinscrite ; Sur les répétitions 0 à 4, la meilleure configuration dépasse V0 d'au moins 0,02 en macro-F1 des classes (porte : en dessous, la confirmation n'est pas lancée ; le meilleur d'une grille est biaisé ver…
+
+### HT1b : Le Transformer n'améliore pas la classification de plus de 0,02 (réplication)  (version 2, 2026-11-10 00:00:10 ; **statut : confirmée**)
+
+Sur les 20 couples (découpe, rotation), macro-F1 des classes (palier A) du Transformer moins celui de TF-IDF (mêmes logs) : confirmée si la borne HAUTE de l'IC95 bootstrap de l'écart moyen est ≤ 0,02 ; réfutée si la borne BASSE est > 0,02 ; sinon non tranchée (et conservée telle quelle).
+
+*Justification.* Verdict établi avec la règle de décision préinscrite (D22).
+
+*Preuve.* Macro-F1 des classes, Transformer moins TF-IDF (mêmes logs) : −0,0545, IC95 [−0,086 ; −0,020] (borne haute ≤ 0,02) ; Wilcoxon p = 0,9997 ; signes 2 en faveur / 18 contre (p = 0,0004) ; permutation p = 0,9998. Moyennes : Transformer 0,469 ; TF-IDF 0,523.  Fichiers : artifacts/results/v3/T2_all_units.csv ; T2_tests.csv
+
+*Note.* Sur ces découpes le Transformer est MEILLEUR de rien : il est moins bon que TF-IDF de 0,05. Cela contredit le +0,02 de la grille T (une seule découpe, répétition 0 pli 0) : l'écart dépend beaucoup de la découpe, et la grille T était sur une découpe favorable au Transformer. Estimation exploratoire sur les 50 couples (grille T + T2) : −0,0095, IC95 [−0,030 ; 0,010]. Plan T2 : 4 nouvelles découpes (répétitions 1 à 4, plis 1 à 4) × 5 rotations, p = 0, graine 42, 140 logs d'entraînement par classe ; 20 couples (découpe, rotation).
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-09 21:31:12) : statut préinscrite ; Sur les 20 couples (découpe, rotation), macro-F1 des classes (palier A) du Transformer moins celui de TF-IDF (mêmes logs) : confirmée si la borne HAUTE de l'IC95 bootstrap de l'écart moyen est ≤ 0,02 …
+
+### HT2b : Mahalanobis dépasse le MSP d'au moins 0,03 sur les vecteurs du Transformer (réplication)  (version 2, 2026-11-10 00:00:10 ; **statut : non tranchée**)
+
+Sur les 20 couples, AUROC d'inconnu de Mahalanobis (commune, vecteurs de 768 valeurs) moins AUROC du MSP du même Transformer : confirmée si la borne BASSE de l'IC95 bootstrap est ≥ 0,03 ; réfutée si la borne HAUTE est < 0,03 ; sinon non tranchée.
+
+*Justification.* Verdict établi avec la règle de décision préinscrite (D22).
+
+*Preuve.* AUROC d'inconnu de Mahalanobis moins MSP (Transformer) : +0,0429, IC95 [0,011 ; 0,074] (contient 0,03) ; Wilcoxon unilatéral p = 0,165 ; signes 13/7 ; permutation p = 0,22.  Fichiers : artifacts/results/v3/T2_all_units.csv ; T2_tests.csv
+
+*Note.* Les deux séries donnent +0,0325 (grille T) et +0,0429 (T2), toutes deux compatibles avec 0,03 ; estimation exploratoire sur les 50 couples : +0,0367, IC95 [0,022 ; 0,052], p Wilcoxon 0,18. En pratique : Mahalanobis gagne entre +0,02 et +0,05 sur le MSP du Transformer, sans qu'on puisse dire s'il atteint exactement 0,03 ; la règle (sinon non tranchée, on arrête) est appliquée, la question du seuil exact est sans intérêt pratique (AUROC de 0,60 contre 0,65). Plan T2 : 4 nouvelles découpes (répétitions 1 à 4, plis 1 à 4) × 5 rotations, p = 0, graine 42, 140 logs d'entraînement par classe ; 20 couples (découpe, rotation).
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-09 21:31:12) : statut préinscrite ; Sur les 20 couples, AUROC d'inconnu de Mahalanobis (commune, vecteurs de 768 valeurs) moins AUROC du MSP du même Transformer : confirmée si la borne BASSE de l'IC95 bootstrap est ≥ 0,03 ; réfutée si l…
+
+### HF15 : La fusion Transformer + TF-IDF améliore la classification  (version 2, 2026-11-10 00:00:10 ; **statut : réfutée**)
+
+Sur les 20 couples, le macro-F1 (palier A) de la fusion dépasse celui du meilleur de ses deux composants d'au moins 0,01 (Wilcoxon apparié unilatéral p < 0,05 contre CHACUN des deux composants, Holm sur 2 ; moyenne de l'écart ≥ 0,01). Réfutée si l'IC95 de l'écart avec le meilleur composant exclut +0,01.
+
+*Justification.* Verdict établi avec la règle de décision préinscrite (D22).
+
+*Preuve.* Macro-F1 des classes, fusion (moyenne des probabilités) : 0,508 ; Transformer 0,469 (fusion +0,040, IC95 [0,024 ; 0,055], p = 0,001) ; TF-IDF 0,523 (fusion −0,015, IC95 [−0,036 ; 0,009], signes 4/16) : la fusion ne dépasse pas le meilleur de ses composants (TF-IDF) ; la borne haute de l'IC95 de l'écart avec le meilleur composant (0,009) exclut +0,01.  Fichiers : artifacts/results/v3/T2_all_units.csv ; T2_tests.csv
+
+*Note.* La fusion n'améliore que le moins bon des deux : une moyenne de probabilités avec un Transformer plus faible tire TF-IDF vers le bas. Plan T2 : 4 nouvelles découpes (répétitions 1 à 4, plis 1 à 4) × 5 rotations, p = 0, graine 42, 140 logs d'entraînement par classe ; 20 couples (découpe, rotation).
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-09 21:31:12) : statut préinscrite ; Sur les 20 couples, le macro-F1 (palier A) de la fusion dépasse celui du meilleur de ses deux composants d'au moins 0,01 (Wilcoxon apparié unilatéral p < 0,05 contre CHACUN des deux composants, Holm s…
+
+### HF16 : La fusion améliore la confiance de famille pour détecter les inconnus  (version 2, 2026-11-10 00:00:10 ; **statut : non tranchée**)
+
+AUROC d'inconnu de la confiance de famille de la fusion supérieur d'au moins 0,01 à celui du meilleur composant (famille Transformer, famille TF-IDF), même test et même Holm que HF15.
+
+*Justification.* Verdict établi avec la règle de décision préinscrite (D22).
+
+*Preuve.* AUROC de la confiance de famille : fusion 0,664 ; TF-IDF 0,656 ; Transformer 0,647. Fusion moins meilleur composant (TF-IDF) : +0,008, IC95 [−0,019 ; 0,037] (contient 0,01) ; moins Transformer : +0,018, IC95 [−0,010 ; 0,046] ; p unilatéraux 0,64 et 0,26.  Fichiers : artifacts/results/v3/T2_all_units.csv ; T2_tests.csv
+
+*Note.* Pas de gain établi : ni confirmée ni réfutée au sens de la règle ; aucun intérêt pratique visible (+0,008). Plan T2 : 4 nouvelles découpes (répétitions 1 à 4, plis 1 à 4) × 5 rotations, p = 0, graine 42, 140 logs d'entraînement par classe ; 20 couples (découpe, rotation).
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-09 21:31:12) : statut préinscrite ; AUROC d'inconnu de la confiance de famille de la fusion supérieur d'au moins 0,01 à celui du meilleur composant (famille Transformer, famille TF-IDF), même test et même Holm que HF15.
+
+### HF17 : Une nouvelle configuration vaut la peine d'être confirmée  (version 2, 2026-11-09 22:07:28 ; **statut : réfutée**)
+
+Sur les répétitions 0 à 4, la meilleure des 32 configurations dépasse V0 de 0,02 en macro-F1 des classes (porte : sinon pas de confirmation ; ce maximum est biaisé vers le haut).
+
+*Justification.* Verdict établi avec la règle de décision préinscrite (voir la version précédente).
+
+*Preuve.* Répétitions 0 à 4 (25 plis) : la meilleure des 32 configurations (W1_lr30 : lettres ≥ 2 min_df = 1 + régression logistique C = 30) a un macro-F1 de 0,5117 contre 0,5032 pour V0 : +0,0085, IC95 [−0,009 ; 0,027], Wilcoxon unilatéral p = 0,26, signes 13/12, permutation p = 0,19 : sous le seuil de 0,02 (porte fermée).  Fichiers : artifacts/results/v3/I6a_all_units.csv ; I6a_resume.csv ; I6a_friedman.csv ; I6_selected.json
+
+*Note.* Maximum de 32 configurations, donc optimiste : aucun test ne l'établit même ainsi. La confirmation I6b n'est pas lancée.
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-09 21:32:42) : statut préinscrite ; Sur les répétitions 0 à 4, la meilleure des 32 configurations dépasse V0 de 0,02 en macro-F1 des classes (porte : sinon pas de confirmation ; ce maximum est biaisé vers le haut).
+
+### HF18 : La configuration retenue améliore le macro-F1 des classes sur de nouveaux plis  (version 3, 2026-11-09 22:11:39 ; **statut : réfutée**)
+
+Sur les 25 plis des répétitions 5 à 9, la configuration retenue dépasse V0 d'au moins 0,02 : confirmée si la borne basse de l'IC95 bootstrap est ≥ 0,02 et si Wilcoxon, test des signes et test de permutation (unilatéraux) donnent tous p < 0,05 ; réfutée si la borne haute de l'IC95 est < 0,02 ; sinon non tranchée.
+
+*Justification.* Verdict établi avec la règle de décision préinscrite, après lancement de la confirmation I6b demandé par l'étudiant (D25) ; remplace l'entrée « non testée ».
+
+*Preuve.* 25 plis (répétitions 5 à 9) : W1_lr30 0,5105 contre V0 0,5132 : écart −0,0027, IC95 [−0,016 ; 0,011] (borne haute < 0,02), Wilcoxon p = 0,998, signes 5 en faveur / 20 contre (p bilatéral 0,004), permutation p = 0,999. Famille : F1 +0,0075 (IC95 [−0,015 ; 0,030]), distance dans l'arbre −0,008 (non significatifs).  Fichiers : artifacts/results/v3/I6b_all_units.csv ; I6b_tests.csv ; I6_selected.json
+
+*Note.* Confirmation lancée alors que la porte HF17 était fermée (+0,0085 en développement) : le résultat est conforme à ce que la porte laissait prévoir. La configuration choisie par maximum de grille ne tient pas sur de nouveaux plis (retour vers la moyenne) : elle est même moins bonne que V0 dans 20 plis sur 25.
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-09 21:32:42) : statut préinscrite ; Sur les 25 plis des répétitions 5 à 9, la configuration retenue dépasse V0 d'au moins 0,02 : confirmée si la borne basse de l'IC95 bootstrap est ≥ 0,02 et si Wilcoxon, test des signes et test de permu…
+- v2 (2026-11-09 22:07:28) : statut non tranchée ; Sur les 25 plis des répétitions 5 à 9, la configuration retenue dépasse V0 d'au moins 0,02 : confirmée si la borne basse de l'IC95 bootstrap est ≥ 0,02 et si Wilcoxon, test des signes et test de permu…
+
+### HF19 : Beaucoup de configurations sont indiscernables du meilleur  (version 2, 2026-11-09 22:07:28 ; **statut : confirmée**)
+
+Friedman sur les 32 configurations × 25 plis (répétitions 0 à 4) rejette l'égalité (p < 0,05), et au moins 5 configurations sont indiscernables du meilleur au sens de Nemenyi (différence critique).
+
+*Justification.* Verdict établi avec la règle de décision préinscrite (voir la version précédente).
+
+*Preuve.* Friedman sur 32 configurations × 25 plis : chi2 = 134,9, p = 6e-15 (l'égalité est rejetée) ; différence critique de Nemenyi 10,0 rangs ; 25 configurations sur 32 (dont le meilleur) sont indiscernables du meilleur, donc 24 autres.  Fichiers : artifacts/results/v3/I6a_all_units.csv ; I6a_resume.csv ; I6a_friedman.csv ; I6_selected.json
+
+*Note.* Les extrêmes sont bien différents (les configurations sensibles à la casse W5 et Ridge perdent jusqu'à 0,038), mais l'essentiel de la grille tient dans l'intervalle de bruit : le réglage ne compte pas, le plafond est dans les données. Défaut corrigé avant lecture : la version 1 de l'analyse (AI6) lisait les rangs à l'envers ; la version 2 les lit correctement (rang 1 = meilleur).
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-09 21:32:42) : statut préinscrite ; Friedman sur les 32 configurations × 25 plis (répétitions 0 à 4) rejette l'égalité (p < 0,05), et au moins 5 configurations sont indiscernables du meilleur au sens de Nemenyi (différence critique).
+
+### HI5 : Une combinaison dépasse nettement le MSP de référence en développement  (version 2, 2026-11-09 22:07:28 ; **statut : confirmée**)
+
+Sur l'ensemble B, la meilleure des 24 combinaisons dépasse le msp (C = 4) d'au moins 0,03 d'AUROC d'inconnu (porte : sinon pas de confirmation).
+
+*Justification.* Verdict établi avec la règle de décision préinscrite (voir la version précédente).
+
+*Preuve.* Ensemble B (rotations 20261110 × répétitions 0 à 4, 25 unités) : msp (C = 4) 0,6084 ; meilleure candidate C64_fam_negent (entropie de famille, C = 64) 0,6498 : +0,0414 (IC95 [0,032 ; 0,052], permutation p = 0,021 ; Wilcoxon p = 0,057 contre le seuil 0,03 ; 15/10 pour la candidate) ; Friedman p = 2e-46, 13 combinaisons indiscernables du meilleur.  Fichiers : artifacts/results/v3/I7a_all_units.csv ; I7a_resume.csv ; I7a_friedman.csv ; I7b_all_units.csv ; I7b_resume.csv ; I7b_tests.csv ; I7_selected.json ; artifacts/data/rotations_v2_I7a.json ; rotations_v2_I7b.json
+
+*Note.* Tous les scores de famille sont groupés à 0,645-0,650 : l'avantage vient du niveau famille, pas du choix précis du score ni de C.
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-09 21:35:36) : statut préinscrite ; Sur l'ensemble B, la meilleure des 24 combinaisons dépasse le msp (C = 4) d'au moins 0,03 d'AUROC d'inconnu (porte : sinon pas de confirmation).
+
+### HI6 : La combinaison retenue dépasse le MSP de référence sur de nouvelles rotations  (version 3, 2026-11-09 22:25:21 ; **statut : confirmée**)
+
+Sur l'ensemble C (125 unités, 25 unités (rotation, répétition)), la combinaison retenue dépasse le msp (C = 4) d'au moins 0,03 : confirmée si la borne basse de l'IC95 bootstrap est ≥ 0,03 et si Wilcoxon, signes et permutation (unilatéraux, écart > 0,03) donnent p < 0,05 ; réfutée si la borne haute est < 0,03 ; sinon non tranchée.
+
+*Justification.* Tranchée par la réplication préinscrite D25 (HI6b, 75 unités) ; l'entrée « non tranchée » précédente est conservée.
+
+*Preuve.* Voir HI6b.
+
+*Note.* Source : I7c.
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-09 21:35:36) : statut préinscrite ; Sur l'ensemble C (125 unités, 25 unités (rotation, répétition)), la combinaison retenue dépasse le msp (C = 4) d'au moins 0,03 : confirmée si la borne basse de l'IC95 bootstrap est ≥ 0,03 et si Wilcox…
+- v2 (2026-11-09 22:07:28) : statut non tranchée ; Sur l'ensemble C (125 unités, 25 unités (rotation, répétition)), la combinaison retenue dépasse le msp (C = 4) d'au moins 0,03 : confirmée si la borne basse de l'IC95 bootstrap est ≥ 0,03 et si Wilcox…
+
+### HI7 : La combinaison retenue réduit le FPR@95  (version 3, 2026-11-09 22:25:21 ; **statut : réfutée**)
+
+Sur l'ensemble C, le FPR@95 de la combinaison retenue est inférieur d'au moins 0,05 à celui du msp (C = 4) (mêmes critères que HI6).
+
+*Justification.* Tranchée par la réplication préinscrite D25 (HI7b, 75 unités) ; l'entrée « non tranchée » précédente est conservée.
+
+*Preuve.* Voir HI7b.
+
+*Note.* Source : I7c.
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-09 21:35:36) : statut préinscrite ; Sur l'ensemble C, le FPR@95 de la combinaison retenue est inférieur d'au moins 0,05 à celui du msp (C = 4) (mêmes critères que HI6).
+- v2 (2026-11-09 22:07:28) : statut non tranchée ; Sur l'ensemble C, le FPR@95 de la combinaison retenue est inférieur d'au moins 0,05 à celui du msp (C = 4) (mêmes critères que HI6).
+
+### HI6b : La combinaison retenue (C64_fam_negent) dépasse le MSP de référence d'au moins 0,03 d'AUROC (réplication)  (version 2, 2026-11-09 22:25:21 ; **statut : confirmée**)
+
+Sur les 75 unités (rotation, répétition) des ensembles D, E, F : confirmée si la borne basse de l'IC95 bootstrap de l'écart (C64_fam_negent − msp C = 4) est ≥ 0,03 et si Wilcoxon, signes et permutation (unilatéraux, écart > 0,03) donnent p < 0,05 ; réfutée si la borne haute de l'IC95 est < 0,03 ; sinon non tranchée (et on arrête : pas de réplication supplémentaire).
+
+*Justification.* Verdict établi avec la règle de décision préinscrite (D25).
+
+*Preuve.* 75 unités (jeux D, E, F × répétitions 10 à 14) : AUROC C64_fam_negent 0,6690 contre msp (C = 4) 0,6271 : +0,0419, IC95 [0,0324 ; 0,0512] (borne basse ≥ 0,03) ; Wilcoxon unilatéral (écart > 0,03) p = 0,0095 ; permutation p = 0,0087 ; test des signes unilatéral p = 0,032 (46 unités en faveur, 29 contre ; le fichier I7c_tests.csv rapporte le p bilatéral 0,064, la règle exige l'unilatéral). Par jeu : +0,040 ; +0,042 ; +0,044.  Fichiers : artifacts/results/v3/I7c_all_units.csv ; I7c_resume.csv ; I7c_tests.csv ; artifacts/data/rotations_v2_I7c.json
+
+*Note.* Résultat conforme à la sélection (+0,041) : l'effet de +0,04 est stable sur 3 jeux de rotations et 75 unités. Le test des signes est le plus fragile (p unilatéral 0,032) ; aucune des trois rotations de l'ensemble C de I7b n'avait donné ce résultat (+0,0175, 25 unités, intervalle trop large). Précision : tous les scores de famille donnent +0,035 à +0,043 ; ce n'est pas C64_fam_negent en particulier qui gagne.
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-09 22:09:48) : statut préinscrite ; Sur les 75 unités (rotation, répétition) des ensembles D, E, F : confirmée si la borne basse de l'IC95 bootstrap de l'écart (C64_fam_negent − msp C = 4) est ≥ 0,03 et si Wilcoxon, signes et permutatio…
+
+### HI7b : La combinaison retenue réduit le FPR@95 d'au moins 0,05 (réplication)  (version 2, 2026-11-09 22:25:21 ; **statut : réfutée**)
+
+Mêmes 75 unités : baisse du FPR@95 (msp C = 4 moins C64_fam_negent) ; mêmes critères que HI6b avec le seuil 0,05.
+
+*Justification.* Verdict établi avec la règle de décision préinscrite (D25).
+
+*Preuve.* Baisse du FPR@95 (msp C = 4 moins C64_fam_negent) : 0,0204, IC95 [0,0069 ; 0,0334] (borne haute < 0,05) ; Wilcoxon p = 1,0 ; signes 25 en faveur / 50 contre.  Fichiers : artifacts/results/v3/I7c_all_units.csv ; I7c_resume.csv ; I7c_tests.csv ; artifacts/data/rotations_v2_I7c.json
+
+*Note.* La confiance de famille améliore l'AUROC mais pas assez le FPR@95 : à 95 % de connus conservés, 85 % des inconnus restent acceptés (0,874 pour le msp, 0,854 pour la famille).
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-09 22:09:48) : statut préinscrite ; Mêmes 75 unités : baisse du FPR@95 (msp C = 4 moins C64_fam_negent) ; mêmes critères que HI6b avec le seuil 0,05.
+
+### HG1 : Les embeddings gelés apportent de la sémantique (E1/E2)  (version 1, 2026-11-10 00:03:47 ; **statut : préinscrite**)
+
+Au moins une des variantes E1, E2 dépasse V0 d'au moins 0,02 de macro-F1 (palier A) sur les 25 plis des répétitions 0 à 4 (Wilcoxon apparié unilatéral, Holm sur les 10 variantes de la ronde, p < 0,05).
+
+*Justification.* Un modèle de langue pré-entraîné rapproche « accessed » de « opened ».
+
+*Note.* Écrit le 2026-11-10 avant tout calcul de la ronde 3.
+
+### HG2 : Le prior de sens sur le nom de la classe aide (E3)  (version 1, 2026-11-10 00:03:47 ; **statut : préinscrite**)
+
+E3 dépasse V0 d'au moins 0,02 (mêmes critères que HG1).
+
+*Justification.* Le nom de la classe est une connaissance disponible sans exemple.
+
+*Note.* Écrit le 2026-11-10 avant tout calcul de la ronde 3.
+
+### HG3 : Le lexique de concepts aide (L1)  (version 1, 2026-11-10 00:03:47 ; **statut : préinscrite**)
+
+L1 dépasse V0 d'au moins 0,02 (mêmes critères).
+
+*Justification.* Regrouper les synonymes d'actions fait partager aux gabarits des jetons communs.
+
+*Note.* Écrit le 2026-11-10 avant tout calcul de la ronde 3.
+
+### HG4 : Les concepts seuls retrouvent une part du score (L2)  (version 1, 2026-11-10 00:03:47 ; **statut : préinscrite**)
+
+L2 atteint au moins 50 % du macro-F1 de V0 (≥ 0,25), IC95 bootstrap de la moyenne entièrement au-dessus de 0,25.
+
+*Justification.* Mesure de l'information portée par le lexique seul.
+
+*Note.* Écrit le 2026-11-10 avant tout calcul de la ronde 3.
+
+### HG5 : La suppression aléatoire de mots simule des gabarits nouveaux (A1, A2)  (version 1, 2026-11-10 00:03:47 ; **statut : préinscrite**)
+
+Au moins une des variantes A1, A2 dépasse V0 d'au moins 0,02 (mêmes critères).
+
+*Justification.* Forcer le modèle à reconnaître la classe avec une partie des mots seulement.
+
+*Note.* Écrit le 2026-11-10 avant tout calcul de la ronde 3.
+
+### HG6 : Pondérer les gabarits en plus de l'augmentation aide (A3 contre A2)  (version 1, 2026-11-10 00:03:47 ; **statut : préinscrite**)
+
+A3 dépasse A2 d'au moins 0,01 (Wilcoxon apparié unilatéral, p < 0,05, sans Holm).
+
+*Justification.* Un gabarit géant ne doit pas dominer.
+
+*Note.* Écrit le 2026-11-10 avant tout calcul de la ronde 3.
+
+### HG7 : Le discriminant au niveau du gabarit bat les classifieurs au niveau des logs (S1)  (version 1, 2026-11-10 00:03:47 ; **statut : préinscrite**)
+
+S1 dépasse V0 d'au moins 0,02 (mêmes critères que HG1).
+
+*Justification.* La variabilité qui compte est entre gabarits, pas entre logs.
+
+*Note.* Écrit le 2026-11-10 avant tout calcul de la ronde 3.
+
+### HG8 : Combiner S1 et V0 dépasse chacun (S2)  (version 1, 2026-11-10 00:03:47 ; **statut : préinscrite**)
+
+S2 dépasse V0 et S1 d'au moins 0,01 chacun (Wilcoxon apparié unilatéral p < 0,05).
+
+*Justification.* Deux géométries différentes.
+
+*Note.* Écrit le 2026-11-10 avant tout calcul de la ronde 3.
+
+### HG9 : Une variante de la ronde passe la porte de confirmation  (version 1, 2026-11-10 00:03:47 ; **statut : préinscrite**)
+
+Au moins une des 10 variantes dépasse V0 de 0,02 avec Holm p < 0,05 sur les répétitions 0 à 4 (condition pour lancer la confirmation sur 5 à 9).
+
+*Justification.* Évite de confirmer sans signal ; si fausse, la ronde 3 est close sans gain.
+
+*Note.* Écrit le 2026-11-10 avant tout calcul de la ronde 3.
+
+### HG10 : Les classes à très peu de gabarits sont celles qui changent  (version 1, 2026-11-10 00:03:47 ; **statut : préinscrite**)
+
+Parmi les variantes de la ronde, la différence de F1 par classe (variante moins V0) est plus grande pour les classes à ≤ 3 gabarits dans le développement que pour les autres (Mann-Whitney sur les classes, p < 0,05), pour la meilleure variante.
+
+*Justification.* Vérifie que le mécanisme est celui de DG2.
+
+*Note.* Écrit le 2026-11-10 avant tout calcul de la ronde 3.
 
 ## Résultats
 
@@ -905,3 +1429,83 @@ Diagnostic sur 15 unités (3 par rotation). (1) Le code est correct : la formule
 *Justification.* La série v3 reprend les trois attaques sur cinq degrés avec tests appariés ; elle précise et n'infirme pas la série v1 (mêmes sens de variation). Elle ajoute la table officielle et le rejet à tort.
 
 *Preuve.* artifacts/results/v3/D_all_units.csv ; D_resume.csv ; D_HD1.csv ; D_HD2.csv ; D_HD4.csv ; D_HD7.csv
+
+### RI1 : Phase 2, itération I1 : représentation par support de gabarit (série actuelle ; baseline v3 conservée)  (version 1, 2026-11-09 13:14:27)
+
+Macro-F1 palier A (25 plis, P2) : V0 0,503 ; ENS 0,502 ; WGT 0,499 ; C2 0,496 ; T2 0,496 ; C3 0,493 ; T3 0,472 ; T3M 0,470 ; C1 0,469 ; T5 0,418. Aucune amélioration ; restreindre le vocabulaire dégrade. F1 de famille : ENS 0,719 (V0 0,692).
+
+*Justification.* Résultat négatif informatif : il réfute l'explication « les valeurs propres à un gabarit causent le plafond » et fait avancer vers les pistes suivantes. Conservé comme les autres.
+
+*Preuve.* artifacts/results/v3/I1_all_units.csv ; I1_resume.csv ; I1_tests_pairs.csv
+
+### RI1b : Confirmation I1b : mots + lettres (ENS) contre mots seuls (V0)  (version 1, 2026-11-09 13:22:39)
+
+Constat exploratoire d'I1 (25 plis) : famille +0,028, distance −0,025, classes −0,001. Confirmation (25 nouveaux plis) : famille +0,029 (IC95 [0,015 ; 0,048]), distance −0,028, classes −0,001 (IC95 [−0,011 ; 0,009]). Les deux séries sont conservées.
+
+*Justification.* L'effet exploratoire se reproduit presque à l'identique sur de nouveaux découpages : il est réel au sens du hasard du découpage. Il porte sur la FAMILLE (confusions moins graves), pas sur les classes.
+
+*Preuve.* artifacts/results/v3/I1b_all_units.csv ; I1b_tests.csv
+
+### RI2 : Phase 2, itération I2 : champs typés (série actuelle ; I1 et I1b conservées)  (version 1, 2026-11-09 13:25:59)
+
+Macro-F1 palier A (25 plis) : V0 0,503 ; FT 0,489 ; FTE 0,487 ; FTo 0,265. F1 de famille : FTE 0,720 ; FT 0,712 ; V0 0,692 ; FTo 0,516. Aucun gain pour les classes ; la structure seule retient environ la moitié du score.
+
+*Justification.* Deuxième résultat négatif sur les classes : ni le vocabulaire (I1) ni la structure typée (I2) ne lèvent le plafond de 0,50 ; seule la composante lettres (ENS) améliore, et uniquement la famille (I1b).
+
+*Preuve.* artifacts/results/v3/I2_all_units.csv ; I2_resume.csv ; I2_tests.csv
+
+### RI4 : Itération I4 : rejet par confiance de famille sur nouvelles rotations (bloc C conservé)  (version 1, 2026-11-09 14:02:51)
+
+Nouvelles rotations × nouveaux plis (25 unités) : AUROC fam_msp 0,693 ; maxlogit 0,671 ; energy 0,670 ; msp 0,665 ; hier_msp 0,664. FPR@95 : 0,85 à 0,87 pour tous. Bloc C (v1 rotations, 125 unités) : fam_msp 0,666 ; énergie 0,639 ; msp 0,623. Les deux séries sont conservées.
+
+*Justification.* La confiance de famille reste le meilleur score dans les deux séries (+0,03 à +0,04 d'AUROC sur le MSP), mais l'avantage est inégal selon les rotations (3 sur 5) et n'améliore pas le FPR@95 : c'est une amélioration modeste, pas une solution. HD7 ajoute qu'elle est plus fragile sous attaque.
+
+*Preuve.* artifacts/results/v3/I4_all_units.csv ; I4_resume.csv ; I4_HI1.csv ; I4_HI2.csv ; I4_HI3.csv ; artifacts/data/rotations_v2_I4.json
+
+### RI5 : Itération I5 : réglage des modèles linéaires mots + lettres  (version 1, 2026-11-09 19:14:25)
+
+Meilleure configuration sur 25 plis (répétitions 0 à 4) : 0,5106 contre V0 0,5032 (+0,007) et contre la somme par défaut 0,5022 ; F1 de famille jusqu'à 0,722. Confirmation non lancée (porte fermée).
+
+*Justification.* Troisième itération consécutive sans gain de macro-F1 des classes (I1, I2, I5) : les modèles linéaires sur TF-IDF mots et lettres sont au plafond d'environ 0,50-0,51 ; critère d'arrêt D20 atteint POUR CETTE FAMILLE de modèles. Reste à essayer ce qui change la nature de l'information : le Transformer (I3).
+
+*Preuve.* artifacts/results/v3/I5a_resume.csv ; I5_selected.json
+
+### RT1 : Bloc T : grille complète du Transformer, 90 modèles (précédent v1 conservé)  (version 1, 2026-11-09 21:14:59)
+
+Macro-F1 des classes connues (même logs, 140 par classe) : Transformer 0,424 à 0,368 selon le bruit (p = 0 à 0,5), TF-IDF 0,393 à 0,362. Détection d'inconnus du Transformer (AUROC moyen sur 90) : MSP 0,560 ; énergie 0,572 ; Mahalanobis 0,593 ; kNN 0,596 ; confiance de famille 0,630 ; FPR@95 de 0,91 à 0,93 pour tous. TF-IDF sur les mêmes logs : MSP 0,602 ; énergie 0,623 ; famille 0,643, FPR@95 0,81 à 0,86.
+
+*Justification.* Constat clé : à petit volume d'entraînement, le Transformer apporte environ +0,02 de macro-F1 mais détecte MOINS bien les inconnus que TF-IDF (AUROC 0,56 contre 0,60 pour le MSP, FPR@95 0,92 contre 0,82) ; la confiance de famille est le meilleur score pour les deux. Pas de gain décisif à attendre d'une fusion avec le Transformer : I3 est donc de faible priorité. (Comparaison Transformer/TF-IDF d'AUROC non préinscrite : exploratoire.)
+
+*Preuve.* artifacts/results/v3/T_all_units.csv ; T_tests.csv
+
+### RI6 : Itération I6 : nouveaux hyperparamètres de représentation, structure et modèle (32 configurations)  (version 1, 2026-11-09 22:07:28)
+
+Macro-F1 des classes (25 plis, répétitions 0 à 4) : V0 0,5032 ; meilleure configuration W1_lr30 0,5117 (+0,0085) ; W2_svm0,1 0,5080 ; W4_lr30 0,5071 ; pire W5_ridge1 0,4651. Structure légère W6 : 0,470 à 0,495 (pas de gain). 25 configurations sur 32 indiscernables du meilleur.
+
+*Justification.* Deuxième tentative des leviers d'I1, I2 et I5 avec de nouvelles valeurs : même conclusion, plafond d'environ 0,50 à 0,51 pour les modèles linéaires.
+
+*Preuve.* artifacts/results/v3/I6a_all_units.csv ; I6a_resume.csv ; I6a_friedman.csv ; I6_selected.json
+
+### RI7 : Itération I7 : rejet d'inconnus, 24 combinaisons sur deux jeux de nouvelles rotations (I4 conservée)  (version 1, 2026-11-09 22:07:28)
+
+Sélection (rotations B) : msp (C = 4) 0,608 ; scores de famille 0,645-0,650 (meilleur C64_fam_negent 0,6498) ; énergie 0,614-0,623 ; fam_x_msp 0,626-0,630. Confirmation (rotations C) : msp 0,632 ; scores de famille jusqu'à 0,659 ; C64_fam_negent 0,650. FPR@95 : 0,84-0,88 pour tous. I4 (rotations v2 I4) : fam_msp 0,693 contre msp 0,665.
+
+*Justification.* Quatrième série de données (blocs C, I4, I7a, I7b, plus HT3) où la confiance de famille est le meilleur détecteur, avec un avantage de +0,02 à +0,04 d'AUROC ; l'avantage reste modeste (AUROC absolu 0,65-0,69, FPR@95 voisin de 0,85) : insuffisant au critère S2 (0,80).
+
+*Preuve.* artifacts/results/v3/I7a_all_units.csv ; I7a_resume.csv ; I7a_friedman.csv ; I7b_all_units.csv ; I7b_resume.csv ; I7b_tests.csv ; I7_selected.json ; artifacts/data/rotations_v2_I7a.json ; rotations_v2_I7b.json
+
+### RI7c : Réplication I7c : rejet d'inconnus sur 75 unités de nouvelles rotations (I4, I7a, I7b conservées)  (version 1, 2026-11-09 22:25:21)
+
+75 unités (3 jeux de 5 rotations × 5 répétitions) : AUROC msp (C = 4) 0,627 ; scores de famille 0,666 à 0,670 (C16_fam_msp 0,670 ; C64_fam_negent 0,669) ; FPR@95 : msp 0,874 ; famille 0,854 à 0,869. Gain d'AUROC de la famille : +0,04 (stable par jeu : +0,040 ; +0,042 ; +0,044) ; baisse du FPR@95 : 0,02.
+
+*Justification.* Résultat final sur le rejet d'inconnus : la confiance de famille est un gain réel et stable d'environ +0,04 d'AUROC sur le MSP (confirmé sur 75 unités de rotations jamais vues), mais le FPR@95 reste voisin de 0,85 et l'AUROC absolu (0,67) est loin du critère S2 (0,80).
+
+*Preuve.* artifacts/results/v3/I7c_all_units.csv ; I7c_resume.csv ; I7c_tests.csv ; artifacts/data/rotations_v2_I7c.json
+
+### RT2 : Réplication Transformer T2 et fusion I3 (grille T conservée)  (version 1, 2026-11-10 00:00:10)
+
+20 couples : macro-F1 des classes : TF-IDF 0,523 ; fusion 0,508 ; Transformer 0,469. AUROC d'inconnu : famille fusion 0,664 ; famille TF-IDF 0,656 ; famille Transformer 0,647 ; Mahalanobis Transformer 0,647 ; MSP TF-IDF 0,629 ; MSP fusion 0,627 ; MSP Transformer 0,604. Grille T (une découpe) : Transformer 0,42 à 0,37 contre TF-IDF 0,39 à 0,36.
+
+*Justification.* Conclusion sur le Transformer : avec 140 logs par classe, il ne bat pas TF-IDF (l'avantage de la grille T venait d'une découpe favorable) et la fusion n'améliore pas la classification ni le rejet : pas de gain à attendre ; I3 est close sans gain. Le pipeline reste TF-IDF (mots + lettres pour la famille) avec rejet par confiance de famille.
+
+*Preuve.* artifacts/results/v3/T2_all_units.csv ; T2_tests.csv
