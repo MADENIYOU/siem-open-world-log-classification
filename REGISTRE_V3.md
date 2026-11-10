@@ -282,6 +282,14 @@ Demande de l'étudiant (2026-11-10) : le test v2 est intouchable, même pour un 
 
 *Note.* Écrit le 2026-11-10 ; validé par l'étudiant (« vas y je valide »).
 
+### D28 : Vague 1 : décodage à masses équilibrées (F8), racines (F14), IDF de gabarit et pureté (F6), hiérarchie à vues séparées (F9), format (F18)  (version 1, 2026-11-10 13:19:51)
+
+Procédure D20 : sélection sur les répétitions 0 à 4 (25 plis), confirmation sur 5 à 9 de la ou des variantes passant la porte. Variantes (30 classes, SIEVE_00, développement seul, 400 logs par gabarit ; mesure principale macro-F1 du palier A ; mesures secondaires macro-F1 des 30 classes et macro-F1 des classes à ≤ 3 gabarits de développement) : RÉFÉRENCES : V0 = SVM linéaire C = 1 sur TF-IDF mots (lettres ≥ 2, min_df = 2) ; LR = régression logistique C = 10 sur les mêmes caractéristiques. A (F8, référence LR) : A1 = Sinkhorn amorti (exposant 0,5, 10 itérations, masses cibles uniformes) sur les probabilités de LR ; A2 = ajustement du prior par EM (Saerens et al. 2002) sur le lot de test sans étiquette. B (F14, référence V0) : mots tronqués à k = 5, 6, 7 lettres. C (F6, référence V0) : IDF calculé sur les gabarits, avec poids de pureté de classe rétrécie (α = 2) : C0 (λ = 0 : IDF de gabarit seul), C1 (λ = 1), C2 (λ = 2). D (F9, référence V0) : marges du SVM mots + β · log p_lettres(famille de la classe) avec β = 0,5 ; 1 ; 2, la famille étant prédite par une LR sur TF-IDF caractères 3-5. E (F18, référence V0) : E1 = retrait des jetons de format (mois, jours, am/pm, pid, utc, nom du programme émetteur) ; E2 = poids de décorrélation format × classe au niveau gabarit w(f,c) = P(f)P(c)/P(f,c), borné à [0,2 ; 5], le format étant (programme + forme des 6 premiers jetons), SVM pondéré. Total 14 variantes ; porte : au moins une variante dépasse sa référence d'au moins 0,02 en macro-F1 du palier A avec Holm p < 0,05 (Wilcoxon apparié unilatéral, Holm sur les 14) ; le test v2 reste scellé (D27) et rien de cette vague ne le lit.
+
+*Justification.* Demande de l'étudiant : aller plus loin, formules maison. DG2 et DG4 indiquent que la confusion vient de mots partagés entre classes et de classes attractrices (déséquilibre de gabarits), et que le vocabulaire seul ne peut identifier un gabarit de classe rare ; F8, F6 et F9 ciblent ces causes, F14 et F18 testent deux sources de variation de forme.
+
+*Note.* Écrit le 2026-11-10 avant tout calcul de la vague 1.
+
 ## Hypothèses (préinscrites, puis confirmées ou réfutées)
 
 ### HA1 : Le découpage au hasard gonfle le score  (version 4, 2026-11-07 22:29:59 ; **statut : confirmée**)
@@ -1353,6 +1361,110 @@ Parmi les variantes de la ronde, la différence de F1 par classe (variante moins
 
 *Note.* Écrit le 2026-11-10 avant tout calcul de la ronde 3.
 
+### HW1 : Équilibrer les masses prédites aide (F8)  (version 2, 2026-11-10 13:26:20 ; **statut : confirmée**)
+
+A1 ou A2 dépasse la référence LR d'au moins 0,02 de macro-F1 du palier A (Wilcoxon apparié unilatéral, Holm sur les 14 variantes, p < 0,05).
+
+*Justification.* Verdict établi avec la règle de décision préinscrite (D28).
+
+*Preuve.* Sélection (25 plis, répétitions 0-4) : A1 (Sinkhorn amorti sur les probabilités de la régression logistique) macro-F1 palier A 0,5752 contre LR 0,4947 : +0,0805, IC95 [0,061 ; 0,102], Wilcoxon p < 1e-4, Holm < 1e-4, 24 plis sur 25 en faveur ; A2 (EM de prior) 0,4380 : −0,0567. Confirmation (25 nouveaux plis, répétitions 5-9) : A1 0,5544 contre LR 0,4976 : +0,0568, IC95 [0,038 ; 0,076] (borne basse ≥ 0,02), Wilcoxon p = 0,0007, permutation p = 0,0004, signes 19 en faveur / 6 contre, Holm 0,010. Contre le SVM mots V0 (meilleure référence classique) : +0,072 en sélection (0,5752 contre 0,5032), +0,041 en confirmation (0,5544 contre 0,5132).  Fichiers : artifacts/results/v3/W1a_all_units.csv ; W1a_tests.csv ; W1b_all_units.csv ; W1b_tests.csv ; W1_selected.json
+
+*Note.* PREMIÈRE AMÉLIORATION CONFIRMÉE de la phase 2. Conditions à écrire dans l'article : (1) le décodage est TRANSDUCTIF : il utilise la composition du lot de test sans étiquette (masses prédites) ; (2) la cible uniforme convient à un lot où toutes les classes sont présentes en proportions comparables au niveau gabarit ; (3) l'EM de prior (A2), qui adapte le prior à la composition du test, fait PIRE (−0,057) : le gain vient du forçage vers l'équilibre, pas de l'adaptation du prior. Remarque : D28 annonçait « 14 variantes » alors que la liste en compte 13 ; Holm appliqué avec m = 14 comme écrit (plus prudent).
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-10 13:19:51) : statut préinscrite ; A1 ou A2 dépasse la référence LR d'au moins 0,02 de macro-F1 du palier A (Wilcoxon apparié unilatéral, Holm sur les 14 variantes, p < 0,05).
+
+### HW2 : La troncature de racine aide (F14)  (version 2, 2026-11-10 13:26:20 ; **statut : réfutée**)
+
+Au moins un k parmi 5, 6, 7 dépasse V0 d'au moins 0,02 (mêmes critères).
+
+*Justification.* Verdict établi avec la règle de décision préinscrite (D28).
+
+*Preuve.* Troncature à 5, 6, 7 lettres : gains −0,0085 ; −0,0010 ; +0,0020 ; bornes hautes de l'IC95 0,004 ; 0,008 ; 0,009 (< 0,02) ; Holm 1,0.  Fichiers : artifacts/results/v3/W1a_all_units.csv ; W1a_tests.csv ; W1b_all_units.csv ; W1b_tests.csv ; W1_selected.json
+
+*Note.*  Remarque : D28 annonçait « 14 variantes » alors que la liste en compte 13 ; Holm appliqué avec m = 14 comme écrit (plus prudent).
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-10 13:19:51) : statut préinscrite ; Au moins un k parmi 5, 6, 7 dépasse V0 d'au moins 0,02 (mêmes critères).
+
+### HW3 : Un IDF de gabarit avec pureté de classe aide (F6)  (version 2, 2026-11-10 13:26:20 ; **statut : réfutée**)
+
+Au moins une des variantes C0, C1, C2 dépasse V0 d'au moins 0,02 (mêmes critères).
+
+*Justification.* Verdict établi avec la règle de décision préinscrite (D28).
+
+*Preuve.* IDF de gabarit seul (C0) −0,0228, IC95 [−0,034 ; −0,012] ; avec pureté de classe (C1, C2) −0,0191 et −0,0182 ; toutes pires que V0, Holm 1,0.  Fichiers : artifacts/results/v3/W1a_all_units.csv ; W1a_tests.csv ; W1b_all_units.csv ; W1b_tests.csv ; W1_selected.json
+
+*Note.* Les mots propres à un gabarit portent de l'information (cf. HF1) ; l'IDF au niveau gabarit les sur-pondère ou sous-pondère mal ; la pureté rétrécie ne répare pas. Remarque : D28 annonçait « 14 variantes » alors que la liste en compte 13 ; Holm appliqué avec m = 14 comme écrit (plus prudent).
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-10 13:19:51) : statut préinscrite ; Au moins une des variantes C0, C1, C2 dépasse V0 d'au moins 0,02 (mêmes critères).
+
+### HW4 : La hiérarchie à vues séparées aide (F9)  (version 2, 2026-11-10 13:26:20 ; **statut : non tranchée**)
+
+Au moins un β parmi 0,5 ; 1 ; 2 dépasse V0 d'au moins 0,02 (mêmes critères).
+
+*Justification.* Verdict établi avec la règle de décision préinscrite (D28).
+
+*Preuve.* Hiérarchie à vues séparées : β = 0,5 : 0,5307 contre V0 0,5032 (+0,0274, IC95 [0,016 ; 0,039]) ; β = 1 : +0,0224 [0,008 ; 0,037] ; β = 2 : +0,0183 [0,002 ; 0,034] ; mais Wilcoxon unilatéral contre le seuil 0,02 : p = 0,22 ; 0,43 ; 0,53 ; Holm 1,0 : seuil non établi ; gain positif dans 12 à 13 plis sur 25 contre le seuil.  Fichiers : artifacts/results/v3/W1a_all_units.csv ; W1a_tests.csv ; W1b_all_units.csv ; W1b_tests.csv ; W1_selected.json
+
+*Note.* Gain d'environ +0,02 à +0,03 par rapport à V0, positif mais pas significativement ≥ 0,02 : à reprendre dans la vague 2 (combinaison avec A1, où les gains pourraient s'ajouter). Remarque : D28 annonçait « 14 variantes » alors que la liste en compte 13 ; Holm appliqué avec m = 14 comme écrit (plus prudent).
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-10 13:19:51) : statut préinscrite ; Au moins un β parmi 0,5 ; 1 ; 2 dépasse V0 d'au moins 0,02 (mêmes critères).
+
+### HW5 : Retirer les jetons de format aide (E1)  (version 2, 2026-11-10 13:26:20 ; **statut : réfutée**)
+
+E1 dépasse V0 d'au moins 0,02 (mêmes critères).
+
+*Justification.* Verdict établi avec la règle de décision préinscrite (D28).
+
+*Preuve.* E1 (retrait des mois, jours, am/pm, pid, utc et du nom du programme) 0,4694 contre V0 0,5032 : −0,0338, IC95 [−0,049 ; −0,018] ; classes à ≤ 3 gabarits : −0,106.  Fichiers : artifacts/results/v3/W1a_all_units.csv ; W1a_tests.csv ; W1b_all_units.csv ; W1b_tests.csv ; W1_selected.json
+
+*Note.* Retirer les jetons de format fait PERDRE de l'information : le nom du programme ou la forme de l'horodatage aident à reconnaître la classe (cohérent avec DG4 : information mutuelle format-classe 0,56). Le « raccourci du format » n'est pas confirmé comme obstacle. Remarque : D28 annonçait « 14 variantes » alors que la liste en compte 13 ; Holm appliqué avec m = 14 comme écrit (plus prudent).
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-10 13:19:51) : statut préinscrite ; E1 dépasse V0 d'au moins 0,02 (mêmes critères).
+
+### HW6 : Décorréler format et classe aide (E2)  (version 2, 2026-11-10 13:26:20 ; **statut : réfutée**)
+
+E2 dépasse V0 d'au moins 0,02 (mêmes critères).
+
+*Justification.* Verdict établi avec la règle de décision préinscrite (D28).
+
+*Preuve.* E2 (poids de décorrélation format × classe) 0,4974 contre V0 0,5032 : −0,0058, IC95 [−0,009 ; −0,003] ; 0 pli sur 25 en faveur au-dessus du seuil.  Fichiers : artifacts/results/v3/W1a_all_units.csv ; W1a_tests.csv ; W1b_all_units.csv ; W1b_tests.csv ; W1_selected.json
+
+*Note.* Décorréler le format ne sert pas : le format est une information utile, pas un raccourci nuisible. Remarque : D28 annonçait « 14 variantes » alors que la liste en compte 13 ; Holm appliqué avec m = 14 comme écrit (plus prudent).
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-10 13:19:51) : statut préinscrite ; E2 dépasse V0 d'au moins 0,02 (mêmes critères).
+
+### HW7 : Au moins une variante passe la porte  (version 2, 2026-11-10 13:26:20 ; **statut : confirmée**)
+
+Au moins une des 14 variantes dépasse sa référence d'au moins 0,02 avec Holm p < 0,05 sur les répétitions 0 à 4 (sinon pas de confirmation et la vague 1 est close sans gain).
+
+*Justification.* Verdict établi avec la règle de décision préinscrite (D28).
+
+*Preuve.* Une variante (A1) passe la porte : +0,0805 avec Holm < 1e-4 sur les répétitions 0 à 4.  Fichiers : artifacts/results/v3/W1a_all_units.csv ; W1a_tests.csv ; W1b_all_units.csv ; W1b_tests.csv ; W1_selected.json
+
+*Note.*  Remarque : D28 annonçait « 14 variantes » alors que la liste en compte 13 ; Holm appliqué avec m = 14 comme écrit (plus prudent).
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-10 13:19:51) : statut préinscrite ; Au moins une des 14 variantes dépasse sa référence d'au moins 0,02 avec Holm p < 0,05 sur les répétitions 0 à 4 (sinon pas de confirmation et la vague 1 est close sans gain).
+
+### HW8 : Le mécanisme est celui de DG4  (version 2, 2026-11-10 13:26:20 ; **statut : réfutée**)
+
+Pour toute variante passant la porte, le gain de macro-F1 sur les classes à ≤ 3 gabarits de développement est positif et supérieur à celui des autres classes (Wilcoxon apparié sur les plis, p < 0,05).
+
+*Justification.* Verdict établi avec la règle de décision préinscrite (D28).
+
+*Preuve.* A1 : gain sur les classes à ≤ 3 gabarits de développement +0,0406 ; gain sur le palier A +0,0805 ; Wilcoxon apparié p = 0,016 : le gain est PLUS GRAND sur le palier A que sur les classes rares, à l'opposé de l'hypothèse.  Fichiers : artifacts/results/v3/W1a_all_units.csv ; W1a_tests.csv ; W1b_all_units.csv ; W1b_tests.csv ; W1_selected.json
+
+*Note.* Le mécanisme n'est donc pas celui de DG4 (sauvetage des classes rares) : le décodage équilibré corrige surtout l'absorption de gabarits par des classes très nombreuses (authentication-failed : 43 gabarits) au bénéfice des classes de taille moyenne. Les classes à 1-3 gabarits gagnent aussi (+0,04) mais moins. À examiner classe par classe en vague 2. Remarque : D28 annonçait « 14 variantes » alors que la liste en compte 13 ; Holm appliqué avec m = 14 comme écrit (plus prudent).
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-10 13:19:51) : statut préinscrite ; Pour toute variante passant la porte, le gain de macro-F1 sur les classes à ≤ 3 gabarits de développement est positif et supérieur à celui des autres classes (Wilcoxon apparié sur les plis, p < 0,05).
+
 ## Résultats
 
 ### RA1 : Bloc A : macro-F1 du palier A par protocole (précédent v1 et actuel v3)  (version 1, 2026-11-07 21:58:55)
@@ -1517,3 +1629,19 @@ Sélection (rotations B) : msp (C = 4) 0,608 ; scores de famille 0,645-0,650 (me
 *Justification.* Conclusion sur le Transformer : avec 140 logs par classe, il ne bat pas TF-IDF (l'avantage de la grille T venait d'une découpe favorable) et la fusion n'améliore pas la classification ni le rejet : pas de gain à attendre ; I3 est close sans gain. Le pipeline reste TF-IDF (mots + lettres pour la famille) avec rejet par confiance de famille.
 
 *Preuve.* artifacts/results/v3/T2_all_units.csv ; T2_tests.csv
+
+### RDG4 : DG4 (exploratoire, développement seulement, aucun entraînement) : comptages format, vocabulaire, axes  (version 1, 2026-11-10 13:19:51)
+
+254 gabarits de développement, 30 classes, 1 à 43 gabarits par classe (médiane 4). (1) FORMAT : l'information mutuelle normalisée entre le format du log (programme + forme des 6 premiers jetons, 62 formats) et la classe vaut 0,56 (programme seul : 0,16) ; prédire un gabarit mis de côté par la classe majoritaire des autres gabarits de même format donne 29 % d'exactitude sur 88 % des gabarits couverts (la classe la plus fréquente fait 17 %) : le format est informatif sans être un raccourci écrasant. (2) VOCABULAIRE : pour un gabarit mis de côté, la bonne classe couvre plus de mots constants que toute autre classe dans 45,5 % des cas seulement ; 0 % quand la classe n'a qu'un ou deux autres gabarits (couverture propre nulle pour file-read, file-write, file-modification, directory-deleted, http-request-failure, user-session-open) alors que la meilleure autre classe couvre 28 à 100 % des mots ; seulement 10 % des mots constants sont absents de tous les autres gabarits : l'erreur vient de mots PARTAGÉS entre classes, pas de mots nouveaux. (3) AXES : 61 gabarits d'« échec », 49 de « fermeture », 33 d'« ouverture », 17 de « modification », 9 de « suppression », mais seulement 2 de « lecture » et 2 d'« écriture » : l'axe d'action ne partage de l'information que pour certaines classes à peu de gabarits ; objet « fichier » 11 gabarits. Déséquilibre : 43 gabarits pour authentication-failed contre 1 à 3 pour huit classes.
+
+*Justification.* Comptages sur le développement seulement (v3_blockA.load() écarte le test v2 ; le garde check_test_seal.py le vérifie). Ils orientent la ronde sans toucher au test.
+
+*Preuve.* artifacts/results/v3/DG4_format_classe.csv ; DG4_vocabulaire_gabarits.csv ; DG4_vocabulaire_par_classe.csv ; DG4_axes.csv
+
+### RW1 : Vague 1 : décodage à masses équilibrées (F8) et autres formules (F14, F6, F9, F18)  (version 1, 2026-11-10 13:26:20)
+
+Macro-F1 palier A, sélection (répétitions 0-4) : V0 0,5032 ; LR 0,4947 ; A1 0,5752 ; D0,5 0,5307 ; D1 0,5256 ; D2 0,5215 ; B7 0,5052 ; B6 0,5022 ; E2 0,4974 ; B5 0,4947 ; C2 0,4850 ; C1 0,4841 ; C0 0,4804 ; E1 0,4694 ; A2 0,4380. Confirmation d'A1 (répétitions 5-9) : 0,5544 contre LR 0,4976 et V0 0,5132.
+
+*Justification.* Premier gain net et confirmé de la phase 2 : +0,04 à +0,07 sur le meilleur modèle classique, avec une formule d'une ligne (Sinkhorn amorti, exposant 0,5, 10 itérations, cible uniforme). Les cinq autres pistes de la vague 1 n'apportent rien (F14, F6, F18) ou un gain non établi (F9).
+
+*Preuve.* artifacts/results/v3/W1a_all_units.csv ; W1a_tests.csv ; W1b_all_units.csv ; W1b_tests.csv ; W1_selected.json

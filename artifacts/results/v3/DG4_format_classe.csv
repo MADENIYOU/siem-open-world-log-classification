@@ -1,0 +1,4 @@
+signature,NMI format-classe,formats distincts,couverture (gabarit a un autre gabarit de même format),exactitude sur les couverts,rappel moyen par classe (tous gabarits),classes avec rappel > 0
+prog,0.156,29,0.917,0.197,0.093,4
+forme6,0.54,58,0.878,0.291,0.184,10
+format,0.559,62,0.878,0.287,0.205,11

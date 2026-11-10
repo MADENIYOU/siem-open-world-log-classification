@@ -518,3 +518,33 @@ Généré à partir de `artifacts/results/v3/versions.jsonl` (append-only, ne pa
 | Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
 |---|---|---|---|---|---|
 | **1** | 2026-11-10 13:17 | Scellement vérifiable du test v2 : empreinte des identifiants, sans lire aucun log | Première version (D27) | **version courante** | `versions/scripts/v3_seal_test_v2__1.py` |
+
+## DG4
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **1** | 2026-11-10 13:19 | Comptages exploratoires sur le développement seulement (format × classe, vocabulaire d'un gabarit mis de côté, axes) | Première version (aucun entraînement, aucun verdict) | **version courante** | `versions/scripts/v3_comptages_dev__1.py` |
+
+## RW1
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **1** | 2026-11-10 13:19 | Préinscription D28, HW1 à HW8 et résultat exploratoire RDG4 | Première version | **version courante** | `versions/scripts/v3_register_W1__1.py` |
+
+## W1
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **1** | 2026-11-10 13:20 | Vague 1 : F8, F14, F6, F9, F18 (14 variantes), sélection puis confirmation | Première version | **version courante** | `versions/scripts/v3_phase2_W1__1.py` |
+
+## AW1
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **1** | 2026-11-10 13:25 | Analyse de la vague 1 (porte HW7, tests, HW8) | Première version | **version courante** | `versions/scripts/v3_analyze_W1__1.py` |
+
+## VW1
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **1** | 2026-11-10 13:26 | Verdicts HW1 à HW8 et résultat RW1 | Première version | **version courante** | `versions/scripts/v3_verdicts_W1__1.py` |

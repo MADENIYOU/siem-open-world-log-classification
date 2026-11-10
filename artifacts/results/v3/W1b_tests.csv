@@ -1,0 +1,2 @@
+variante,référence,f1A,f1A réf,gain f1A,IC95_bas,IC95_haut,p_wilcoxon_unilat,p Holm (m=14),signes +/-,p_permutation_unilat,gain f1_30,gain f1_small,passe la porte
+A1,REF_LR,0.5544,0.4976,0.0568,0.0384,0.07575,0.00073,0.01017,19/6,0.0004,0.0537,0.0409,True
