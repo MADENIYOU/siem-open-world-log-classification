@@ -1,0 +1,87 @@
+{
+ "hash": "2d2f372ffd7c2233",
+ "block": "P2_W5a_rejet_decode",
+ "name": "W5a rot3 r0 pli0",
+ "cfg": {
+  "phase": 2,
+  "iteration": "W5a",
+  "rotation_set": "a",
+  "rotation": 2,
+  "masked": [
+   "authentication-failed",
+   "directory-changed",
+   "file-write",
+   "process-info",
+   "process-started",
+   "user-session-open"
+  ],
+  "repeat": 0,
+  "fold": 0,
+  "cap": 400,
+  "rot_seed": 20261110,
+  "C": 16,
+  "file": "SIEVE_00"
+ },
+ "code_version": "W5a.1",
+ "result": {
+  "scores": {
+   "MSP": {
+    "auroc": 0.7656928878070481,
+    "fpr95": 0.6803102111158983
+   },
+   "FAM": {
+    "auroc": 0.7986980259634917,
+    "fpr95": 0.6777251184834123
+   },
+   "FAMQ": {
+    "auroc": 0.6872176298760152,
+    "fpr95": 0.990952175786299
+   },
+   "FAMD": {
+    "auroc": 0.8033779013161205,
+    "fpr95": 0.6682464454976303
+   },
+   "MSPQ": {
+    "auroc": 0.7143672637865862,
+    "fpr95": 0.7522619560534253
+   }
+  },
+  "info": {
+   "n_known_test": 8811,
+   "n_unknown_test": 2321,
+   "masked": [
+    "authentication-failed",
+    "directory-changed",
+    "file-write",
+    "process-info",
+    "process-started",
+    "user-session-open"
+   ]
+  }
+ },
+ "seconds": 2.18,
+ "machine": {
+  "host": "MacBook-Pro-de-Madeniyou.local",
+  "platform": "macOS-27.0.1-arm64-arm-64bit",
+  "python": "3.12.16"
+ },
+ "commit": "d0812c7",
+ "code": {
+  "v3_phase2_W5.py": "a9f4621a95da",
+  "tp2_attacks.py": "37a5b3530f02",
+  "tp2_data.py": "7f392cbaae6e",
+  "tp2_encoder.py": "faec7df763bf",
+  "tp2_fields.py": "70b8fa07b590",
+  "tp2_journal.py": "d98d2c73b0a1",
+  "tp2_logtext.py": "2b5360ac2128",
+  "tp2_new_figs.py": "e48636202d7c",
+  "tp2_openset.py": "05d7b8a91592",
+  "tp2_runner.py": "7765735476e7",
+  "tp2_sota_figs.py": "4ba8388989c4",
+  "tp2_split_v3.py": "d9a4181a2a60",
+  "tp2_stats.py": "1bf4f78f39c3",
+  "tp2_vec.py": "6d09bf373fd2",
+  "tp2_versions.py": "b7dd47bdb2f6"
+ },
+ "date": "2026-11-10 14:34:00"
+}

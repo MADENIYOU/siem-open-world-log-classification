@@ -1,0 +1,7 @@
+variante,mesure,écart moyen,IC95_bas,IC95_haut,p_wilcoxon_unilat,p Holm (3),signes +/-,p_permutation_unilat
+FAMQ,AUROC (gain),-0.00191,-0.01102,0.00731,0.99986,1.0,6/19,0.9999
+FAMD,AUROC (gain),-0.00382,-0.01304,0.00521,0.99996,1.0,6/19,1.0
+MSPQ,AUROC (gain),-0.02337,-0.03351,-0.0132,1.0,1.0,1/24,1.0
+FAMQ,FPR@95 (baisse),-0.00844,-0.03638,0.0189,0.99322,1.0,8/17,0.9929
+FAMD,FPR@95 (baisse),0.00677,-0.01318,0.02664,0.99063,1.0,5/20,0.9843
+MSPQ,FPR@95 (baisse),0.01807,-0.00451,0.041,0.83061,1.0,10/15,0.8452

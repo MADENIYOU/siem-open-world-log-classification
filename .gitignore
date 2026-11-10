@@ -26,3 +26,6 @@ presentation/.venv/
 presentation/_render/
 presentation/script_oral.md
 .claude/
+
+# Embeddings gelés (163 Mo, régénérables par scripts/v3_embed_dev_frozen.py ; index.json et son empreinte sont versionnés)
+artifacts/results/v3/emb_distilbert_frozen/part_*.npy

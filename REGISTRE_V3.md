@@ -354,6 +354,14 @@ AXE05 est choisie parce que son IC95 de sélection est entièrement au-dessus de
 
 *Note.* Écrit le 2026-11-10 avant toute confirmation de la vague 4 (aucune donnée des répétitions 10 à 19 n'a été lue pour AXE05).
 
+### D37 : Vagues 5 à 7 : monde ouvert avec décodage, V-REx et embeddings gelés, LP-FT et pré-entraînement sur les logs  (version 1, 2026-11-10 14:33:07)
+
+Demande de l'étudiant (2026-11-10, « va pour les 3 »). Pipeline gelé provisoire : TF-IDF mots → régression logistique C = 10 → décodage M50 (D33). Procédure D20 : sélection puis confirmation sur plis ou rotations distincts ; le test v2 reste scellé (D27). VAGUE 5 (monde ouvert) : modèle entraîné sur les classes connues (régression logistique C = 16 sur TF-IDF mots et tête de famille, comme I7), lot de test = classes connues + classes masquées ; référence FAM = confiance de famille (probabilité maximale de la tête de famille) ; variantes : FAMQ = probabilité de famille obtenue en agrégeant les probabilités de classe DÉCODÉES par M50 sur le lot, max ; FAMD = décodage de type M50 appliqué directement aux probabilités de famille (cible 0,5 uniforme + 0,5 prior observé), max ; MSPQ = probabilité maximale de classe après décodage. Sélection : rotations de l'ensemble B (graine 20261110) × répétitions 0-4 ; confirmation : ensemble C (graine 20261111) × répétitions 5-9 ; unité (rotation, répétition) = 25. VAGUE 6 (classification fermée, 30 classes, plis P2) : V-REx = régression softmax linéaire sur TF-IDF mots entraînée avec perte moyenne par gabarit + λ · variance de la perte entre gabarits (λ = 1, 5, 20 : VR1, VR5, VR20) ; référence ERM (même entraîneur, λ = 0) ; EMBEDDINGS gelés DistilBERT (moyenne des vecteurs de la dernière couche, 768 valeurs, longueur 128, sans réglage fin, calculés sur les seuls logs du développement) : E1 = régression logistique sur les embeddings standardisés ; E2 = moyenne géométrique des probabilités de la régression logistique mots (LR) et d'E1 ; E3 = régression logistique sur [TF-IDF mots, embeddings standardisés × 0,1] ; modes brut et M50 ; références LR (brut) et LR + M50 (M50) ; condition « toutes » ; sélection répétitions 0-4, confirmation répétitions 10-19 des variantes passant la porte. VAGUE 7 : LP-FT (sonde linéaire 1 époque, encodeur gelé, puis affinage de tout le modèle à taux 1e-5 pendant 2 époques) dans le protocole de T2 (140 logs d'entraînement par classe, 4 découpes × 5 rotations, 20 couples, graine 42) comparé à l'affinage complet de T2 (taux 3e-5) sur les mêmes couples ; et la même chose à partir d'un DistilBERT ADAPTÉ par prédiction de mots masqués (MLM, 1 époque, longueur 128) sur les seuls logs d'entraînement de la découpe (sans étiquette ni log de test). Plusieurs tests (IC95, Wilcoxon, signes, permutation).
+
+*Justification.* Demande de l'étudiant ; ces pistes (invariance entre gabarits, sémantique gelée, adaptation au langage des logs) changent l'information ou l'entraînement, pas le réglage.
+
+*Note.* Écrit le 2026-11-10 avant tout calcul des vagues 5 à 7.
+
 ## Hypothèses (préinscrites, puis confirmées ou réfutées)
 
 ### HA1 : Le découpage au hasard gonfle le score  (version 4, 2026-11-07 22:29:59 ; **statut : confirmée**)
@@ -1838,6 +1846,107 @@ Sur les mêmes 50 plis, condition « toutes », mode M50 : gain d'AXE05 + M50 co
 *Historique des versions précédentes (conservées) :*
 - v1 (2026-11-10 14:16:51) : statut préinscrite ; Sur les mêmes 50 plis, condition « toutes », mode M50 : gain d'AXE05 + M50 contre LR + M50 avec borne basse d'IC95 ≥ 0,01 ET Wilcoxon, signes et permutation (unilatéraux contre le seuil 0,01) p < 0,05…
 
+### HO1 : Le décodage améliore la détection d'inconnus par la famille (AUROC)  (version 2, 2026-11-10 14:47:20 ; **statut : réfutée**)
+
+Sélection (ensemble B, 25 unités) : au moins une variante parmi FAMQ, FAMD, MSPQ dépasse la référence FAM d'au moins 0,02 d'AUROC d'inconnu (Wilcoxon apparié unilatéral contre le seuil, Holm sur 3, p < 0,05).
+
+*Justification.* Verdict établi avec la règle de décision préinscrite (D37).
+
+*Preuve.* Ensemble B (25 unités, rotations 20261110 × répétitions 0-4), AUROC d'inconnu contre FAM (0,6483) : FAMQ 0,6464 (−0,0019, IC95 [−0,011 ; 0,007]) ; FAMD 0,6445 (−0,0038, [−0,013 ; 0,005]) ; MSPQ 0,6250 (−0,0234, [−0,034 ; −0,013]) ; bornes hautes < 0,02.  Fichiers : artifacts/results/v3/W5a_all_units.csv ; W5a_tests.csv ; W5_selected.json
+
+*Note.* Le décodage M50 n'améliore pas la détection d'inconnus par la famille ; sur le MSP il le dégrade (la cible équilibrée absorbe des logs inconnus dans des classes connues).
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-10 14:33:07) : statut préinscrite ; Sélection (ensemble B, 25 unités) : au moins une variante parmi FAMQ, FAMD, MSPQ dépasse la référence FAM d'au moins 0,02 d'AUROC d'inconnu (Wilcoxon apparié unilatéral contre le seuil, Holm sur 3, p …
+
+### HO2 : Le décodage réduit le FPR@95  (version 2, 2026-11-10 14:47:20 ; **statut : non tranchée**)
+
+Une variante parmi FAMQ, FAMD, MSPQ réduit le FPR@95 d'au moins 0,03 contre FAM (mêmes critères).
+
+*Justification.* Verdict établi avec la règle de décision préinscrite (D37).
+
+*Preuve.* FPR@95 contre FAM (0,8731) : baisse de FAMQ −0,0084 ([−0,036 ; 0,019]), FAMD +0,0068 ([−0,013 ; 0,027]), MSPQ +0,0181 ([−0,005 ; 0,041]) ; aucune n'atteint 0,03 avec Holm ; la borne haute de MSPQ (0,041) ne permet pas d'exclure 0,03.  Fichiers : artifacts/results/v3/W5a_all_units.csv ; W5a_tests.csv ; W5_selected.json
+
+*Note.* Gain de FPR@95 de MSPQ non exclu mais accompagné d'une AUROC plus basse de 0,023 : sans intérêt pratique.
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-10 14:33:07) : statut préinscrite ; Une variante parmi FAMQ, FAMD, MSPQ réduit le FPR@95 d'au moins 0,03 contre FAM (mêmes critères).
+
+### HO3 : La variante retenue est confirmée sur de nouvelles rotations  (version 2, 2026-11-10 14:47:20 ; **statut : non tranchée**)
+
+Ensemble C × répétitions 5-9 (25 unités) : le gain d'AUROC de la variante retenue contre FAM a une borne basse d'IC95 ≥ 0,02 ET Wilcoxon, signes et permutation (unilatéraux contre 0,02) p < 0,05 ; réfutée si la borne haute < 0,02.
+
+*Justification.* Verdict établi avec la règle de décision préinscrite (D37).
+
+*Preuve.* Non testée : la porte HO1/HO2 est restée fermée ; la confirmation sur l'ensemble C n'a pas été lancée.  Fichiers : artifacts/results/v3/W5a_all_units.csv ; W5a_tests.csv ; W5_selected.json
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-10 14:33:07) : statut préinscrite ; Ensemble C × répétitions 5-9 (25 unités) : le gain d'AUROC de la variante retenue contre FAM a une borne basse d'IC95 ≥ 0,02 ET Wilcoxon, signes et permutation (unilatéraux contre 0,02) p < 0,05 ; réf…
+
+### HR1 : L'invariance au risque entre gabarits améliore la classification (V-REx)  (version 2, 2026-11-10 14:47:20 ; **statut : réfutée**)
+
+Au moins une des variantes VR1, VR5, VR20 dépasse l'ERM d'au moins 0,02 de macro-F1 du palier A, brut, condition « toutes » (Wilcoxon apparié unilatéral contre le seuil, Holm sur 6 variantes de la vague 6, p < 0,05).
+
+*Justification.* Verdict établi avec la règle de décision préinscrite (D37).
+
+*Preuve.* Sélection (25 plis) : V-REx contre ERM (0,4872) : VR1 −0,0043 (IC95 [−0,0086 ; −0,0006]) ; VR5 −0,0014 ([−0,009 ; 0,007]) ; VR20 +0,0102 ([0,0006 ; 0,0199]) ; bornes hautes < 0,02 ; Holm 1,0.  Fichiers : artifacts/results/v3/W6a_all_units.csv ; W6a_tests.csv ; W6_selected.json ; emb_distilbert_frozen/index.json
+
+*Note.* La pénalité de variance du risque entre gabarits n'apporte rien : le meilleur λ gagne 0,01 sur l'ERM, sous le seuil.
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-10 14:33:07) : statut préinscrite ; Au moins une des variantes VR1, VR5, VR20 dépasse l'ERM d'au moins 0,02 de macro-F1 du palier A, brut, condition « toutes » (Wilcoxon apparié unilatéral contre le seuil, Holm sur 6 variantes de la vag…
+
+### HR2 : V-REx améliore le pipeline décodé  (version 2, 2026-11-10 14:47:20 ; **statut : réfutée**)
+
+Une variante VR dépasse l'ERM + M50 d'au moins 0,02 en mode M50 (mêmes critères).
+
+*Justification.* Verdict établi avec la règle de décision préinscrite (D37).
+
+*Preuve.* Mode M50 contre ERM + M50 (0,5507) : VR1 +0,0015 (IC95 [−0,003 ; 0,006]) ; VR5 −0,0044 ; VR20 −0,0056 ; bornes hautes < 0,02.  Fichiers : artifacts/results/v3/W6a_all_units.csv ; W6a_tests.csv ; W6_selected.json ; emb_distilbert_frozen/index.json
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-10 14:33:07) : statut préinscrite ; Une variante VR dépasse l'ERM + M50 d'au moins 0,02 en mode M50 (mêmes critères).
+
+### HR3 : Les embeddings gelés apportent de la sémantique  (version 2, 2026-11-10 14:47:20 ; **statut : réfutée**)
+
+Au moins une des variantes E1, E2, E3 dépasse LR d'au moins 0,02, brut, condition « toutes » (mêmes critères).
+
+*Justification.* Verdict établi avec la règle de décision préinscrite (D37).
+
+*Preuve.* Embeddings gelés DistilBERT, brut, contre LR (0,4947) : E1 (embeddings seuls) 0,4515 (−0,0432, IC95 [−0,062 ; −0,025]) ; E2 (moyenne géométrique mots + embeddings) 0,4801 (−0,0146, [−0,028 ; −0,0007]) ; E3 (concaténation) 0,4628 (−0,0319, [−0,044 ; −0,020]) : tous PIRES que LR.  Fichiers : artifacts/results/v3/W6a_all_units.csv ; W6a_tests.csv ; W6_selected.json ; emb_distilbert_frozen/index.json
+
+*Note.* Les embeddings gelés d'un modèle de langue anglais courant n'apportent pas de sémantique utile ici et diluent le signal lexical (cohérent avec v1 5.8b : 0,4547 contre 0,4745).
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-10 14:33:07) : statut préinscrite ; Au moins une des variantes E1, E2, E3 dépasse LR d'au moins 0,02, brut, condition « toutes » (mêmes critères).
+
+### HR4 : Les embeddings gelés s'ajoutent au pipeline décodé  (version 2, 2026-11-10 14:47:20 ; **statut : réfutée**)
+
+Une variante E dépasse LR + M50 d'au moins 0,02 en mode M50 (mêmes critères).
+
+*Justification.* Verdict établi avec la règle de décision préinscrite (D37).
+
+*Preuve.* Mode M50 contre LR + M50 (0,5544) : E1 0,4643 (−0,0901) ; E2 0,5056 (−0,0488) ; E3 0,4872 (−0,0671) ; tous pires.  Fichiers : artifacts/results/v3/W6a_all_units.csv ; W6a_tests.csv ; W6_selected.json ; emb_distilbert_frozen/index.json
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-10 14:33:07) : statut préinscrite ; Une variante E dépasse LR + M50 d'au moins 0,02 en mode M50 (mêmes critères).
+
+### HL1 : LP-FT dépasse l'affinage complet  (version 1, 2026-11-10 14:33:07 ; **statut : préinscrite**)
+
+Sur les 20 couples de T2 (4 découpes × 5 rotations, graine 42, 140 logs/classe), le macro-F1 du palier A de LP-FT dépasse celui de l'affinage complet de T2 d'au moins 0,02 : borne basse de l'IC95 ≥ 0,02 ET Wilcoxon, signes, permutation (unilatéraux contre 0,02) p < 0,05 ; réfutée si la borne haute < 0,02.
+
+*Justification.* Kumar et al. 2022 (résumé vérifié) : la sonde avant l'affinage préserve les caractéristiques pré-entraînées sous décalage de distribution.
+
+*Note.* Écrit le 2026-11-10 avant tout calcul des vagues 5 à 7.
+
+### HM1 : Adapter l'encodeur au langage des logs (MLM) améliore LP-FT  (version 1, 2026-11-10 14:33:07 ; **statut : préinscrite**)
+
+Sur les mêmes 20 couples, LP-FT à partir de l'encodeur adapté (MLM sur les logs d'entraînement de la découpe) dépasse LP-FT standard d'au moins 0,02 (mêmes critères).
+
+*Justification.* Gururangan et al. 2020 (à vérifier dans la source) : l'adaptation au domaine aide.
+
+*Note.* Écrit le 2026-11-10 avant tout calcul des vagues 5 à 7.
+
 ## Résultats
 
 ### RA1 : Bloc A : macro-F1 du palier A par protocole (précédent v1 et actuel v3)  (version 1, 2026-11-07 21:58:55)
@@ -2058,3 +2167,19 @@ Sélection (25 plis, répétitions 0-4), condition « toutes », macro-F1 du pal
 *Justification.* Aucune de ces formules n'est établie au-delà du pipeline gelé (LR + M50). F7 est la seule à montrer un gain net en brut, mais son mécanisme annoncé (aider les classes rares) n'est pas observé (HZ6) et le décodage en absorbe plus de la moitié. F20 et F10 n'apportent rien (la pondération non bornée est inutilisable).
 
 *Preuve.* artifacts/results/v3/W4b_all_units.csv ; W4b_tests.csv ; W4b_HZ7_HZ8.csv
+
+### RW5 : Vague 5 : détection d'inconnus par la famille avec décodage M50 (I7 conservée)  (version 1, 2026-11-10 14:47:20)
+
+Ensemble B (25 unités) : AUROC FAM 0,6483 ; FAMQ 0,6464 ; FAMD 0,6445 ; MSPQ 0,6250 ; MSP 0,6081. FPR@95 : FAM 0,8731 ; FAMQ 0,8816 ; FAMD 0,8663 ; MSPQ 0,8550 ; MSP 0,8854.
+
+*Justification.* Le décodage équilibré, utile pour la classification fermée, ne l'est pas pour la détection d'inconnus : le pipeline gelé garde la confiance de famille brute pour le rejet (+0,04 d'AUROC sur le MSP, HI6b), sans décodage.
+
+*Preuve.* artifacts/results/v3/W5a_all_units.csv ; W5a_tests.csv ; W5_selected.json
+
+### RW6 : Vague 6 : V-REx et embeddings gelés (brut / M50)  (version 1, 2026-11-10 14:47:20)
+
+Macro-F1 du palier A (25 plis), brut / M50 : LR 0,4947 / 0,5544 ; ERM 0,4872 / 0,5507 ; VR1 0,4829 / 0,5522 ; VR5 0,4858 / 0,5462 ; VR20 0,4974 / 0,5451 ; E1 0,4515 / 0,4643 ; E2 0,4801 / 0,5056 ; E3 0,4628 / 0,4872.
+
+*Justification.* Ni l'invariance de risque entre gabarits ni la sémantique d'un encodeur gelé ne relèvent le score : deux leviers de plus fermés, avec des résultats négatifs informatifs.
+
+*Preuve.* artifacts/results/v3/W6a_all_units.csv ; W6a_tests.csv ; W6_selected.json ; emb_distilbert_frozen/index.json

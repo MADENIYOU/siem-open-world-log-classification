@@ -1,0 +1,1 @@
+{"sha256": "0999d84dd51da07df4055df18e491b04429c6892e1639c73a84325a522bfdb53", "n": 52439, "block": 4096, "model": "distilbert-base-uncased", "max_len": 128, "pooling": "moyenne des jetons, derni\u00e8re couche"}

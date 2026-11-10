@@ -686,3 +686,57 @@ Généré à partir de `artifacts/results/v3/versions.jsonl` (append-only, ne pa
 | Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
 |---|---|---|---|---|---|
 | **1** | 2026-11-10 14:19 | Verdicts HZ7, HZ8 et résultat RW4 | Première version | **version courante** | `versions/scripts/v3_verdicts_W4__1.py` |
+
+## RW567
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **1** | 2026-11-10 14:33 | Préinscription D37 et HO1-HO3, HR1-HR4, HL1, HM1 (vagues 5 à 7) | Première version | **version courante** | `versions/scripts/v3_register_W567__1.py` |
+
+## W5
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **1** | 2026-11-10 14:33 | Vague 5 : détection d'inconnus par la famille avec décodage M50 (FAMQ, FAMD, MSPQ) | Première version | **version courante** | `versions/scripts/v3_phase2_W5__1.py` |
+
+## AW5
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **1** | 2026-11-10 14:33 | Analyse de la vague 5 (HO1-HO3) | Première version | **version courante** | `versions/scripts/v3_analyze_W5__1.py` |
+
+## EMB1
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **1** | 2026-11-10 14:34 | Embeddings gelés de DistilBERT pour les logs du développement (reprenable par blocs) | Première version | **version courante** | `versions/scripts/v3_embed_dev_frozen__1.py` |
+
+## W6
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **1** | 2026-11-10 14:36 | Vague 6 : V-REx et embeddings gelés (brut et M50) | Première version | **version courante** | `versions/scripts/v3_phase2_W6__1.py` |
+
+## AW6
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **1** | 2026-11-10 14:43 | Analyse de la vague 6 (HR1-HR4) | Première version | **version courante** | `versions/scripts/v3_analyze_W6__1.py` |
+
+## ENCL
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **1** | 2026-11-10 14:44 | LP-FT et adaptation MLM de DistilBERT (réutilise HierEncoder) | Première version | **version courante** | `versions/src/tp2_encoder_lpft__1.py` |
+
+## W7
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **1** | 2026-11-10 14:44 | Vague 7 : LP-FT et LP-FT depuis un DistilBERT adapté (MLM), protocole de T2 | Première version | **version courante** | `versions/scripts/v3_transformer_W7__1.py` |
+
+## VW56
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **1** | 2026-11-10 14:47 | Verdicts HO1-HO3, HR1-HR4 et résultats RW5, RW6 | Première version | **version courante** | `versions/scripts/v3_verdicts_W56__1.py` |

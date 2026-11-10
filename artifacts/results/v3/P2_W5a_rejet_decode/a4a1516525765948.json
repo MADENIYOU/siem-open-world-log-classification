@@ -1,0 +1,87 @@
+{
+ "hash": "a4a1516525765948",
+ "block": "P2_W5a_rejet_decode",
+ "name": "W5a rot2 r2 pli4",
+ "cfg": {
+  "phase": 2,
+  "iteration": "W5a",
+  "rotation_set": "a",
+  "rotation": 1,
+  "masked": [
+   "directory-deleted",
+   "file-modification",
+   "file-read",
+   "hardware-monitoring",
+   "network-traffic",
+   "process-shutdown"
+  ],
+  "repeat": 2,
+  "fold": 4,
+  "cap": 400,
+  "rot_seed": 20261110,
+  "C": 16,
+  "file": "SIEVE_00"
+ },
+ "code_version": "W5a.1",
+ "result": {
+  "scores": {
+   "MSP": {
+    "auroc": 0.6131393159217297,
+    "fpr95": 0.9985645933014354
+   },
+   "FAM": {
+    "auroc": 0.6092489864669506,
+    "fpr95": 0.8339712918660287
+   },
+   "FAMQ": {
+    "auroc": 0.671248925778063,
+    "fpr95": 0.8291866028708134
+   },
+   "FAMD": {
+    "auroc": 0.5607303392337054,
+    "fpr95": 0.9148325358851674
+   },
+   "MSPQ": {
+    "auroc": 0.6764043322705143,
+    "fpr95": 0.9023923444976076
+   }
+  },
+  "info": {
+   "n_known_test": 8357,
+   "n_unknown_test": 2090,
+   "masked": [
+    "directory-deleted",
+    "file-modification",
+    "file-read",
+    "hardware-monitoring",
+    "network-traffic",
+    "process-shutdown"
+   ]
+  }
+ },
+ "seconds": 2.77,
+ "machine": {
+  "host": "MacBook-Pro-de-Madeniyou.local",
+  "platform": "macOS-27.0.1-arm64-arm-64bit",
+  "python": "3.12.16"
+ },
+ "commit": "d0812c7",
+ "code": {
+  "v3_phase2_W5.py": "a9f4621a95da",
+  "tp2_attacks.py": "37a5b3530f02",
+  "tp2_data.py": "7f392cbaae6e",
+  "tp2_encoder.py": "faec7df763bf",
+  "tp2_fields.py": "70b8fa07b590",
+  "tp2_journal.py": "d98d2c73b0a1",
+  "tp2_logtext.py": "2b5360ac2128",
+  "tp2_new_figs.py": "e48636202d7c",
+  "tp2_openset.py": "05d7b8a91592",
+  "tp2_runner.py": "7765735476e7",
+  "tp2_sota_figs.py": "4ba8388989c4",
+  "tp2_split_v3.py": "d9a4181a2a60",
+  "tp2_stats.py": "1bf4f78f39c3",
+  "tp2_vec.py": "6d09bf373fd2",
+  "tp2_versions.py": "b7dd47bdb2f6"
+ },
+ "date": "2026-11-10 14:33:57"
+}
