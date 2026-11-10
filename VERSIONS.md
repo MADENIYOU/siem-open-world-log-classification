@@ -482,3 +482,9 @@ Généré à partir de `artifacts/results/v3/versions.jsonl` (append-only, ne pa
 | Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
 |---|---|---|---|---|---|
 | **1** | 2026-11-09 22:25 | Verdicts HI6b, HI7b, tranche HI6 et HI7, résultat RI7c | Première version | **version courante** | `versions/scripts/v3_verdicts_I7c__1.py` |
+
+## VT2
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **1** | 2026-11-10 00:00 | Verdicts HT1b, HT2b, HF15, HF16, tranche HT1, résultat RT2 | Première version | **version courante** | `versions/scripts/v3_verdicts_T2__1.py` |

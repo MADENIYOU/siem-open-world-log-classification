@@ -100,3 +100,4 @@
 {"artefact": "VI6b", "version": "1", "date": "2026-11-09 22:11", "fait": "Verdict HF18 après lancement d'I6b", "pourquoi": "Première version", "fichier": "versions/scripts/v3_verdicts_I6b__1.py", "commit": null, "note": ""}
 {"artefact": "AI7c", "version": "1", "date": "2026-11-09 22:11", "fait": "Analyse de la réplication I7c (HI6b, HI7b)", "pourquoi": "Première version", "fichier": "versions/scripts/v3_analyze_I7c__1.py", "commit": null, "note": ""}
 {"artefact": "VI7c", "version": "1", "date": "2026-11-09 22:25", "fait": "Verdicts HI6b, HI7b, tranche HI6 et HI7, résultat RI7c", "pourquoi": "Première version", "fichier": "versions/scripts/v3_verdicts_I7c__1.py", "commit": null, "note": ""}
+{"artefact": "VT2", "version": "1", "date": "2026-11-10 00:00", "fait": "Verdicts HT1b, HT2b, HF15, HF16, tranche HT1, résultat RT2", "pourquoi": "Première version", "fichier": "versions/scripts/v3_verdicts_T2__1.py", "commit": null, "note": ""}

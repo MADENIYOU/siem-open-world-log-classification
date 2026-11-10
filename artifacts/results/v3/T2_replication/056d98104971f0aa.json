@@ -1,0 +1,139 @@
+{
+ "hash": "056d98104971f0aa",
+ "block": "T2_replication",
+ "name": "T2 r2k2 rot1",
+ "cfg": {
+  "block": "T2",
+  "split_repeat": 2,
+  "split_fold": 2,
+  "rotation": 0,
+  "seed": 42,
+  "model": "distilbert-base-uncased",
+  "max_len": 256,
+  "epochs": 2,
+  "lr": 3e-05,
+  "batch": 32,
+  "n_train_per_class": 140,
+  "n_test_per_class": 133,
+  "p": 0
+ },
+ "code_version": "T2.1",
+ "result": {
+  "transformer": {
+   "closed": {
+    "f1A": 0.40955239373780117,
+    "f1_30": 0.3017754480173272,
+    "acc": 0.3407202216066482
+   },
+   "open": {
+    "msp": {
+     "auroc": 0.751730186169817,
+     "fpr95": 0.7293233082706767
+    },
+    "maxlogit": {
+     "auroc": 0.7559500254395387,
+     "fpr95": 0.7387218045112782
+    },
+    "energy": {
+     "auroc": 0.7482501019069241,
+     "fpr95": 0.8233082706766918
+    },
+    "fam_msp": {
+     "auroc": 0.7636231705103678,
+     "fpr95": 0.8515037593984962
+    },
+    "mc_msp": {
+     "auroc": 0.7543105885013286,
+     "fpr95": 0.6954887218045113
+    },
+    "maha_shared": {
+     "auroc": 0.7895064134415977,
+     "fpr95": 0.7951127819548872
+    },
+    "knn10": {
+     "auroc": 0.8280569845666799,
+     "fpr95": 0.6785714285714286
+    }
+   }
+  },
+  "tfidf_memes_logs": {
+   "closed": {
+    "f1A": 0.5221897690488404,
+    "f1_30": 0.4466278849518603,
+    "acc": 0.46933122279382666
+   },
+   "open": {
+    "msp": {
+     "auroc": 0.86457983105766,
+     "fpr95": 0.9868421052631579
+    },
+    "energy": {
+     "auroc": 0.8781453534905724,
+     "fpr95": 0.9548872180451128
+    },
+    "fam_msp": {
+     "auroc": 0.8671803172355106,
+     "fpr95": 0.6823308270676691
+    }
+   }
+  },
+  "fusion": {
+   "closed": {
+    "f1A": 0.46208419007212787,
+    "f1_30": 0.3404830874215679,
+    "acc": 0.37989711119905023
+   },
+   "open": {
+    "msp": {
+     "auroc": 0.8593565433171373,
+     "fpr95": 0.7293233082706767
+    },
+    "fam_msp": {
+     "auroc": 0.831256266903904,
+     "fpr95": 0.7349624060150376
+    }
+   }
+  },
+  "info": {
+   "n_train": 3360,
+   "n_test": 3059,
+   "n_known_test": 2527,
+   "n_unknown_test": 532,
+   "train_minutes": 3.69,
+   "unit_seconds": 354.3,
+   "masked": [
+    "directory-created",
+    "http-request-success",
+    "process-info",
+    "process-started",
+    "system-configuration-changed",
+    "user-session-open"
+   ]
+  }
+ },
+ "seconds": 354.9,
+ "machine": {
+  "host": "MacBook-Pro-de-Madeniyou.local",
+  "platform": "macOS-27.0.1-arm64-arm-64bit",
+  "python": "3.12.16"
+ },
+ "commit": "09bbeb0",
+ "code": {
+  "v3_transformer_T2.py": "47fd5d2de353",
+  "tp2_attacks.py": "37a5b3530f02",
+  "tp2_data.py": "7f392cbaae6e",
+  "tp2_encoder.py": "faec7df763bf",
+  "tp2_fields.py": "70b8fa07b590",
+  "tp2_journal.py": "d98d2c73b0a1",
+  "tp2_logtext.py": "2b5360ac2128",
+  "tp2_new_figs.py": "e48636202d7c",
+  "tp2_openset.py": "05d7b8a91592",
+  "tp2_runner.py": "7765735476e7",
+  "tp2_sota_figs.py": "4ba8388989c4",
+  "tp2_split_v3.py": "d9a4181a2a60",
+  "tp2_stats.py": "0a90cfa961ba",
+  "tp2_vec.py": "6d09bf373fd2",
+  "tp2_versions.py": "b7dd47bdb2f6"
+ },
+ "date": "2026-11-09 22:28:29"
+}
