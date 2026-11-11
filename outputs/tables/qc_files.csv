@@ -1,0 +1,7 @@
+p,format,rows_raw,bad_label,exact_dups_removed,conflict_rows_removed,rows_kept,n_classes,min_per_class,max_per_class,label_runs,mean_chars
+0.0,"lines(delim=',',label=first)",35001,1,4,0,34996,30,1163,1167,30,150.9
+0.1,"lines(delim=',',label=first)",35001,1,0,0,35000,30,1166,1167,30,155.0
+0.2,"lines(delim=',',label=first)",35001,1,0,0,35000,30,1166,1167,30,159.6
+0.3,"lines(delim=',',label=first)",35001,1,0,0,35000,30,1166,1167,30,164.1
+0.4,"lines(delim=',',label=first)",35001,1,0,0,35000,30,1166,1167,30,167.6
+0.5,"lines(delim=',',label=first)",35001,1,0,0,35000,30,1166,1167,30,172.8

@@ -1,0 +1,33 @@
+{
+ "seed": 42,
+ "backbone": "distilbert-base-uncased",
+ "max_len": 96,
+ "batch_size": 64,
+ "epochs": 3,
+ "lr": 5e-05,
+ "weight_decay": 0.01,
+ "warmup_ratio": 0.06,
+ "lambda_cons": 0.5,
+ "n_rotations": 5,
+ "n_unknown": 6,
+ "train_cap": 1500,
+ "eval_cap": 300,
+ "proto_cap": 300,
+ "split_frac": [
+  0.6,
+  0.2,
+  0.2
+ ],
+ "strict_min_groups": 5,
+ "tpr_target": 0.95,
+ "mc_passes": 5,
+ "noise_levels": [
+  0.1,
+  0.2,
+  0.3,
+  0.4,
+  0.5
+ ],
+ "fp16": true,
+ "resume": true
+}

@@ -1,0 +1,657 @@
+08:42:27 | INFO | 
+====================================================================================================
+## ENVIRONNEMENT & CONFIGURATION
+====================================================================================================
+08:42:27 | INFO | python=3.13.16 | torch=2.14.1+cu130 | transformers=5.22.1 | device=cuda | gpu=Tesla T4 | AMP=True
+08:42:27 | INFO | QUICK=False | DATA_DIR=/content/data | OUT_DIR=/content/outputs
+08:42:27 | INFO | CFG={
+ "seed": 42,
+ "backbone": "distilbert-base-uncased",
+ "max_len": 96,
+ "batch_size": 64,
+ "epochs": 3,
+ "lr": 5e-05,
+ "weight_decay": 0.01,
+ "warmup_ratio": 0.06,
+ "lambda_cons": 0.5,
+ "n_rotations": 5,
+ "n_unknown": 6,
+ "train_cap": 1500,
+ "eval_cap": 300,
+ "proto_cap": 300,
+ "split_frac": [
+  0.6,
+  0.2,
+  0.2
+ ],
+ "strict_min_groups": 5,
+ "tpr_target": 0.95,
+ "mc_passes": 5,
+ "noise_levels": [
+  0.1,
+  0.2,
+  0.3,
+  0.4,
+  0.5
+ ],
+ "fp16": true,
+ "resume": true
+}
+08:42:27 | INFO | 
+====================================================================================================
+## 1. CHARGEMENT DES DONNÉES
+====================================================================================================
+08:42:27 | INFO | Fichiers trouvés : {0.1: '/content/data/output_0.1.log', 0.2: '/content/data/output_0.2.log', 0.3: '/content/data/output_0.3.log', 0.4: '/content/data/output_0.4.log', 0.5: '/content/data/output_0.5.log', 0.0: '/content/data/output_0.log'}
+08:42:27 | INFO | [p=0.0] output_0.log | aperçu brut : ['category,log\n', 'authentication-failed,[Wed Nov 03 19:30:11 1976] [error] [client 217.121.56.73] user clarkesummer: authentication failure for "/at/challenge.png/pass": Password', 'authentication-failed,[Sat May 21 08:27:17 1988] [error] [client 195.255.99.164] user alicekelly: authentication failure for "/age/evidence.mp3/be": Password Mi']
+08:42:27 | INFO | [p=0.1] output_0.1.log | aperçu brut : ['category,log\n', 'authentication-failed,[Tue Apr 11 14:36:11 2000] [error] [client 28.213.68.3] user jessicakaiser: authentication failure for "/here/once.odp/lose": Password Mis', 'authentication-failed,[Tue Jan 21 17:01:07 2020] [error] [client 108.216.26.68] user mejianathan: authentication failure : "/power/general.ppt/moviefor" Passwor']
+08:42:28 | INFO | [p=0.2] output_0.2.log | aperçu brut : ['category,log\n', 'authentication-failed,[Mon Oct 08 02:06:17 1990] [error] [client 157.19.13.209] user saramaynard: authentication failure for "/production/break.bmp/measure": Pa', 'authentication-failed,[Tue Sep 27 04:12:32 2011] [error] [client 90.50.86.158] user whudson: glitch  authentication failure for  inaccuracy "/always/cut.css/tre']
+08:42:28 | INFO | [p=0.3] output_0.3.log | aperçu brut : ['category,log\n', 'authentication-failed,[Tue Mar 09 06:39:56 2004] [error] [client 191.207.106.101] user kristinneal: authentication failure for "/everybody/around.jpeg/upon": Pa', 'authentication-failed,[:Mismatch [shake] [client for] user lori8972.3.117.167 " failure : "/raise/little.mov/Tue Mar 18 20:20:17 1986authenticationerror Passwor']
+08:42:28 | INFO | [p=0.4] output_0.4.log | aperçu brut : ['category,log\n', 'authentication-failed,[Thu Nov 23 09:19:35 1972] [error] [client 65.199.194.249] user lrogers: authentication failure for "/free/after.png/stock": Password Mism', 'authentication-failed,[client] :errorSat Apr 18 19:55:06 1992 [5.33.125.183 :] user "] /but/result.jpg nterry Password failureauthentication/detail"Mismatch for']
+08:42:29 | INFO | [p=0.5] output_0.5.log | aperçu brut : ['category,log\n', 'authentication-failed,[Tue Jan 28 01:27:51 2014] [error] [client 156.17.197.60] user douglasmaldonado: authentication failure for "/standard/early.mp3/night": P', 'authentication-failed,:forauthentication [failure] /authority/car.wavhsandoval 214.18.6.71] user /: client Mismatch Thu Dec 07 03:54:44 2006 "[Password[]air " e']
+08:42:29 | INFO | 
+--- Contrôle qualité des fichiers ---
+                           format  rows_raw  bad_label  exact_dups_removed  conflict_rows_removed  rows_kept  n_classes  min_per_class  max_per_class  label_runs  mean_chars
+p                                                                                                                                                                            
+0.0  lines(delim=',',label=first)     35001          1                   4                      0      34996         30           1163           1167          30       150.9
+0.1  lines(delim=',',label=first)     35001          1                   0                      0      35000         30           1166           1167          30       155.0
+0.2  lines(delim=',',label=first)     35001          1                   0                      0      35000         30           1166           1167          30       159.6
+0.3  lines(delim=',',label=first)     35001          1                   0                      0      35000         30           1166           1167          30       164.1
+0.4  lines(delim=',',label=first)     35001          1                   0                      0      35000         30           1166           1167          30       167.6
+0.5  lines(delim=',',label=first)     35001          1                   0                      0      35000         30           1166           1167          30       172.8
+08:42:29 | INFO | Le fichier SIEVE_00 est ORDONNÉ par classe (30 blocs).
+08:42:29 | INFO | Textes identiques entre SIEVE_00 et chaque version bruitée (doublons inter-versions) : {0.1: 0, 0.2: 0, 0.3: 0, 0.4: 0, 0.5: 0}
+08:42:29 | INFO | 
+--- Exemples SIEVE_00 ---
+                                                                                                                                              text             classe
+25995                                    [Tue May 23 01:19:51 2017] [notice] Apache/1.2.1 (Red Hat) DAV/2 configured -- resuming normal operations       process-info
+13003                                                   At 17:42:12 16/02/1979 stevenlawrence successfully renamed  using /information/democratic.  file-modification
+22680  date=1977-05-27 time=18:50:29 logid="2466004125" type="traffic" subtype="multicast" level="notice" vd="vdom1" eventtime=315071251 srcip=...    network-traffic
+27457                                                                                 110797 19:42:46 [Note] /%vreyes/year/make: Shutdown complete   process-shutdown
+21295  <5985>1286 2002-08-21T07:06:58 email-80.harris.com girl 961 - [meta sequenceId="1646"] 4,,,c188b859b3f35ccfdd1628bf7b840cec,vtnet0,match...   network-filtered
+32076                                               Nov 12 15:28:50 history userdel[83283]: account deleted - account=davisdavid, uid=3134 by=6222      user-deletion
+08:42:29 | INFO | 
+====================================================================================================
+## 2. TAXONOMIE
+====================================================================================================
+08:42:29 | INFO | Taxonomie : 9 familles
+08:42:29 | INFO |   authentication    (2) : authentication-failed, authentication-success
+08:42:29 | INFO |   connection        (3) : connection-closed, connection-failed, connection-opened
+08:42:29 | INFO |   directory         (3) : directory-changed, directory-created, directory-deleted
+08:42:29 | INFO |   file              (5) : file-action-failure, file-deleted, file-modification, file-read, file-write
+08:42:29 | INFO |   http              (2) : http-request-failure, http-request-success
+08:42:29 | INFO |   network_security  (3) : ids-alert, network-filtered, network-traffic
+08:42:29 | INFO |   process           (5) : process-ended, process-error, process-info, process-shutdown, process-started
+08:42:29 | INFO |   system            (3) : database-operation, hardware-monitoring, system-configuration-changed
+08:42:29 | INFO |   user              (4) : user-creation, user-deletion, user-logout, user-session-open
+08:42:29 | INFO | 
+====================================================================================================
+## 3. GROUPES (TEMPLATES) ET SPLIT
+====================================================================================================
+08:42:31 | INFO | 
+--- Qualité de la reconstruction des templates (size_cv bas = groupes homogènes comme attendu) ---
+                              templates_expected  groups  expected_size  size_min  size_max  size_cv  empty_vec_rate  vocab  ARI_vs_blocks
+cls                                                                                                                                       
+authentication-failed                         69      69           16.9         2        34     0.35             0.0    232          0.669
+authentication-success                        37      37           31.5         5        62     0.49             0.0    128          0.540
+connection-closed                             15      15           77.5        21       155     0.32             0.0    120          0.892
+connection-failed                             13      13           89.8        88        91     0.01             0.0    103          0.902
+connection-opened                             16      16           72.9        31       146     0.31             0.0    112          0.920
+database-operation                             9       9          129.7       129       130     0.00             0.0     59          0.988
+directory-changed                              4       4          291.8       291       292     0.00             0.0      8          1.000
+directory-created                              3       3          389.0       389       389     0.00             0.0     10          1.000
+directory-deleted                              3       3          389.0       389       389     0.00             0.0      8          1.000
+file-action-failure                            2       2          583.5       583       584     0.00             0.0     39          1.000
+file-deleted                                   4       4          291.8       291       292     0.00             0.0     30          1.000
+file-modification                              2       2          583.5       583       584     0.00             0.0     11          1.000
+file-read                                      3       3          389.0         1       778     0.82             0.0      8          0.570
+file-write                                     3       3          389.0       389       389     0.00             0.0     14          1.000
+hardware-monitoring                           22      22           53.0        19        88     0.20             0.0    173          0.904
+http-request-failure                           3       3          389.0       389       389     0.00             0.0     28          1.000
+http-request-success                           4       4          291.8        70       514     0.54             0.0     39          0.696
+ids-alert                                     93      93           12.5         1        26     0.25             0.0    289          0.603
+network-filtered                               7       7          166.7       166       167     0.00             0.0    160          0.996
+network-traffic                                6       6          194.5       194       195     0.00             0.0    128          0.994
+process-ended                                  6       6          194.3       194       195     0.00             0.0     32          0.996
+process-error                                  6       6          194.3        35       354     0.47             0.0     66          0.814
+process-info                                   7       7          166.6       166       167     0.00             0.0     57          0.994
+process-shutdown                              12      12           97.2        19       195     0.37             0.0     73          0.890
+process-started                               34      34           34.3         6        70     0.25             0.0    122          0.568
+system-configuration-changed                  22      22           53.0        53        53     0.00             0.0    131          1.000
+user-creation                                  8       8          145.8        85       290     0.41             0.0     43          0.666
+user-deletion                                  5       5          233.2       233       234     0.00             0.0     37          1.000
+user-logout                                   19      19           61.4         3       122     0.31             0.0     74          0.891
+user-session-open                              3       3          388.7       388       389     0.00             0.0     11          1.000
+08:42:31 | INFO | Groupes construits en 2.4s | total groupes = 440
+08:42:31 | INFO | ARI moyen vs blocs du fichier = 0.883 (≈1 : les groupes coïncident avec les templates réels)
+08:42:32 | INFO | Cohérence assign_groups vs KMeans sur SIEVE_00 : 0.9999
+08:42:32 | INFO | 
+--- Split par classe ---
+                                 n  groups  strict  train  val  test
+authentication-failed         1167      69    True    695  205   267
+authentication-success        1167      37    True    694  229   244
+connection-closed             1163      15    True    710  227   226
+connection-failed             1167      13    True    628  270   269
+connection-opened             1167      16    True    729  219   219
+database-operation            1167       9    True    648  260   259
+directory-changed             1167       4   False    701  233   233
+directory-created             1167       3   False    701  233   233
+directory-deleted             1167       3   False    701  233   233
+file-action-failure           1167       2   False    701  233   233
+file-deleted                  1167       4   False    701  233   233
+file-modification             1167       2   False    701  233   233
+file-read                     1167       3   False    701  233   233
+file-write                    1167       3   False    701  233   233
+hardware-monitoring           1167      22    True    708  247   212
+http-request-failure          1167       3   False    701  233   233
+http-request-success          1167       4   False    701  233   233
+ids-alert                     1167      93    True    688  217   262
+network-filtered              1167       7    True    834  167   166
+network-traffic               1167       6    True    779  194   194
+process-ended                 1166       6    True    777  195   194
+process-error                 1166       6    True    778  194   194
+process-info                  1166       7    True    833  167   166
+process-shutdown              1166      12    True    777  195   194
+process-started               1166      34    True    646  256   264
+system-configuration-changed  1166      22    True    742  212   212
+user-creation                 1166       8    True    495  295   376
+user-deletion                 1166       5    True    700  233   233
+user-logout                   1166      19    True    614  308   244
+user-session-open             1166       3   False    700  233   233
+08:42:32 | INFO | Classes STRICTES (split par template, sans fuite) : 19/30 | NON strictes (fuite résiduelle) : ['directory-changed', 'directory-created', 'directory-deleted', 'file-action-failure', 'file-deleted', 'file-modification', 'file-read', 'file-write', 'http-request-failure', 'http-request-success', 'user-session-open']
+08:42:32 | INFO | Fuite de template (classes strictes) : 0 groupes présents dans >1 split (attendu 0)
+08:42:32 | INFO | 
+====================================================================================================
+## 4. VERSIONS BRUITÉES
+====================================================================================================
+08:42:34 | INFO | 
+--- Versions bruitées : rattachement aux templates ---
+      rows  kept_for_test  mean_sim  zero_sim_rate
+p                                                 
+0.1  35000           6996     0.895         0.0008
+0.2  35000           6927     0.867         0.0013
+0.3  35000           6943     0.847         0.0021
+0.4  35000           6858     0.830         0.0023
+0.5  35000           6956     0.808         0.0025
+08:42:34 | INFO | Tailles après plafonnement par classe : train=21185 val=6845 test=6882 proto=9000 noisy={0.1: 6914, 0.2: 6879, 0.3: 6877, 0.4: 6804, 0.5: 6880}
+08:42:34 | INFO | 
+====================================================================================================
+## 5. ROTATIONS DES CLASSES CACHÉES
+====================================================================================================
+08:42:34 | INFO | 
+--- Rotations (classes cachées) ---
+                                                                                                                       unknown                                          unknown_families  n_unknown_strict
+rotation                                                                                                                                                                                                  
+0                   [directory-deleted, file-action-failure, http-request-failure, ids-alert, process-shutdown, user-deletion]  [directory, file, http, network_security, process, user]                 3
+1                    [authentication-failed, connection-opened, file-read, http-request-success, process-started, user-logout]   [authentication, connection, file, http, process, user]                 4
+2                 [authentication-success, connection-closed, database-operation, file-modification, file-write, process-info]       [authentication, connection, file, process, system]                 4
+3         [connection-failed, network-filtered, process-error, system-configuration-changed, user-creation, user-session-open]     [connection, network_security, process, system, user]                 5
+4                    [directory-changed, directory-created, file-deleted, hardware-monitoring, network-traffic, process-ended]      [directory, file, network_security, process, system]                 3
+08:42:34 | INFO | Rotations disjointes : True | classes couvertes comme inconnues : 30/30
+08:42:34 | INFO | 
+====================================================================================================
+## 6. MODÈLE
+====================================================================================================
+08:42:50 | INFO | Tokenisation en 10.5s | longueur tokens train : moy=51.8 p95=96 max=96 | tronqués (>=96) : 13.29%
+08:42:50 | INFO | 
+====================================================================================================
+## 9. E1 — CLOSED-SET (30 classes connues)
+====================================================================================================
+08:42:55 | WARNING | /tmp/ipykernel_508/3688756628.py:103: FutureWarning: `torch.cuda.amp.GradScaler(args...)` is deprecated. Please use `torch.amp.GradScaler('cuda', args...)` instead.
+  scaler = torch.cuda.amp.GradScaler(enabled=AMP); Md = M.to(DEVICE)
+
+08:42:55 | INFO | [train E1-hier] K=30 connues | 21185 logs train | 6845 val | 996 steps
+08:43:45 | INFO | [train E1-hier] epoch 1/3 | loss=1.3888 {'ce_fine': 0.7575, 'ce_fam': 0.3955, 'cons': 0.4716} | val_acc_fine=0.7722 val_acc_fam=0.8926 | 50s
+08:44:34 | INFO | [train E1-hier] epoch 2/3 | loss=0.1121 {'ce_fine': 0.0589, 'ce_fam': 0.0364, 'cons': 0.0337} | val_acc_fine=0.7665 val_acc_fam=0.8909 | 49s
+08:45:25 | INFO | [train E1-hier] epoch 3/3 | loss=0.1024 {'ce_fine': 0.0528, 'ce_fam': 0.0337, 'cons': 0.0318} | val_acc_fine=0.7702 val_acc_fam=0.8904 | 51s
+08:45:51 | INFO | [E1-hier] terminé en 181s
+08:45:52 | WARNING | /tmp/ipykernel_508/3688756628.py:103: FutureWarning: `torch.cuda.amp.GradScaler(args...)` is deprecated. Please use `torch.amp.GradScaler('cuda', args...)` instead.
+  scaler = torch.cuda.amp.GradScaler(enabled=AMP); Md = M.to(DEVICE)
+
+08:45:52 | INFO | [train E1-flat] K=30 connues | 21185 logs train | 6845 val | 996 steps
+08:46:44 | INFO | [train E1-flat] epoch 1/3 | loss=0.6629 {'ce_fine': 0.6629} | val_acc_fine=0.7714 val_acc_fam=0.8390 | 52s
+08:47:36 | INFO | [train E1-flat] epoch 2/3 | loss=0.0548 {'ce_fine': 0.0548} | val_acc_fine=0.7787 val_acc_fam=0.8478 | 52s
+08:48:29 | INFO | [train E1-flat] epoch 3/3 | loss=0.0512 {'ce_fine': 0.0512} | val_acc_fine=0.7753 val_acc_fam=0.8456 | 53s
+08:48:57 | INFO | [E1-flat] terminé en 185s
+08:48:57 | INFO | 
+--- E1 : métriques closed-set (clean + bruité) ---
+             rot test_set      f1  acc_fine  fam_acc  tax_dist     ece  cons_raw     n
+model view                                                                            
+hier  all     E1    clean  0.6813    0.7203   0.8155    0.4643  0.2134    0.9779  6882
+      strict  E1    clean  0.5291    0.5809   0.7326    0.6865  0.3397    0.9779  4319
+flat  all     E1    clean  0.6644    0.7058   0.7958    0.4984  0.2248       NaN  6882
+      strict  E1    clean  0.5062    0.5578   0.7013    0.7409  0.3625       NaN  4319
+08:48:57 | INFO | 
+--- E1 : F1 par classe (clean) ---
+                               hier   flat  strict
+authentication-failed         0.560  0.480    True
+authentication-success        0.317  0.048    True
+connection-closed             0.235  0.362    True
+connection-failed             0.263  0.397    True
+connection-opened             0.335  0.273    True
+database-operation            1.000  1.000    True
+directory-changed             0.877  0.877   False
+directory-created             1.000  1.000   False
+directory-deleted             0.879  0.879   False
+file-action-failure           1.000  1.000   False
+file-deleted                  0.841  0.841   False
+file-modification             0.901  0.901   False
+file-read                     1.000  1.000   False
+file-write                    1.000  1.000   False
+hardware-monitoring           0.823  0.691    True
+http-request-failure          1.000  0.934   False
+http-request-success          1.000  1.000   False
+ids-alert                     0.989  0.985    True
+network-filtered              1.000  1.000    True
+network-traffic               0.000  0.000    True
+process-ended                 0.000  0.000    True
+process-error                 0.000  0.000    True
+process-info                  0.000  0.000    True
+process-shutdown              0.759  0.759    True
+process-started               0.592  0.595    True
+system-configuration-changed  0.629  0.538    True
+user-creation                 1.000  1.000    True
+user-deletion                 1.000  1.000    True
+user-logout                   0.552  0.489    True
+user-session-open             0.886  0.883   False
+08:48:57 | INFO | E1-hier : 10 confusions les plus fréquentes (vrai -> prédit) : [('process-ended->process-started', 194), ('network-traffic->connection-failed', 194), ('process-error->connection-closed', 186), ('process-info->authentication-success', 158), ('connection-failed->connection-opened', 152), ('user-logout->connection-closed', 122), ('authentication-success->authentication-failed', 100), ('connection-closed->authentication-failed', 78), ('connection-closed->user-logout', 74), ('connection-opened->connection-failed', 73)]
+08:48:57 | INFO | 
+====================================================================================================
+## 10. EXPÉRIENCES OPEN-SET (E2–E4)
+====================================================================================================
+08:48:57 | INFO | 
+##########################################################################################
+# ROTATION 1/5 | inconnues = ['directory-deleted', 'file-action-failure', 'http-request-failure', 'ids-alert', 'process-shutdown', 'user-deletion']
+##########################################################################################
+08:48:58 | WARNING | /tmp/ipykernel_508/3688756628.py:103: FutureWarning: `torch.cuda.amp.GradScaler(args...)` is deprecated. Please use `torch.amp.GradScaler('cuda', args...)` instead.
+  scaler = torch.cuda.amp.GradScaler(enabled=AMP); Md = M.to(DEVICE)
+
+08:48:58 | INFO | [train R0-hier] K=24 connues | 16917 logs train | 5501 val | 795 steps
+08:49:40 | INFO | [train R0-hier] epoch 1/3 | loss=1.3975 {'ce_fine': 0.74, 'ce_fam': 0.4165, 'cons': 0.4822} | val_acc_fine=0.7491 val_acc_fam=0.8377 | 42s
+08:50:23 | INFO | [train R0-hier] epoch 2/3 | loss=0.0919 {'ce_fine': 0.0529, 'ce_fam': 0.0264, 'cons': 0.0252} | val_acc_fine=0.7553 val_acc_fam=0.8462 | 42s
+08:51:05 | INFO | [train R0-hier] epoch 3/3 | loss=0.0814 {'ce_fine': 0.0465, 'ce_fam': 0.0234, 'cons': 0.023} | val_acc_fine=0.7542 val_acc_fam=0.8337 | 43s
+08:51:33 | INFO | [eval hier] seuils tau (quantile 5% des connus val) : {'msp': 0.4368, 'energy': 4.8413, 'proto': 0.5522, 'mcd': -1.7325, 'hier': 0.301}
+08:52:26 | INFO | [R0-hier] total 209s
+08:52:27 | WARNING | /tmp/ipykernel_508/3688756628.py:103: FutureWarning: `torch.cuda.amp.GradScaler(args...)` is deprecated. Please use `torch.amp.GradScaler('cuda', args...)` instead.
+  scaler = torch.cuda.amp.GradScaler(enabled=AMP); Md = M.to(DEVICE)
+
+08:52:27 | INFO | [train R0-flat] K=24 connues | 16917 logs train | 5501 val | 795 steps
+08:53:10 | INFO | [train R0-flat] epoch 1/3 | loss=0.6615 {'ce_fine': 0.6615} | val_acc_fine=0.7831 val_acc_fam=0.8546 | 43s
+08:53:53 | INFO | [train R0-flat] epoch 2/3 | loss=0.0491 {'ce_fine': 0.0491} | val_acc_fine=0.8309 val_acc_fam=0.8737 | 42s
+08:54:35 | INFO | [train R0-flat] epoch 3/3 | loss=0.0450 {'ce_fine': 0.045} | val_acc_fine=0.8280 val_acc_fam=0.8657 | 43s
+08:55:03 | INFO | [eval flat] seuils tau (quantile 5% des connus val) : {'msp': 0.409, 'energy': 4.4527, 'proto': 0.3785, 'mcd': -1.92}
+08:55:57 | INFO | [R0-flat] total 210s
+08:55:58 | INFO | 
+--- Rotation 0 — OOD (clean, vue strict) ---
+               auroc  aupr_in  aupr_out   fpr95    oscr  known_reject  unk_accept  osr_f1  unk_fam_acc
+model method                                                                                          
+hier  msp     0.6249   0.8233    0.3499  0.9503  0.4027        0.0758      0.9164  0.2790       0.3588
+      energy  0.6327   0.8361    0.4331  0.8220  0.4095        0.0140      0.8826  0.2761       0.3588
+      proto   0.6696   0.8436    0.4659  0.8120  0.4201        0.0548      0.7954  0.2847       0.3588
+      mcd     0.6385   0.8172    0.4123  0.8631  0.4048        0.0372      0.8725  0.2756       0.3588
+      hier    0.6643   0.8537    0.4232  0.8365  0.4241        0.0433      0.8422  0.2808       0.3588
+flat  msp     0.6351   0.8331    0.3446  0.9496  0.3989        0.0251      0.9625  0.3006       0.3696
+      energy  0.6723   0.8531    0.4155  0.8552  0.4293        0.0003      0.9971  0.2963       0.3696
+      proto   0.6725   0.8538    0.4110  0.8696  0.4291        0.0030      0.9805  0.2978       0.3696
+      mcd     0.6580   0.8388    0.4137  0.8790  0.4112        0.0033      0.9647  0.2990       0.3696
+08:55:58 | INFO | 
+--- Rotation 0 — closed-set sur connus (clean) ---
+              rot test_set      f1  acc_fine  fam_acc  tax_dist     ece  cons_raw     n
+model view                                                                             
+hier  all       0    clean  0.6250    0.6751   0.7940    0.5309  0.2378    0.9785  5494
+      strict    0    clean  0.4586    0.5223   0.7022    0.7755  0.3581    0.9785  3630
+flat  all       0    clean  0.6606    0.6937   0.8034    0.5029  0.2194       NaN  5494
+      strict    0    clean  0.5121    0.5504   0.7165    0.7331  0.3357       NaN  3630
+08:55:58 | INFO | 
+##########################################################################################
+# ROTATION 2/5 | inconnues = ['authentication-failed', 'connection-opened', 'file-read', 'http-request-success', 'process-started', 'user-logout']
+##########################################################################################
+08:55:58 | WARNING | /tmp/ipykernel_508/3688756628.py:103: FutureWarning: `torch.cuda.amp.GradScaler(args...)` is deprecated. Please use `torch.amp.GradScaler('cuda', args...)` instead.
+  scaler = torch.cuda.amp.GradScaler(enabled=AMP); Md = M.to(DEVICE)
+
+08:55:58 | INFO | [train R1-hier] K=24 connues | 17099 logs train | 5399 val | 804 steps
+08:56:42 | INFO | [train R1-hier] epoch 1/3 | loss=1.3554 {'ce_fine': 0.7147, 'ce_fam': 0.4048, 'cons': 0.4718} | val_acc_fine=0.8226 val_acc_fam=0.8955 | 44s
+08:57:25 | INFO | [train R1-hier] epoch 2/3 | loss=0.1329 {'ce_fine': 0.0685, 'ce_fam': 0.0443, 'cons': 0.0401} | val_acc_fine=0.8666 val_acc_fam=0.9048 | 43s
+08:58:08 | INFO | [train R1-hier] epoch 3/3 | loss=0.1178 {'ce_fine': 0.0618, 'ce_fam': 0.0391, 'cons': 0.0339} | val_acc_fine=0.8629 val_acc_fam=0.9011 | 43s
+08:58:36 | INFO | [eval hier] seuils tau (quantile 5% des connus val) : {'msp': 0.6382, 'energy': 5.5021, 'proto': 0.5922, 'mcd': -1.3462, 'hier': 0.4265}
+08:59:29 | INFO | [R1-hier] total 211s
+08:59:30 | WARNING | /tmp/ipykernel_508/3688756628.py:103: FutureWarning: `torch.cuda.amp.GradScaler(args...)` is deprecated. Please use `torch.amp.GradScaler('cuda', args...)` instead.
+  scaler = torch.cuda.amp.GradScaler(enabled=AMP); Md = M.to(DEVICE)
+
+08:59:30 | INFO | [train R1-flat] K=24 connues | 17099 logs train | 5399 val | 804 steps
+09:00:13 | INFO | [train R1-flat] epoch 1/3 | loss=0.6378 {'ce_fine': 0.6378} | val_acc_fine=0.7501 val_acc_fam=0.7596 | 43s
+09:00:56 | INFO | [train R1-flat] epoch 2/3 | loss=0.0652 {'ce_fine': 0.0652} | val_acc_fine=0.7500 val_acc_fam=0.7596 | 43s
+09:01:39 | INFO | [train R1-flat] epoch 3/3 | loss=0.0599 {'ce_fine': 0.0599} | val_acc_fine=0.7603 val_acc_fam=0.7700 | 43s
+09:02:06 | INFO | [eval flat] seuils tau (quantile 5% des connus val) : {'msp': 0.4944, 'energy': 5.0543, 'proto': 0.4562, 'mcd': -1.6578}
+09:02:59 | INFO | [R1-flat] total 210s
+09:02:59 | INFO | 
+--- Rotation 1 — OOD (clean, vue strict) ---
+               auroc  aupr_in  aupr_out   fpr95    oscr  known_reject  unk_accept  osr_f1  unk_fam_acc
+model method                                                                                          
+hier  msp     0.6347   0.7831    0.4270  0.8904  0.5141        0.0941      0.8301  0.3490       0.5945
+      energy  0.6430   0.8058    0.4295  0.8932  0.5233        0.0971      0.7918  0.3504       0.5945
+      proto   0.6634   0.8289    0.4588  0.8890  0.5417        0.0791      0.8068  0.3528       0.5945
+      mcd     0.6411   0.7894    0.4195  0.9055  0.5161        0.0965      0.7945  0.3505       0.5945
+      hier    0.6579   0.8132    0.4558  0.8699  0.5309        0.0755      0.8151  0.3520       0.5945
+flat  msp     0.6268   0.8099    0.3807  0.9253  0.5225        0.1080      0.8425  0.3382       0.5322
+      energy  0.6173   0.8099    0.3515  0.9630  0.5286        0.1474      0.9068  0.3372       0.5322
+      proto   0.6367   0.8309    0.3630  0.9521  0.5482        0.1164      0.9082  0.3411       0.5322
+      mcd     0.6147   0.8002    0.3566  0.9637  0.5190        0.1356      0.8836  0.3365       0.5322
+09:02:59 | INFO | 
+--- Rotation 1 — closed-set sur connus (clean) ---
+              rot test_set      f1  acc_fine  fam_acc  tax_dist     ece  cons_raw     n
+model view                                                                             
+hier  all       1    clean  0.7347    0.7909   0.8174    0.3917  0.1430    0.9766  5422
+      strict    1    clean  0.6226    0.6926   0.7359    0.5714  0.2275    0.9766  3325
+flat  all       1    clean  0.7239    0.7850   0.8194    0.3956  0.1103       NaN  5422
+      strict    1    clean  0.6000    0.6845   0.7408    0.5747  0.1816       NaN  3325
+09:02:59 | INFO | 
+##########################################################################################
+# ROTATION 3/5 | inconnues = ['authentication-success', 'connection-closed', 'database-operation', 'file-modification', 'file-write', 'process-info']
+##########################################################################################
+09:03:00 | WARNING | /tmp/ipykernel_508/3688756628.py:103: FutureWarning: `torch.cuda.amp.GradScaler(args...)` is deprecated. Please use `torch.amp.GradScaler('cuda', args...)` instead.
+  scaler = torch.cuda.amp.GradScaler(enabled=AMP); Md = M.to(DEVICE)
+
+09:03:00 | INFO | [train R2-hier] K=24 connues | 16898 logs train | 5496 val | 795 steps
+09:03:43 | INFO | [train R2-hier] epoch 1/3 | loss=1.3346 {'ce_fine': 0.7126, 'ce_fam': 0.3925, 'cons': 0.459} | val_acc_fine=0.8352 val_acc_fam=0.8786 | 43s
+09:04:25 | INFO | [train R2-hier] epoch 2/3 | loss=0.0820 {'ce_fine': 0.0473, 'ce_fam': 0.0226, 'cons': 0.024} | val_acc_fine=0.8306 val_acc_fam=0.8734 | 43s
+09:05:08 | INFO | [train R2-hier] epoch 3/3 | loss=0.0745 {'ce_fine': 0.043, 'ce_fam': 0.0202, 'cons': 0.0227} | val_acc_fine=0.8311 val_acc_fam=0.8737 | 42s
+09:05:36 | INFO | [eval hier] seuils tau (quantile 5% des connus val) : {'msp': 0.7239, 'energy': 6.1949, 'proto': 0.6851, 'mcd': -0.9513, 'hier': 0.582}
+09:06:28 | INFO | [R2-hier] total 208s
+09:06:29 | WARNING | /tmp/ipykernel_508/3688756628.py:103: FutureWarning: `torch.cuda.amp.GradScaler(args...)` is deprecated. Please use `torch.amp.GradScaler('cuda', args...)` instead.
+  scaler = torch.cuda.amp.GradScaler(enabled=AMP); Md = M.to(DEVICE)
+
+09:06:29 | INFO | [train R2-flat] K=24 connues | 16898 logs train | 5496 val | 795 steps
+09:07:12 | INFO | [train R2-flat] epoch 1/3 | loss=0.6224 {'ce_fine': 0.6224} | val_acc_fine=0.8339 val_acc_fam=0.8954 | 43s
+09:07:54 | INFO | [train R2-flat] epoch 2/3 | loss=0.0433 {'ce_fine': 0.0433} | val_acc_fine=0.8326 val_acc_fam=0.8903 | 43s
+09:08:37 | INFO | [train R2-flat] epoch 3/3 | loss=0.0420 {'ce_fine': 0.042} | val_acc_fine=0.8328 val_acc_fam=0.8923 | 43s
+09:09:05 | INFO | [eval flat] seuils tau (quantile 5% des connus val) : {'msp': 0.5545, 'energy': 5.0775, 'proto': 0.4948, 'mcd': -1.5501}
+09:09:58 | INFO | [R2-flat] total 209s
+09:09:58 | INFO | 
+--- Rotation 2 — OOD (clean, vue strict) ---
+               auroc  aupr_in  aupr_out   fpr95    oscr  known_reject  unk_accept  osr_f1  unk_fam_acc
+model method                                                                                          
+hier  msp     0.6002   0.7681    0.3962  0.9089  0.4852        0.1183      0.7921  0.3386       0.1014
+      energy  0.6274   0.7793    0.4173  0.9184  0.5081        0.1466      0.7693  0.3443       0.1014
+      proto   0.6247   0.7911    0.3946  0.9273  0.4966        0.1548      0.7230  0.3467       0.1014
+      mcd     0.5908   0.7711    0.3977  0.9104  0.4785        0.1533      0.7950  0.3428       0.1014
+      hier    0.6113   0.7929    0.3860  0.9126  0.4902        0.1180      0.8134  0.3346       0.1014
+flat  msp     0.7026   0.8289    0.4705  0.9126  0.5292        0.0844      0.8295  0.3361       0.1675
+      energy  0.7107   0.8379    0.5117  0.8832  0.5398        0.0751      0.8215  0.3359       0.1675
+      proto   0.7097   0.8529    0.5160  0.8641  0.5390        0.0853      0.7722  0.3422       0.1675
+      mcd     0.6985   0.8252    0.4791  0.8942  0.5281        0.0870      0.8075  0.3395       0.1675
+09:09:58 | INFO | 
+--- Rotation 2 — closed-set sur connus (clean) ---
+              rot test_set      f1  acc_fine  fam_acc  tax_dist     ece  cons_raw     n
+model view                                                                             
+hier  all       2    clean  0.7691    0.8011   0.8879    0.3110  0.1658    0.9929  5521
+      strict    2    clean  0.6493    0.6980   0.8379    0.4641  0.2655    0.9929  3424
+flat  all       2    clean  0.7577    0.7857   0.8826    0.3316  0.1629       NaN  5521
+      strict    2    clean  0.6310    0.6732   0.8294    0.4974  0.2627       NaN  3424
+09:09:58 | INFO | 
+##########################################################################################
+# ROTATION 4/5 | inconnues = ['connection-failed', 'network-filtered', 'process-error', 'system-configuration-changed', 'user-creation', 'user-session-open']
+##########################################################################################
+09:09:59 | WARNING | /tmp/ipykernel_508/3688756628.py:103: FutureWarning: `torch.cuda.amp.GradScaler(args...)` is deprecated. Please use `torch.amp.GradScaler('cuda', args...)` instead.
+  scaler = torch.cuda.amp.GradScaler(enabled=AMP); Md = M.to(DEVICE)
+
+09:09:59 | INFO | [train R3-hier] K=24 connues | 17008 logs train | 5474 val | 798 steps
+09:10:42 | INFO | [train R3-hier] epoch 1/3 | loss=1.3674 {'ce_fine': 0.719, 'ce_fam': 0.4144, 'cons': 0.468} | val_acc_fine=0.7483 val_acc_fam=0.8557 | 43s
+09:11:24 | INFO | [train R3-hier] epoch 2/3 | loss=0.1121 {'ce_fine': 0.0483, 'ce_fam': 0.044, 'cons': 0.0396} | val_acc_fine=0.7461 val_acc_fam=0.8581 | 43s
+09:12:07 | INFO | [train R3-hier] epoch 3/3 | loss=0.1035 {'ce_fine': 0.0437, 'ce_fam': 0.0411, 'cons': 0.0375} | val_acc_fine=0.7589 val_acc_fam=0.8666 | 43s
+09:12:35 | INFO | [eval hier] seuils tau (quantile 5% des connus val) : {'msp': 0.6379, 'energy': 5.5763, 'proto': 0.6409, 'mcd': -1.1726, 'hier': 0.4348}
+09:13:28 | INFO | [R3-hier] total 210s
+09:13:30 | WARNING | /tmp/ipykernel_508/3688756628.py:103: FutureWarning: `torch.cuda.amp.GradScaler(args...)` is deprecated. Please use `torch.amp.GradScaler('cuda', args...)` instead.
+  scaler = torch.cuda.amp.GradScaler(enabled=AMP); Md = M.to(DEVICE)
+
+09:13:30 | INFO | [train R3-flat] K=24 connues | 17008 logs train | 5474 val | 798 steps
+09:14:13 | INFO | [train R3-flat] epoch 1/3 | loss=0.6195 {'ce_fine': 0.6195} | val_acc_fine=0.7804 val_acc_fam=0.8694 | 43s
+09:14:55 | INFO | [train R3-flat] epoch 2/3 | loss=0.0444 {'ce_fine': 0.0444} | val_acc_fine=0.7863 val_acc_fam=0.8774 | 43s
+09:15:38 | INFO | [train R3-flat] epoch 3/3 | loss=0.0413 {'ce_fine': 0.0413} | val_acc_fine=0.7808 val_acc_fam=0.8677 | 43s
+09:16:06 | INFO | [eval flat] seuils tau (quantile 5% des connus val) : {'msp': 0.56, 'energy': 5.4714, 'proto': 0.5357, 'mcd': -1.3954}
+09:16:59 | INFO | [R3-flat] total 210s
+09:17:00 | INFO | 
+--- Rotation 3 — OOD (clean, vue strict) ---
+               auroc  aupr_in  aupr_out   fpr95    oscr  known_reject  unk_accept  osr_f1  unk_fam_acc
+model method                                                                                          
+hier  msp     0.8192   0.9244    0.5448  0.9352  0.5792        0.0884      0.6572  0.3122       0.3362
+      energy  0.8367   0.9298    0.6156  0.8624  0.5867        0.0784      0.5670  0.3194       0.3362
+      proto   0.8189   0.9244    0.5933  0.8515  0.5834        0.0922      0.6754  0.3152       0.3362
+      mcd     0.8231   0.9262    0.5596  0.9032  0.5816        0.0919      0.6150  0.3142       0.3362
+      hier    0.8093   0.9181    0.5731  0.8843  0.5732        0.0780      0.8311  0.2973       0.3362
+flat  msp     0.8844   0.9404    0.7826  0.4534  0.5989        0.0321      0.5386  0.3130       0.3311
+      energy  0.8800   0.9390    0.7735  0.4694  0.5983        0.0881      0.4447  0.3224       0.3311
+      proto   0.8855   0.9480    0.7707  0.4782  0.6045        0.1026      0.4185  0.3277       0.3311
+      mcd     0.8787   0.9414    0.7485  0.5102  0.5994        0.0664      0.4862  0.3183       0.3311
+09:17:00 | INFO | 
+--- Rotation 3 — closed-set sur connus (clean) ---
+              rot test_set      f1  acc_fine  fam_acc  tax_dist     ece  cons_raw     n
+model view                                                                             
+hier  all       3    clean  0.7273    0.7649   0.8317    0.4034  0.1688    0.9951  5508
+      strict    3    clean  0.5686    0.6290   0.7448    0.6262  0.2885    0.9951  3178
+flat  all       3    clean  0.7193    0.7627   0.8259    0.4114  0.1776       NaN  5508
+      strict    3    clean  0.5546    0.6249   0.7344    0.6407  0.3093       NaN  3178
+09:17:00 | INFO | 
+##########################################################################################
+# ROTATION 5/5 | inconnues = ['directory-changed', 'directory-created', 'file-deleted', 'hardware-monitoring', 'network-traffic', 'process-ended']
+##########################################################################################
+09:17:00 | WARNING | /tmp/ipykernel_508/3688756628.py:103: FutureWarning: `torch.cuda.amp.GradScaler(args...)` is deprecated. Please use `torch.amp.GradScaler('cuda', args...)` instead.
+  scaler = torch.cuda.amp.GradScaler(enabled=AMP); Md = M.to(DEVICE)
+
+09:17:00 | INFO | [train R4-hier] K=24 connues | 16818 logs train | 5510 val | 789 steps
+09:17:43 | INFO | [train R4-hier] epoch 1/3 | loss=1.3097 {'ce_fine': 0.6816, 'ce_fam': 0.3908, 'cons': 0.4744} | val_acc_fine=0.8403 val_acc_fam=0.9256 | 42s
+09:18:25 | INFO | [train R4-hier] epoch 2/3 | loss=0.0153 {'ce_fine': 0.0073, 'ce_fam': 0.0038, 'cons': 0.0083} | val_acc_fine=0.8439 val_acc_fam=0.9321 | 42s
+09:19:07 | INFO | [train R4-hier] epoch 3/3 | loss=0.0099 {'ce_fine': 0.0046, 'ce_fam': 0.0025, 'cons': 0.0055} | val_acc_fine=0.8363 val_acc_fam=0.9245 | 42s
+09:19:35 | INFO | [eval hier] seuils tau (quantile 5% des connus val) : {'msp': 0.6492, 'energy': 5.3701, 'proto': 0.6407, 'mcd': -1.3089, 'hier': 0.5441}
+09:20:28 | INFO | [R4-hier] total 208s
+09:20:29 | WARNING | /tmp/ipykernel_508/3688756628.py:103: FutureWarning: `torch.cuda.amp.GradScaler(args...)` is deprecated. Please use `torch.amp.GradScaler('cuda', args...)` instead.
+  scaler = torch.cuda.amp.GradScaler(enabled=AMP); Md = M.to(DEVICE)
+
+09:20:29 | INFO | [train R4-flat] K=24 connues | 16818 logs train | 5510 val | 789 steps
+09:21:11 | INFO | [train R4-flat] epoch 1/3 | loss=0.5998 {'ce_fine': 0.5998} | val_acc_fine=0.8325 val_acc_fam=0.8828 | 42s
+09:21:54 | INFO | [train R4-flat] epoch 2/3 | loss=0.0042 {'ce_fine': 0.0042} | val_acc_fine=0.8363 val_acc_fam=0.8880 | 42s
+09:22:36 | INFO | [train R4-flat] epoch 3/3 | loss=0.0025 {'ce_fine': 0.0025} | val_acc_fine=0.8354 val_acc_fam=0.8869 | 42s
+09:23:04 | INFO | [eval flat] seuils tau (quantile 5% des connus val) : {'msp': 0.6004, 'energy': 5.4124, 'proto': 0.5064, 'mcd': -1.4275}
+09:23:57 | INFO | [R4-flat] total 209s
+09:23:57 | INFO | 
+--- Rotation 4 — OOD (clean, vue strict) ---
+               auroc  aupr_in  aupr_out   fpr95    oscr  known_reject  unk_accept  osr_f1  unk_fam_acc
+model method                                                                                          
+hier  msp     0.7053   0.8861    0.3665  0.9630  0.5577        0.0715      0.9361  0.3740       0.4419
+      energy  0.7270   0.8930    0.4168  0.9523  0.5671        0.0683      0.9346  0.3716       0.4419
+      proto   0.7354   0.8901    0.4077  0.9623  0.5702        0.0753      0.8907  0.3769       0.4419
+      mcd     0.7012   0.8727    0.3966  0.9338  0.5504        0.0777      0.8868  0.3738       0.4419
+      hier    0.7177   0.8896    0.3724  0.9707  0.5666        0.0734      0.9246  0.3757       0.4419
+flat  msp     0.7065   0.8771    0.3948  0.9069  0.5536        0.0355      0.9446  0.3882       0.4065
+      energy  0.7308   0.8801    0.4803  0.7952  0.5707        0.0075      0.9446  0.3861       0.4065
+      proto   0.7297   0.8792    0.4834  0.7614  0.5640        0.0126      0.9330  0.3880       0.4065
+      mcd     0.7282   0.8882    0.4636  0.8345  0.5645        0.0129      0.9307  0.3865       0.4065
+09:23:57 | INFO | 
+--- Rotation 4 — closed-set sur connus (clean) ---
+              rot test_set      f1  acc_fine  fam_acc  tax_dist     ece  cons_raw     n
+model view                                                                             
+hier  all       4    clean  0.7380    0.7790   0.8655    0.3555  0.1717    0.9678  5583
+      strict    4    clean  0.6143    0.6682   0.7981    0.5337  0.2589    0.9678  3719
+flat  all       4    clean  0.7615    0.7992   0.8542    0.3466  0.1678       NaN  5583
+      strict    4    clean  0.6496    0.6986   0.7811    0.5203  0.2525       NaN  3719
+09:23:57 | INFO | Résultats bruts : closed=120 lignes | open=440 | par-classe=1320
+09:23:58 | INFO | 
+====================================================================================================
+## 11. AGRÉGATION
+====================================================================================================
+09:23:58 | INFO | 
+--- E2 — Détection d'inconnus, moyenne ± std sur 5 rotations (vue strict) ---
+              n_rot          auroc        aupr_in       aupr_out          fpr95           oscr         osr_f1   known_reject     unk_accept    unk_fam_acc
+model method                                                                                                                                              
+flat  energy      5  0.722 ± 0.098  0.864 ± 0.049  0.506 ± 0.162  0.793 ± 0.191  0.533 ± 0.064  0.336 ± 0.033  0.064 ± 0.061  0.823 ± 0.221  0.361 ± 0.132
+      mcd         5  0.716 ± 0.101  0.859 ± 0.056  0.492 ± 0.151  0.816 ± 0.177  0.524 ± 0.071  0.336 ± 0.033  0.061 ± 0.055  0.815 ± 0.193  0.361 ± 0.132
+      msp         5  0.711 ± 0.104  0.858 ± 0.052  0.475 ± 0.178  0.830 ± 0.211  0.521 ± 0.074  0.335 ± 0.034  0.057 ± 0.037  0.824 ± 0.170  0.361 ± 0.132
+      proto       5  0.727 ± 0.096  0.873 ± 0.045  0.509 ± 0.158  0.785 ± 0.184  0.537 ± 0.065  0.339 ± 0.033  0.064 ± 0.053  0.803 ± 0.228  0.361 ± 0.132
+hier  energy      5  0.693 ± 0.090  0.849 ± 0.062  0.462 ± 0.086  0.890 ± 0.050  0.519 ± 0.069  0.332 ± 0.037  0.081 ± 0.048  0.789 ± 0.141  0.367 ± 0.180
+      hier        5  0.692 ± 0.076  0.854 ± 0.052  0.442 ± 0.080  0.895 ± 0.051  0.517 ± 0.062  0.328 ± 0.039  0.078 ± 0.027  0.845 ± 0.046  0.367 ± 0.180
+      mcd         5  0.679 ± 0.090  0.835 ± 0.064  0.437 ± 0.069  0.903 ± 0.025  0.506 ± 0.069  0.331 ± 0.038  0.091 ± 0.042  0.793 ± 0.108  0.367 ± 0.180
+      msp         5  0.677 ± 0.089  0.837 ± 0.067  0.417 ± 0.077  0.930 ± 0.030  0.508 ± 0.069  0.331 ± 0.036  0.090 ± 0.018  0.826 ± 0.112  0.367 ± 0.180
+      proto       5  0.702 ± 0.076  0.856 ± 0.052  0.464 ± 0.079  0.888 ± 0.060  0.522 ± 0.066  0.335 ± 0.036  0.091 ± 0.038  0.778 ± 0.083  0.367 ± 0.180
+09:23:58 | INFO | 
+--- E2 — Détection d'inconnus, moyenne ± std sur 5 rotations (vue all) ---
+              n_rot          auroc        aupr_in       aupr_out          fpr95           oscr         osr_f1   known_reject     unk_accept    unk_fam_acc
+model method                                                                                                                                              
+flat  energy      5  0.795 ± 0.078  0.939 ± 0.025  0.491 ± 0.165  0.746 ± 0.188  0.669 ± 0.053  0.656 ± 0.045  0.039 ± 0.037  0.823 ± 0.221  0.361 ± 0.132
+      mcd         5  0.790 ± 0.078  0.937 ± 0.027  0.474 ± 0.152  0.773 ± 0.189  0.664 ± 0.059  0.657 ± 0.043  0.037 ± 0.033  0.815 ± 0.193  0.361 ± 0.132
+      msp         5  0.777 ± 0.079  0.935 ± 0.026  0.438 ± 0.166  0.805 ± 0.178  0.654 ± 0.061  0.655 ± 0.040  0.041 ± 0.021  0.824 ± 0.170  0.361 ± 0.132
+      proto       5  0.810 ± 0.072  0.946 ± 0.022  0.501 ± 0.162  0.743 ± 0.188  0.681 ± 0.051  0.659 ± 0.046  0.039 ± 0.031  0.803 ± 0.228  0.361 ± 0.132
+hier  energy      5  0.758 ± 0.087  0.923 ± 0.037  0.438 ± 0.090  0.793 ± 0.149  0.643 ± 0.074  0.652 ± 0.054  0.050 ± 0.029  0.789 ± 0.141  0.367 ± 0.180
+      hier        5  0.755 ± 0.062  0.926 ± 0.027  0.395 ± 0.050  0.859 ± 0.043  0.643 ± 0.055  0.643 ± 0.043  0.057 ± 0.026  0.845 ± 0.046  0.367 ± 0.180
+      mcd         5  0.750 ± 0.083  0.916 ± 0.038  0.413 ± 0.070  0.814 ± 0.100  0.636 ± 0.068  0.651 ± 0.052  0.057 ± 0.025  0.793 ± 0.108  0.367 ± 0.180
+      msp         5  0.743 ± 0.081  0.916 ± 0.039  0.377 ± 0.062  0.850 ± 0.097  0.634 ± 0.069  0.646 ± 0.048  0.063 ± 0.021  0.826 ± 0.112  0.367 ± 0.180
+      proto       5  0.784 ± 0.065  0.937 ± 0.023  0.450 ± 0.081  0.803 ± 0.099  0.663 ± 0.057  0.652 ± 0.047  0.057 ± 0.023  0.778 ± 0.083  0.367 ± 0.180
+09:23:58 | INFO | 
+--- E3 — Closed-set sur classes connues (moyenne ± std sur rotations) ---
+              n_rot             f1       acc_fine        fam_acc       tax_dist            ece       cons_raw
+model view                                                                                                   
+flat  all         5  0.725 ± 0.041  0.765 ± 0.042  0.837 ± 0.031  0.398 ± 0.068  0.168 ± 0.039      nan ± nan
+      strict      5  0.589 ± 0.056  0.646 ± 0.060  0.760 ± 0.045  0.593 ± 0.096  0.268 ± 0.059      nan ± nan
+hier  all         5  0.719 ± 0.055  0.762 ± 0.051  0.839 ± 0.038  0.399 ± 0.082  0.177 ± 0.036  0.982 ± 0.012
+      strict      5  0.583 ± 0.075  0.642 ± 0.072  0.764 ± 0.054  0.594 ± 0.117  0.280 ± 0.049  0.982 ± 0.012
+09:23:58 | INFO | 
+--- STABILITÉ selon les classes cachées — AUROC (vue strict) : moyenne, IC95, min, max, coefficient de variation ---
+              auroc_mean    ci95     min     max      cv
+model method                                            
+flat  energy      0.7222  0.1220  0.6173  0.8800  0.1360
+      mcd         0.7156  0.1250  0.6147  0.8787  0.1407
+      msp         0.7111  0.1287  0.6268  0.8844  0.1458
+      proto       0.7268  0.1187  0.6367  0.8855  0.1315
+hier  energy      0.6933  0.1115  0.6274  0.8367  0.1295
+      hier        0.6921  0.0938  0.6113  0.8093  0.1092
+      mcd         0.6789  0.1113  0.5908  0.8231  0.1320
+      msp         0.6769  0.1101  0.6002  0.8192  0.1310
+      proto       0.7024  0.0948  0.6247  0.8189  0.1087
+09:23:58 | INFO | Meilleure combinaison (AUROC moyen, vue strict) : flat + proto = 0.7268 ± 0.1187 (IC95)
+09:23:58 | INFO | 
+--- Hiérarchique − Flat (appariée par rotation, vue strict). diff>0 = le hiérarchique est meilleur ---
+               diff_mean  diff_ci95 wins  p_ttest  p_wilcoxon
+method metric                                                
+energy auroc     -0.0289     0.0516  1/5   0.1948      0.1875
+       oscr      -0.0144     0.0144  0/5   0.0494      0.0625
+       osr_f1    -0.0032     0.0178  2/5   0.6428      0.6250
+mcd    auroc     -0.0367     0.0614  1/5   0.1726      0.1875
+       oscr      -0.0181     0.0231  0/5   0.0943      0.0625
+       osr_f1    -0.0046     0.0179  2/5   0.5154      0.6250
+msp    auroc     -0.0342     0.0590  1/5   0.1829      0.1875
+       oscr      -0.0128     0.0249  2/5   0.2253      0.3125
+       osr_f1    -0.0047     0.0162  2/5   0.4670      0.6250
+proto  auroc     -0.0244     0.0603  2/5   0.3238      0.6250
+       oscr      -0.0145     0.0227  1/5   0.1504      0.1250
+       osr_f1    -0.0041     0.0142  2/5   0.4691      0.4375
+09:23:58 | INFO | 
+--- E4 — Robustesse : OOD vs niveau de bruit p (τ fixé sur val clean), vue strict ---
+                   auroc    oscr  osr_f1  known_reject  unk_accept
+model method p                                                    
+flat  energy 0.0  0.7222  0.5334  0.3356        0.0637      0.8229
+             0.1  0.7175  0.5250  0.3332        0.0609      0.8229
+             0.2  0.7111  0.5159  0.3305        0.0661      0.8165
+             0.3  0.7002  0.5020  0.3253        0.0686      0.8184
+             0.4  0.6944  0.4926  0.3227        0.0707      0.8125
+             0.5  0.6853  0.4759  0.3154        0.0804      0.8057
+      mcd    0.0  0.7156  0.5244  0.3360        0.0611      0.8145
+      msp    0.0  0.7111  0.5206  0.3352        0.0570      0.8235
+             0.1  0.7078  0.5152  0.3346        0.0608      0.8170
+             0.2  0.7010  0.5084  0.3327        0.0680      0.8119
+             0.3  0.6914  0.4954  0.3265        0.0704      0.8197
+             0.4  0.6852  0.4860  0.3245        0.0756      0.8168
+             0.5  0.6764  0.4699  0.3174        0.0851      0.8088
+      proto  0.0  0.7268  0.5370  0.3394        0.0640      0.8025
+             0.1  0.7218  0.5290  0.3375        0.0653      0.7971
+             0.2  0.7156  0.5213  0.3358        0.0701      0.7894
+             0.3  0.7037  0.5063  0.3298        0.0745      0.7900
+             0.4  0.6975  0.4964  0.3266        0.0785      0.7861
+             0.5  0.6882  0.4794  0.3186        0.0909      0.7747
+hier  energy 0.0  0.6933  0.5189  0.3324        0.0809      0.7890
+             0.1  0.6885  0.5074  0.3294        0.0844      0.7796
+             0.2  0.6800  0.4960  0.3258        0.0950      0.7614
+             0.3  0.6707  0.4809  0.3181        0.1043      0.7601
+             0.4  0.6671  0.4723  0.3147        0.1118      0.7442
+             0.5  0.6580  0.4538  0.3078        0.1185      0.7451
+      hier   0.0  0.6921  0.5170  0.3281        0.0776      0.8453
+             0.1  0.6869  0.5066  0.3270        0.0794      0.8268
+             0.2  0.6788  0.4970  0.3251        0.0893      0.8074
+             0.3  0.6699  0.4818  0.3183        0.0950      0.8036
+             0.4  0.6642  0.4722  0.3143        0.1046      0.7944
+             0.5  0.6563  0.4547  0.3074        0.1118      0.7856
+      mcd    0.0  0.6789  0.5063  0.3314        0.0913      0.7928
+      msp    0.0  0.6769  0.5078  0.3306        0.0896      0.8264
+             0.1  0.6701  0.4954  0.3281        0.0893      0.8132
+             0.2  0.6623  0.4852  0.3245        0.0966      0.7908
+             0.3  0.6535  0.4700  0.3172        0.1026      0.7924
+             0.4  0.6496  0.4618  0.3139        0.1104      0.7818
+             0.5  0.6403  0.4433  0.3062        0.1155      0.7793
+      proto  0.0  0.7024  0.5224  0.3353        0.0912      0.7783
+             0.1  0.6977  0.5125  0.3330        0.0956      0.7645
+             0.2  0.6917  0.5042  0.3306        0.1104      0.7408
+             0.3  0.6824  0.4886  0.3216        0.1238      0.7388
+             0.4  0.6774  0.4785  0.3188        0.1311      0.7249
+             0.5  0.6703  0.4615  0.3105        0.1388      0.7175
+09:23:58 | INFO | 
+--- E4 — Robustesse : closed-set vs p (vue strict) ---
+               f1  acc_fine  fam_acc  tax_dist     ece
+model p                                               
+flat  0.0  0.5894    0.6463   0.7605    0.5932  0.2684
+      0.1  0.5884    0.6403   0.7603    0.5994  0.2692
+      0.2  0.5828    0.6312   0.7479    0.6209  0.2690
+      0.3  0.5736    0.6189   0.7426    0.6385  0.2754
+      0.4  0.5683    0.6114   0.7420    0.6466  0.2783
+      0.5  0.5552    0.5948   0.7238    0.6814  0.2841
+hier  0.0  0.5827    0.6420   0.7638    0.5942  0.2797
+      0.1  0.5749    0.6304   0.7541    0.6155  0.2783
+      0.2  0.5689    0.6226   0.7456    0.6318  0.2782
+      0.3  0.5569    0.6051   0.7340    0.6609  0.2882
+      0.4  0.5491    0.5967   0.7302    0.6731  0.2879
+      0.5  0.5344    0.5774   0.7136    0.7090  0.2999
+09:23:58 | INFO | 
+--- Taux de rejet (=bonne détection) quand la classe est INCONNUE, au seuil τ — moyenne sur rotations ---
+model                          flat                        hier                                       famille stricte
+method                       energy    mcd    msp  proto energy   hier    mcd    msp  proto                          
+cls                                                                                                                  
+authentication-failed         0.105  0.045  0.116  0.116  0.064  0.060  0.056  0.094  0.064    authentication    True
+authentication-success        0.000  0.000  0.000  0.000  0.078  0.209  0.033  0.160  0.193    authentication    True
+connection-closed             0.000  0.000  0.009  0.000  0.031  0.075  0.035  0.022  0.199        connection    True
+connection-failed             0.019  0.007  0.022  0.059  0.290  0.227  0.164  0.193  0.331        connection    True
+connection-opened             0.055  0.174  0.242  0.160  0.082  0.059  0.123  0.078  0.064        connection    True
+database-operation            0.533  0.583  0.432  0.541  0.992  0.718  0.992  0.923  0.965            system    True
+directory-changed             0.009  0.017  0.004  0.004  0.206  0.176  0.249  0.167  0.245         directory   False
+directory-created             0.000  0.000  0.052  0.039  0.043  0.159  0.142  0.009  0.223         directory   False
+directory-deleted             0.000  0.069  0.000  0.000  0.176  0.245  0.202  0.090  0.249         directory   False
+file-action-failure           0.000  0.000  0.000  0.000  0.120  0.266  0.129  0.112  0.343              file   False
+file-deleted                  0.215  0.215  0.133  0.193  0.116  0.030  0.215  0.026  0.137              file   False
+file-modification             0.000  0.000  0.000  0.000  0.000  0.000  0.000  0.000  0.000              file   False
+file-read                     0.120  0.296  0.339  0.026  0.361  0.335  0.369  0.369  0.309              file   False
+file-write                    0.223  0.176  0.172  0.232  0.133  0.000  0.026  0.000  0.150              file   False
+hardware-monitoring           0.090  0.137  0.113  0.142  0.000  0.057  0.028  0.165  0.000            system    True
+http-request-failure          0.000  0.004  0.000  0.000  0.000  0.000  0.000  0.000  0.000              http   False
+http-request-success          0.215  0.193  0.103  0.193  0.309  0.219  0.236  0.180  0.215              http   False
+ids-alert                     0.015  0.122  0.198  0.103  0.359  0.328  0.382  0.263  0.473  network_security    True
+network-filtered              1.000  1.000  0.970  1.000  0.970  0.018  0.705  0.289  0.120  network_security    True
+network-traffic               0.000  0.031  0.000  0.000  0.000  0.000  0.000  0.000  0.000  network_security    True
+process-ended                 0.005  0.005  0.021  0.010  0.000  0.005  0.000  0.005  0.005           process    True
+process-error                 0.995  0.804  0.742  0.995  0.979  0.361  0.866  0.856  0.964           process    True
+process-info                  0.319  0.422  0.470  0.699  0.000  0.000  0.000  0.000  0.000           process    True
+process-shutdown              0.000  0.000  0.000  0.000  0.000  0.072  0.000  0.000  0.113           process    True
+process-started               0.068  0.023  0.098  0.064  0.428  0.424  0.432  0.295  0.485           process    True
+system-configuration-changed  0.226  0.236  0.038  0.184  0.264  0.274  0.368  0.354  0.340            system    True
+user-creation                 0.420  0.337  0.443  0.513  0.363  0.130  0.340  0.430  0.247              user    True
+user-deletion                 0.000  0.000  0.000  0.000  0.000  0.000  0.000  0.000  0.000              user    True
+user-logout                   0.000  0.000  0.070  0.000  0.000  0.000  0.012  0.000  0.004              user    True
+user-session-open             0.966  0.991  0.781  0.991  0.004  0.004  0.086  0.004  0.017              user   False
+09:23:58 | INFO | 
+====================================================================================================
+## 12. FIGURES
+====================================================================================================
+09:23:58 | INFO | Figure sauvegardée : /content/outputs/figs/F1_auroc_boxplot.png
+09:23:59 | INFO | Figure sauvegardée : /content/outputs/figs/F2_robustness_noise.png
+09:24:00 | INFO | Figure sauvegardée : /content/outputs/figs/F3_reject_per_class.png
+09:24:01 | INFO | Figure sauvegardée : /content/outputs/figs/F4_E1_confusion.png
+09:24:02 | INFO | Figure sauvegardée : /content/outputs/figs/F5_score_hist_rot0.png
+09:24:02 | INFO | 
+====================================================================================================
+## 13. RECAP FINAL
+====================================================================================================
+09:24:02 | INFO | RECAP.md écrit : /content/outputs/RECAP.md

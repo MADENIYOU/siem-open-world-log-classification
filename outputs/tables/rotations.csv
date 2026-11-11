@@ -1,0 +1,6 @@
+rotation,unknown,unknown_families,n_unknown_strict
+0,"['directory-deleted', 'file-action-failure', 'http-request-failure', 'ids-alert', 'process-shutdown', 'user-deletion']","['directory', 'file', 'http', 'network_security', 'process', 'user']",3
+1,"['authentication-failed', 'connection-opened', 'file-read', 'http-request-success', 'process-started', 'user-logout']","['authentication', 'connection', 'file', 'http', 'process', 'user']",4
+2,"['authentication-success', 'connection-closed', 'database-operation', 'file-modification', 'file-write', 'process-info']","['authentication', 'connection', 'file', 'process', 'system']",4
+3,"['connection-failed', 'network-filtered', 'process-error', 'system-configuration-changed', 'user-creation', 'user-session-open']","['connection', 'network_security', 'process', 'system', 'user']",5
+4,"['directory-changed', 'directory-created', 'file-deleted', 'hardware-monitoring', 'network-traffic', 'process-ended']","['directory', 'file', 'network_security', 'process', 'system']",3
