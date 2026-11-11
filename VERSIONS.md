@@ -868,3 +868,27 @@ Généré à partir de `artifacts/results/v3/versions.jsonl` (append-only, ne pa
 | Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
 |---|---|---|---|---|---|
 | **1** | 2026-11-10 23:18 | Verdicts HJ1 à HJ5 et résultat RW11 | Première version | **version courante** | `versions/scripts/v3_verdicts_W11__1.py` |
+
+## RW12
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **1** | 2026-11-10 23:19 | Préinscription D44, HN1 à HN3 (vague 12) | Première version | **version courante** | `versions/scripts/v3_register_W12__1.py` |
+
+## W12
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **1** | 2026-11-10 23:19 | Vague 12 : poids de la composition optimisés sur la macro-F1 décodée hors-gabarit | Première version | **version courante** | `versions/scripts/v3_phase2_W12__1.py` |
+
+## AW12
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **1** | 2026-11-10 23:23 | Analyse de la vague 12 (HN1 à HN3) | Première version | **version courante** | `versions/scripts/v3_analyze_W12__1.py` |
+
+## VW12
+
+| Version | Date | Ce que fait cette version | Pourquoi elle remplace la précédente | Pourquoi elle a été remplacée | Où la retrouver |
+|---|---|---|---|---|---|
+| **1** | 2026-11-11 00:52 | Verdicts HN1 à HN3 et résultat RW12 | Première version | **version courante** | `versions/scripts/v3_verdicts_W12__1.py` |

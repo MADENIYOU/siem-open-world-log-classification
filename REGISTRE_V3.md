@@ -410,6 +410,14 @@ Demande de l'étudiant (« lançons la vague maintenant »). RÉFÉRENCE STK4 = 
 
 *Note.* Écrit le 2026-11-10 (22h30) avant tout calcul de la vague 11.
 
+### D44 : Vague 12 : apprendre les poids de la composition sur la macro-F1 décodée hors-gabarit  (version 1, 2026-11-10 23:19:11)
+
+Constat (RW11) : les poids appris par entropie croisée hors-gabarit se dégradent quand on ajoute des têtes corrélées (STK7, STK9 : −0,013 contre STK4) : le critère d'apprentissage (entropie croisée) n'est pas la mesure d'évaluation (macro-F1 du palier A après décodage). Vague 12 : les poids sont CHOISIS en maximisant la macro-F1 (palier A) des prédictions hors-gabarit du jeu d'entraînement (les mêmes prédictions hors-gabarit en 3 plis internes qu'en D40) après softmax et décodage M50 (α = 0,5, T = 1) appliqué à l'ensemble de ces prédictions ; optimiseur de Nelder-Mead borné [0 ; 3], départ aux poids d'entropie croisée, au plus 150 évaluations. VARIANTES : F4 = têtes de STK4 (Lc, Lo, La, Lf) aux poids optimisés sur la macro-F1 ; F4s = moyenne des poids d'entropie croisée et des poids optimisés (rétrécissement) ; F9 = neuf têtes de STK9 aux poids optimisés ; F9s = moyenne rétrécie. Références : STK4 (pipeline gelé D42), PIPE (décodage M50 seul). Sélection : répétitions 0-4 (25 plis), conditions toutes, abs8, abs14. Confirmation (si la porte HN1 est franchie) : répétitions 40-49 (50 plis, jamais utilisés) de la variante au plus grand gain moyen. Règle supplémentaire (écrite avant le calcul, tirée de l'expérience de HJ3) : si en sélection l'IC95 du gain de la meilleure variante contre STK4 est ENTIÈREMENT sous 0, aucune confirmation n'est menée. Le test v2 reste scellé (D27).
+
+*Justification.* Aligner le critère d'apprentissage des poids avec la mesure d'évaluation est la réponse directe au défaut observé en vague 11 ; le rétrécissement vers les poids d'entropie croisée limite le surajustement à environ 200 gabarits.
+
+*Note.* Écrit le 2026-11-10 (23h50) avant tout calcul de la vague 12.
+
 ## Hypothèses (préinscrites, puis confirmées ou réfutées)
 
 ### HA1 : Le découpage au hasard gonfle le score  (version 4, 2026-11-07 22:29:59 ; **statut : confirmée**)
@@ -2283,6 +2291,41 @@ Descriptif (aucune règle de décision) : poids moyens par tête sur les 25 plis
 *Historique des versions précédentes (conservées) :*
 - v1 (2026-11-10 22:40:05) : statut préinscrite ; Descriptif (aucune règle de décision) : poids moyens par tête sur les 25 plis de sélection et leur écart-type ; rapportés.
 
+### HN1 : Les poids optimisés sur la macro-F1 décodée améliorent STK4  (version 2, 2026-11-11 00:52:08 ; **statut : réfutée**)
+
+En sélection (25 plis, condition « toutes »), au moins une des variantes F4, F4s, F9, F9s dépasse STK4 d'au moins 0,01 de macro-F1 du palier A (Wilcoxon unilatéral contre le seuil, Holm sur 4 variantes, p < 0,05).
+
+*Justification.* Verdict établi avec la règle de décision préinscrite (D44).
+
+*Preuve.* Sélection (25 plis, « toutes »), STK4 0,5940 : F4 0,5902 (−0,0038, IC95 [−0,012 ; 0,004], signes 6/19) ; F4s 0,5912 (−0,0028, [−0,008 ; 0,002], 1/24) ; F9 0,5837 (−0,0103, [−0,024 ; 0,003]) ; F9s 0,5839 (−0,0101, [−0,022 ; 0,002]) ; bornes hautes ≤ 0,004 < 0,01 ; Holm 1,0.  Fichiers : artifacts/results/v3/W12a_all_units.csv ; W12a_tests.csv ; W12_selected.json
+
+*Note.* L'optimisation de la macro-F1 hors-gabarit AMÉLIORE bien le critère sur lequel elle porte (F1 hors-gabarit +0,010 à +0,011) mais pas le score sur les plis de test : les prédictions hors-gabarit (modèles entraînés sur deux tiers des gabarits) ne sont pas celles des modèles complets ; les poids d'entropie croisée de STK4 sont déjà bons.
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-10 23:19:11) : statut préinscrite ; En sélection (25 plis, condition « toutes »), au moins une des variantes F4, F4s, F9, F9s dépasse STK4 d'au moins 0,01 de macro-F1 du palier A (Wilcoxon unilatéral contre le seuil, Holm sur 4 variante…
+
+### HN2 : La variante retenue est confirmée sur plis neufs  (version 2, 2026-11-11 00:52:08 ; **statut : non tranchée**)
+
+Sur les répétitions 40-49 (50 plis), condition « toutes » : gain de la variante retenue contre STK4 avec borne basse d'IC95 ≥ 0,01 ET Wilcoxon, signes et permutation (unilatéraux contre 0,01) p < 0,05 ; réfutée si la borne haute < 0,01 ; non évaluée si HN1 n'est pas franchie ou si le gain de sélection est entièrement négatif.
+
+*Justification.* Verdict établi avec la règle de décision préinscrite (D44).
+
+*Preuve.* Non évaluée : la porte HN1 n'est pas franchie (règle D44 : non évaluée si HN1 n'est pas franchie) ; aucun candidat n'a un gain de sélection dont la borne haute atteigne 0,01.  Fichiers : artifacts/results/v3/W12a_all_units.csv ; W12a_tests.csv ; W12_selected.json
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-10 23:19:11) : statut préinscrite ; Sur les répétitions 40-49 (50 plis), condition « toutes » : gain de la variante retenue contre STK4 avec borne basse d'IC95 ≥ 0,01 ET Wilcoxon, signes et permutation (unilatéraux contre 0,01) p < 0,05…
+
+### HN3 : La variante retenue ne dégrade pas la robustesse  (version 2, 2026-11-11 00:52:08 ; **statut : non tranchée**)
+
+Sur les répétitions 40-49, gain contre STK4 dans abs8 et abs14 avec borne basse d'IC95 > −0,01 (non-infériorité) ; non évaluée si HN2 ne l'est pas.
+
+*Justification.* Verdict établi avec la règle de décision préinscrite (D44).
+
+*Preuve.* Non évaluée (pas de confirmation) ; à titre indicatif en sélection, abs14 : F4 −0,0013 ; F4s +0,0008 ; F9 −0,0162 ; F9s −0,0171 contre STK4.  Fichiers : artifacts/results/v3/W12a_all_units.csv ; W12a_tests.csv ; W12_selected.json
+
+*Historique des versions précédentes (conservées) :*
+- v1 (2026-11-10 23:19:11) : statut préinscrite ; Sur les répétitions 40-49, gain contre STK4 dans abs8 et abs14 avec borne basse d'IC95 > −0,01 (non-infériorité) ; non évaluée si HN2 ne l'est pas.
+
 ## Résultats
 
 ### RA1 : Bloc A : macro-F1 du palier A par protocole (précédent v1 et actuel v3)  (version 1, 2026-11-07 21:58:55)
@@ -2559,3 +2602,11 @@ Sélection (25 plis), macro-F1 du palier A, toutes / 8 absentes / 14 absentes : 
 *Justification.* Plus de têtes ne donne pas plus de score : les poids appris par entropie croisée hors-gabarit se dégradent quand les têtes sont corrélées (surajustement du critère d'apprentissage, qui n'est pas la macro-F1 après décodage). STK4, qui a quatre têtes peu corrélées, reste le pipeline gelé. Piste suivante : apprendre les poids directement sur la macro-F1 décodée hors-gabarit.
 
 *Preuve.* artifacts/results/v3/W11a_all_units.csv ; W11a_tests.csv ; W11a_poids_STK4.csv ; W11a_poids_STK7.csv ; W11a_poids_STK9.csv ; W11_selected.json
+
+### RW12 : Vague 12 : poids de la composition optimisés sur la macro-F1 décodée hors-gabarit  (version 1, 2026-11-11 00:52:08)
+
+Sélection (25 plis), macro-F1 du palier A, toutes / 8 absentes / 14 absentes : STK4 0,5940 / 0,6284 / 0,6262 ; F4 0,5902 / 0,6302 / 0,6249 ; F4s 0,5912 / 0,6294 / 0,6270 ; F9 0,5837 / 0,6228 / 0,6100 ; F9s 0,5839 / 0,6214 / 0,6091 ; PIPE 0,5544 / 0,5998 / 0,5796. F1 hors-gabarit (critère d'optimisation) : F4 0,4976 → 0,5079 ; F9 0,4973 → 0,5087.
+
+*Justification.* Aligner le critère d'apprentissage sur la mesure n'apporte rien sur les plis de test : le pipeline gelé reste STK4 + M50 avec poids d'entropie croisée. Les deux dernières vagues (11 et 12) closent la piste « composition apprise » : plus de têtes ou un autre critère ne font pas mieux que quatre têtes peu corrélées.
+
+*Preuve.* artifacts/results/v3/W12a_all_units.csv ; W12a_tests.csv ; W12_selected.json
