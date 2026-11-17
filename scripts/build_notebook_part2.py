@@ -1,5 +1,5 @@
 """Construit la PARTIE 2 du notebook (protocole v3) : sections AJOUTÉES à la fin, sans rien retirer ni réécrire de la v1. Les cellules générées portent metadata {"part2": true} ;
-relancer le script régénère uniquement ces cellules (les cellules v1 ne sont jamais touchées) ; le notebook est archivé avant chaque réécriture (archive/). Tableaux et figures sortent du journal et de artifacts/results/v3. Usage : python scripts/build_notebook_part2.py"""
+relancer le script régénère uniquement ces cellules (les cellules v1 ne sont jamais touchées) ; le notebook est archivé avant chaque réécriture (archive/). Tableaux et figures sortent du journal et de artifacts/results/v3. Version NB2-3 (vagues 7 à 12 et pipeline gelé STK4 + M50 ajoutés ; cellules des versions précédentes de la partie 2 conservées). Usage : TP1/.venv312/bin/python scripts/build_notebook_part2.py"""
 import sys, json, time, shutil, uuid, collections, pathlib
 ROOT = pathlib.Path(__file__).resolve().parents[1]; sys.path.insert(0, str(ROOT / "src"))
 import numpy as np, pandas as pd
@@ -32,7 +32,7 @@ def fig_decoding():
         a.axhline(0, color="black", lw=0.8); a.axhline(0.02, color=TEAL, lw=1, ls="--"); a.set_xticks(x); a.set_xticklabels([s.replace(" (", "\n(") for s in ser], fontsize=8); a.set_title(title, fontsize=10)
     ax[0].set_ylabel("gain de macro-F1 (palier A)\nsur la régression logistique"); ax[0].legend(fontsize=8, loc="upper right"); fig.suptitle("Le décodage équilibré gagne ; seule la cible mixte (M50) tient quand des classes sont absentes", fontsize=12); fig.tight_layout(); p = FIG / "p2_decodage_gains.png"; fig.savefig(p); plt.close(fig); return p, G
 def fig_verdicts():
-    fam = collections.OrderedDict([("A", "A (découpage)"), ("B", "B (classification)"), ("C", "C (inconnus)"), ("V", "V (bruit)"), ("T", "T (Transformer)"), ("D", "D (attaques)"), ("E", "E (calibration)"), ("F", "F (représentation)"), ("I", "I (rejet par famille)"), ("X", "W2-W4 (affinages)"), ("Y", "W3 (présence)"), ("Z", "W4 (axes, bagging)"), ("W", "W1"), ("O", "W5 (inconnus décodés)"), ("R", "W6 (V-REx, embeddings)"), ("L", "W7 (LP-FT)"), ("M", "W7 (MLM)"), ("G", "ronde 3 (non lancée)")])
+    fam = collections.OrderedDict([("A", "A (découpage)"), ("B", "B (classification)"), ("C", "C (inconnus)"), ("V", "V (bruit)"), ("T", "T (Transformer)"), ("D", "D (attaques)"), ("E", "E (calibration)"), ("F", "F (représentation)"), ("I", "I (rejet par famille)"), ("X", "W2-W4 (affinages)"), ("Y", "W3 (présence)"), ("Z", "W4 (axes, bagging)"), ("W", "W1"), ("O", "W5 (inconnus décodés)"), ("R", "W6 (V-REx, embeddings)"), ("L", "W7 (LP-FT)"), ("M", "W7 (MLM)"), ("G", "ronde 3 (non lancée)"), ("K", "W9-W10 (composition)"), ("J", "W11 (STK élargie)"), ("N", "W12 (poids optimisés)")])
     cnt = collections.defaultdict(collections.Counter)
     for i, L in E.items():
         if L[-1]["type"] == "hypothese" and i[0] == "H": cnt[i[1]][L[-1]["statut"]] += 1
@@ -52,7 +52,16 @@ def fig_ladder():
     fig, ax = plt.subplots(figsize=(8.4, 4.2)); b = ax.bar(lab, val, color=col)
     for r, v in zip(b, val): ax.text(r.get_x() + r.get_width() / 2, v + 0.004, f"{v:.3f}", ha="center", fontsize=11)
     ax.set_ylim(0.45, 0.6); ax.set_ylabel("macro-F1 du palier A"); ax.set_title("De 0,50 à 0,55 : le seul levier établi sur les classes connues", fontsize=11); fig.tight_layout(); p = FIG / "p2_echelle_scores.png"; fig.savefig(p); plt.close(fig); return p, X
-pD, GD = fig_decoding(); pV, CNT = fig_verdicts(); pO = fig_open(); pL, XL = fig_ladder()
+def fig_final():
+    d = pd.read_csv(RES / "W10c_all_units.csv"); d3 = pd.read_csv(RES / "W3d_tests.csv"); g = lambda v, c: d3[(d3.variante == v) & (d3.condition == c)].iloc[0]; conds = ("toutes", "abs8", "abs14"); lab = ["régression\nlogistique brute", "+ décodage M50\n(PIPE)", "+ composition\napprise STK4"]
+    fig, ax = plt.subplots(1, 3, figsize=(12, 4.2), sharey=True); vals = {}
+    for a, c in zip(ax, conds):
+        X = d[d.cond == c].pivot_table(index=["repeat", "fold"], columns="variant", values="f1A"); t = pd.read_csv(RES / "W10c_tests.csv"); t = t[(t.condition == c) & (t.variante == "STK_T1_a0.5")].iloc[0]
+        v = [t["f1A PIPE"] - g("M50", c)["gain"], t["f1A PIPE"], t["f1A"]]; vals[c] = v; b = a.bar(lab, v, color=[GREY, SAND, CORAL])
+        for r, x in zip(b, v): a.text(r.get_x() + r.get_width() / 2, x + 0.003, f"{x:.3f}", ha="center", fontsize=10)
+        a.set_ylim(0.45, 0.66); a.set_title({"toutes": "toutes classes présentes", "abs8": "8 classes absentes", "abs14": "14 classes absentes"}[c], fontsize=10); a.tick_params(axis="x", labelsize=8)
+    ax[0].set_ylabel("macro-F1 du palier A (100 plis neufs)"); fig.suptitle("Pipeline gelé : de 0,50 à 0,59 sur les classes connues, y compris quand des classes manquent", fontsize=11); fig.tight_layout(); p = FIG / "p2_pipeline_final.png"; fig.savefig(p); plt.close(fig); return p, vals
+pD, GD = fig_decoding(); pV, CNT = fig_verdicts(); pO = fig_open(); pL, XL = fig_ladder(); pF, VF = fig_final()
 def verdict_table():
     out = ["| Id | Hypothèse | Verdict final | Historique |", "|---|---|---|---|"]
     for i, L in E.items():
@@ -153,6 +162,30 @@ cells += [md(f"""
 **En simple.** Le produit d'experts objet × action améliore la classification brute (+0,035) mais ce gain est absorbé par le décodage ; le décodage ne sert pas à détecter les inconnus ; ni V-REx ni les embeddings gelés ne relèvent le score.
 """)]
 cells += [md(f"""
+## P2.8b Vagues 7 à 12 : transformers, composition de leviers, pipeline gelé
+Ces vagues prolongent P2.6 à P2.8 ; elles sont ajoutées sans rien retirer. Même méthode : hypothèses préinscrites, sélection puis confirmation sur plis jamais utilisés.
+
+{results_block(['RW7', 'RW8', 'RW9', 'RW10'])}
+
+![pipeline final](artifacts/figures/p2_pipeline_final.png)
+
+**En simple.** (1) **Vague 7** : adapter un Transformer (DistilBERT) au langage des logs ne le fait pas battre TF-IDF (0,4965). (2) **Vague 8** : régler finement le décodage donne des gains de sélection de +0,015 à +0,025, qui retombent à +0,003-0,006 sur plis neufs : un maximum de grille est optimiste. (3) **Vague 9** : composer plusieurs leviers à la fois (axes objet × action, lettres pour la famille, température, prior) tient sur plis neufs (+0,035). (4) **Vague 10** : une **composition apprise** (poids appris hors-gabarit) bat les réglages à la main, y compris avec 8 ou 14 classes absentes ; c'est le pipeline gelé.
+""")]
+cells += [md(f"""
+## P2.8c Pipeline gelé (D42) et ce qui n'a plus rien apporté (vagues 11 et 12)
+**Pipeline gelé : STK4 + M50.** TF-IDF mots + lettres → quatre têtes (classe, objet, action par les mots ; famille par les lettres) → composition log-linéaire à poids positifs appris sur des plis hors-gabarit → softmax → décodage M50 sur le lot → rejet des inconnus par la confiance de famille brute. Gain total d'environ **+0,088** sur la régression logistique brute (0,5046 → 0,5922, plis 20-39 ; condition « toutes »).
+
+| Condition (100 plis neufs) | LR brute | PIPE (M50) | STK4 + M50 | Gain STK4 sur PIPE |
+|---|---|---|---|---|
+| toutes | {VF['toutes'][0]:.3f} | {VF['toutes'][1]:.3f} | {VF['toutes'][2]:.3f} | {VF['toutes'][2]-VF['toutes'][1]:+.3f} |
+| 8 absentes | {VF['abs8'][0]:.3f} | {VF['abs8'][1]:.3f} | {VF['abs8'][2]:.3f} | {VF['abs8'][2]-VF['abs8'][1]:+.3f} |
+| 14 absentes | {VF['abs14'][0]:.3f} | {VF['abs14'][1]:.3f} | {VF['abs14'][2]:.3f} | {VF['abs14'][2]-VF['abs14'][1]:+.3f} |
+
+{results_block(['RW11', 'RW12'])}
+
+**En simple.** Après le gel, deux idées naturelles ont été essayées : ajouter des têtes (vague 11) et optimiser les poids directement sur le score final (vague 12). Les deux **font un peu moins bien** (−0,003 à −0,014) : plus de têtes corrélées dégradent les poids, et le critère optimisé ne se transfère pas au score de test. Elles sont consignées comme réfutées ; le pipeline reste STK4 + M50. L'exploration s'arrête ici.
+""")]
+cells += [md(f"""
 ## P2.9 Registre complet des hypothèses
 
 ![verdicts](artifacts/figures/p2_verdicts.png)
@@ -165,6 +198,7 @@ cells += [md("""
 - **Statistique** : plis dépendants (mêmes gabarits) ; beaucoup de « réfutées » ont un intervalle trop large pour exclure +0,01 ; le test des signes est le plus sévère (HY8 puis HY9, HZ7 : 31 plis sur 50 donnent p = 0,0595).
 - **Transduction** : le décodage M50 suppose un lot de test.
 - **Erreurs de procédure, reconnues et tracées** : OpenMax implémenté à l'envers ; rangs de Friedman lus à l'envers ; une unité de résultat supprimée par erreur (valeurs conservées, RW4smoke) ; deux versions de script enregistrées avec une description fausse (corrections ajoutées) ; défaut de formule d'une pondération non bornée (DRO1).
+- **Mise à jour NB2-3** : pipeline gelé actuel = STK4 + M50 (D42), qui remplace pour la suite le pipeline « TF-IDF mots → régression logistique → M50 » cité dans la ligne suivante (conservée, version précédente). Vagues 11 et 12 réfutées ; plusieurs hypothèses de confirmation (HJ3, HJ4, HN2, HN3) non évaluées par règle écrite. Le gain de STK4 vient en partie d'une règle de choix appliquée sur les mêmes plis de réplication que ses tests (choix par minimum des trois conditions) : lecture prudente.
 - **Test v2** : toujours scellé au moment de cette rédaction ; une seule ouverture, à la fin, sur le pipeline gelé (TF-IDF mots → régression logistique C = 10 → décodage M50 ; rejet par confiance de famille brute).
 """)]
 cells += [md("""
@@ -179,10 +213,12 @@ cells += [md("""
 | Pourquoi tant d'hypothèses réfutées ? | Parce qu'elles étaient écrites avant de voir les chiffres ; une réfutation est un résultat. |
 | Que veut dire « non tranchée » ? | L'intervalle est trop large pour conclure dans un sens ou dans l'autre. |
 | Comment sait-on que le test n'a pas servi à choisir ? | Journal d'accès vide, empreinte SHA-256 des 57 identifiants, garde automatique au commit. |
+| Quel est le pipeline final ? | STK4 + M50 : quatre têtes (classe, objet, action, famille) composées avec des poids appris hors-gabarit, puis décodage M50 : 0,592 contre 0,505 (+0,088) sur 100 plis neufs. |
+| Pourquoi arrêter après la vague 10 ? | Les vagues 11 et 12 (plus de têtes, poids optimisés sur le score) ont fait −0,003 à −0,014 : plus de réglages = plus de sur-ajustement. |
 | Qu'a appris l'entraînement adversarial ? | Il aide contre les attaques vues, pas contre une attaque nouvelle ; la normalisation par la table officielle UTS #39 est la parade qui généralise (v1 9.12, v3 HD5). |
 """)]
 # ---------- écriture ----------
 nb = json.load(open(NB)); old = [c for c in nb["cells"] if not c.get("metadata", {}).get("part2")]; had = len(nb["cells"]) - len(old)
 if had == 0:   # première construction seulement : les relances ne régénèrent que les cellules de la partie 2 (cellules v1 vérifiées identiques)
     arc = ROOT / "archive" / f"{time.strftime('%Y-%m-%d_%H%M')}_avant_partie2_notebook"; arc.mkdir(parents=True, exist_ok=True); shutil.copy2(NB, arc / NB.name)
-nb["cells"] = old + cells; json.dump(nb, open(NB, "w"), ensure_ascii=False, indent=1); print(f"cellules v1 conservées : {len(old)} ; cellules de la partie 2 : {len(cells)} (avant : {had}) ; figures : {pD.name}, {pV.name}, {pO.name}, {pL.name}")
+nb["cells"] = old + cells; json.dump(nb, open(NB, "w"), ensure_ascii=False, indent=1); print(f"cellules v1 conservées : {len(old)} ; cellules de la partie 2 : {len(cells)} (avant : {had}) ; figures : {pD.name}, {pV.name}, {pO.name}, {pL.name}, {pF.name}")
